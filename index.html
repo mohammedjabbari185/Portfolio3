@@ -324,6 +324,33 @@ Management consulting essential training -Udemy- </h3>
       document.getElementById(target).classList.add('active');
     });
   });
+  
+   const sections = document.querySelectorAll('section');
+
+  const activateOnlyTopSection = () => {
+    let topSection = null;
+    let topOffset = window.innerHeight;
+
+    sections.forEach(section => {
+      const rect = section.getBoundingClientRect();
+      if (rect.top >= 0 && rect.top < topOffset) {
+        topOffset = rect.top;
+        topSection = section;
+      }
+    });
+
+    sections.forEach(section => {
+      if (section === topSection) {
+        section.classList.remove('dimmed');
+      } else {
+        section.classList.add('dimmed');
+      }
+    });
+  };
+
+  window.addEventListener('scroll', activateOnlyTopSection);
+  window.addEventListener('load', activateOnlyTopSection);
+
 
 </script>
 
