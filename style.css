@@ -253,4 +253,23 @@ body.dark-mode form button {
 
 body.dark-mode form button:hover {
   background: #888;
+
+  .cv-btn {
+    display: inline-block;
+    margin-top: 25px;
+    padding: 12px 25px;
+    background-color: #26c6da;
+    color: white;
+    border-radius: 30px;
+    font-weight: 600;
+    font-size: 1.1rem;
+    text-decoration: none;
+    transition: background 0.3s ease;
+  }
+  
+  .cv-btn:hover {
+    background-color: #6a1b9a;
+    color: #fff;
+  }
+  
 }
