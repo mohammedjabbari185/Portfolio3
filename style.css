@@ -266,10 +266,36 @@ body.dark-mode form button:hover {
     text-decoration: none;
     transition: background 0.3s ease;
   }
+  .cv-section {
+    margin-top: 30px;
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap;
+  }
+  
+  .cv-btn {
+    background: #26c6da;
+    color: white;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 30px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1.1rem;
+    transition: background 0.3s ease;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+  }
   
   .cv-btn:hover {
-    background-color: #6a1b9a;
-    color: #fff;
+    background: #6a1b9a;
+    transform: scale(1.05);
+  }
+  
+  .cv-btn.download::after {
+    content: " 📥";
+  }
+  
   }
   
 }
