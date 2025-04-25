@@ -1,4 +1,5 @@
 
+
 <!DOCTYPE html> 
 <html lang="fr">
 <head>
@@ -17,22 +18,17 @@
     <h1>Mohammed Jabbari</h1>
     <nav>
       <a data-target="about"><i class="fas fa-user"></i> À propos</a>
-      <a data-target="skills"><i class="fas fa-tools"></i> Compétences</a>
+      <a data-target="Competences"><i class="fas fa-tools"></i> Compétences</a>
       <a data-target="education"><i class="fas fa-graduation-cap"></i> Formation</a>
       <a data-target="projects"><i class="fas fa-project-diagram"></i> Projets</a>
-      <a data-target="certifications"><i class="fas fa-certificate"></i> Certifications</a>
+      <a data-target="certs"><i class="fas fa-certificate"></i> Certifications</a>
       <a data-target="contact"><i class="fas fa-envelope"></i> Contact</a>
 	</nav>
  	   <button id="theme-toggle" style="position: absolute; top: 20px; right: 20px; padding: 10px 15px; background: #fff; border: none; border-radius: 20px; cursor: pointer; font-	weight: bold;">
 	  🌙 Mode Sombre
 	</button>
-<div class="cv-section">
-  <a href="cv.pdf" target="_blank" class="cv-btn">
-    👀 Visualiser le CV
-  </a>
-  <a href="cv.pdf" download class="cv-btn download">
-    📥 Télécharger le CV
-  </a>
+
+  </span></a>
 </div>
 
 
@@ -42,24 +38,34 @@
 
   <div class="side-menu">
     <a data-target="about"><i class="fas fa-user"></i></a>
-    <a data-target="skills"><i class="fas fa-tools"></i></a>
+    <a data-target="Competences"><i class="fas fa-tools"></i></a>
     <a data-target="education"><i class="fas fa-graduation-cap"></i></a>
     <a data-target="projects"><i class="fas fa-project-diagram"></i></a>
-    <a data-target="certifications"><i class="fas fa-certificate"></i></a>
+    <a data-target="certs"><i class="fas fa-certificate"></i></a>
     <a data-target="contact"><i class="fas fa-envelope"></i></a>
   </div>
 
 
   <section id="about" class="active">
     <h2><i class="fas fa-user"></i> À propos</h2>
-    <p> Mohammed JABBARI | Élève Ingénieur Officier de Réserve | Génie Électrique & Automatisation Industrielle | EMI 
+    <p>Passionné par l’innovation technologique et les systèmes intelligents, je suis Mohammed Jabbari, élève ingénieur à l’École Mohammadia d’Ingénieurs en Génie Électrique et Automatisation Industrielle.
+Mon parcours est guidé par une volonté constante de comprendre, concevoir et optimiser des solutions à haute valeur ajoutée, tant sur le plan technique qu’humain.<br><br>
 
-Passionné par l’innovation technologique, l’électrotechnique et l’automatisation industrielle, j’ai suivi un parcours académique rigoureux, combinant excellence scientifique et expertise technique </p>
+Fort de solides compétences en programmation embarquée, automatisation, modélisation de systèmes, ainsi qu'en électrotechnique, je m'investis pleinement dans les projets qui combinent rigueur scientifique, créativité et impact concret. Qu’il s’agisse de concevoir une architecture VLSI, de piloter un automate industriel ou de développer un système intelligent de détection, je m’efforce toujours d’apporter une réponse efficace et durable.<br><br>
+
+Je suis également animé par l'esprit d'équipe, le leadership et la communication, des qualités essentielles que j’ai développées à travers mes engagements académiques et personnels.<br><br>
+
+🎯 Objectif : Contribuer à bâtir un avenir technologique plus intelligent, plus sûr et plus responsable.
+<br><br>
+🌟 Vous souhaitez en savoir plus sur mon parcours ?<br>
+➡️ Consultez mon CV en ligne ou téléchargez-le en un clic :
+
+ </p>
   </section>
 
 <div class="cv-section">
-  <a href="cv.pdf" target="_blank" class="cv-btn">👀 Visualiser le CV</a>
-  <a href="cv.pdf" download class="cv-btn download">⬇️ Télécharger le CV</a>
+  <a href="cv.pdf" target="_blank" class="cv-btn"><span>👀 Visualiser le CV</span></a>
+  <a href="cv.pdf" download class="cv-btn download"><span>⬇️ Télécharger le CV</span></a>
 </div>
 
 
@@ -185,17 +191,7 @@ Management consulting essential training -Udemy- </h3>
       </div>
   </section>
 
- <!-- Nouvelle section CV -->
-  <section id="cv-access">
-    <h2><i class="fas fa-file-alt"></i> Demander l'accès à mon CV</h2>
-    <form onsubmit="handleRequest(event)">
-      <input type="text" placeholder="Nom" required>
-      <input type="email" placeholder="Email" required>
-      <button type="submit">Demander l'accès</button>
-    </form>
-  </section>
-
-  <section id="contact">
+   <section id="contact">
     <h2>Contact</h2>
     <form>
       <input type="text" placeholder="Nom" required>
@@ -209,10 +205,32 @@ Management consulting essential training -Udemy- </h3>
 
 
 
-  <footer>
-    <p>&copy; 2025 Mohammed Jabbari. Tous droits réservés.</p>
-  </footer>
 
+  
+<!-- === SECTION COMMENTAIRES & NOTES === -->
+<section id="feedback">
+  <h2><i class="fas fa-comment-dots"></i> Laissez un commentaire</h2>
+  <form id="comment-form">
+    <input type="text" name="name" placeholder="Votre nom" required />
+    <textarea name="comment" placeholder="Votre commentaire" required></textarea>
+    <div class="rating">
+      <label>Note :</label>
+      <div class="stars">
+        <input type="radio" name="rating" id="star5" value="5" /><label for="star5">&#9733;</label>
+        <input type="radio" name="rating" id="star4" value="4" /><label for="star4">&#9733;</label>
+        <input type="radio" name="rating" id="star3" value="3" /><label for="star3">&#9733;</label>
+        <input type="radio" name="rating" id="star2" value="2" /><label for="star2">&#9733;</label>
+        <input type="radio" name="rating" id="star1" value="1" /><label for="star1">&#9733;</label>
+      </div>
+    </div>
+    <button type="submit">Envoyer</button>
+  </form>
+  
+</section>
+
+
+<footer>
+    <p>&copy; 2025 Mohammed Jabbari. Tous droits réservés.</p>
 <script>
   document.addEventListener("DOMContentLoaded", () => {
     const sections = document.querySelectorAll("section");
