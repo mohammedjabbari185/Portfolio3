@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap');
 
+/* === RESET & BASE === */
 * {
   margin: 0;
   padding: 0;
@@ -15,6 +16,7 @@ body {
   overflow-x: hidden;
 }
 
+/* === HEADER === */
 header {
   background: linear-gradient(135deg, #6a1b9a, #26c6da);
   color: white;
@@ -39,6 +41,7 @@ h1 {
   margin-bottom: 10px;
 }
 
+/* === NAVIGATION === */
 nav {
   margin-top: 20px;
   display: flex;
@@ -64,6 +67,7 @@ nav a i {
   margin-right: 6px;
 }
 
+/* === SIDE MENU === */
 .side-menu {
   position: fixed;
   top: 0;
@@ -94,15 +98,15 @@ nav a i {
   left: 0;
 }
 
+/* === SECTIONS === */
 section {
   padding: 60px 20px;
   max-width: 1200px;
   margin: 40px auto;
   position: relative;
   transition: transform 0.8s ease, filter 0.8s ease, opacity 0.8s ease;
-  transform-origin: center ;
+  transform-origin: center;
 }
-
 
 section.active {
   z-index: 50;
@@ -123,6 +127,7 @@ h2 i {
   margin-right: 10px;
 }
 
+/* === GRIDS === */
 .skills,
 .projects,
 .certs,
@@ -133,6 +138,7 @@ h2 i {
   margin-top: 40px;
 }
 
+/* === CARD === */
 .card {
   background: #ffffff;
   padding: 25px;
@@ -158,6 +164,7 @@ h2 i {
   display: block;
 }
 
+/* === FORMULAIRE === */
 form input,
 form textarea {
   width: 100%;
@@ -177,20 +184,14 @@ form button {
   cursor: pointer;
   font-weight: 600;
   font-size: 1.1rem;
+  transition: background 0.3s ease;
 }
 
 form button:hover {
   background: #26c6da;
 }
 
-footer {
-  text-align: center;
-  padding: 30px;
-  background: #6a1b9a;
-  color: white;
-  font-weight: 300;
-}
-
+/* === BOUTON TOGGLE === */
 .toggle-btn {
   margin-top: 15px;
   padding: 8px 15px;
@@ -208,8 +209,206 @@ footer {
   background-color: #6a1b9a;
 }
 
-/* Mode sombre */
+/* === FOOTER === */
+footer {
+  text-align: center;
+  padding: 30px;
+  background: #6a1b9a;
+  color: white;
+  font-weight: 300;
+}
 
+/* === CV SECTION === */
+.cv-section {
+  margin-top: 30px;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.cv-btn {
+  display: inline-block;
+  padding: 12px 25px;
+  background: #26c6da;
+  color: white;
+  border-radius: 30px;
+  text-decoration: none;
+  font-weight: 600;
+  justify-content: center;
+  font-size: 1.1rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+.cv-btn:hover {
+  background: #6a1b9a;
+  transform: scale(1.05);
+}
+
+.cv-btn.download::after {
+  content: " 📄";
+}
+
+
+.cv-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 30px;
+  background: linear-gradient(135deg, #26c6da, #6a1b9a);
+  color: white;
+  border-radius: 50px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1.1rem;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.cv-btn::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0;
+  width: 0%;
+  height: 100%;
+  background: rgba(255,255,255,0.2);
+  transition: width 0.4s ease-in-out;
+  z-index: 0;
+}
+
+.cv-btn:hover::before {
+  width: 100%;
+}
+
+.cv-btn:hover {
+  transform: scale(1.05);
+}
+
+.cv-btn span {
+  position: relative;
+  z-index: 1;
+}
+
+
+/* === MODERN PREMIUM STYLES === */
+
+body {
+  background: linear-gradient(to right, #f0f2f5, #e0ecf8);
+  font-size: 17px;
+  font-weight: 400;
+}
+
+.card {
+  border-radius: 20px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.1);
+}
+
+h1, h2, h3 {
+  font-weight: 700;
+}
+
+section {
+  border-radius: 16px;
+  background: white;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+  padding: 60px 30px;
+  margin-bottom: 50px;
+}
+
+.cv-btn {
+  background: linear-gradient(to right, #7b1fa2, #26c6da);
+}
+
+.cv-btn:hover {
+  background: linear-gradient(to right, #5e35b1, #00acc1);
+}
+
+/* === COMMENT & RATING SECTION === */
+#feedback {
+  background: #fff;
+  border-radius: 20px;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+  padding: 40px;
+  max-width: 700px;
+  margin: 60px auto;
+}
+
+#feedback h2 {
+  font-size: 2rem;
+  color: #6a1b9a;
+  margin-bottom: 25px;
+  text-align: center;
+}
+
+#feedback form input,
+#feedback form textarea {
+  width: 100%;
+  padding: 14px;
+  margin: 10px 0 20px;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  font-size: 1rem;
+}
+
+#feedback form textarea {
+  min-height: 120px;
+}
+
+.rating {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.stars {
+  direction: rtl;
+  display: flex;
+  gap: 5px;
+}
+
+.stars input[type="radio"] {
+  display: none;
+}
+
+.stars label {
+  font-size: 1.8rem;
+  color: #ccc;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.stars input[type="radio"]:checked ~ label,
+.stars label:hover,
+.stars label:hover ~ label {
+  color: #ffc107;
+}
+
+#feedback button {
+  background: #6a1b9a;
+  color: white;
+  padding: 12px 30px;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  font-size: 1.1rem;
+  transition: background 0.3s ease;
+}
+
+#feedback button:hover {
+  background: #26c6da;
+}
+
+/* === DARK MODE === */
 body.dark-mode {
   background: #121212;
   color: #f0f0f0;
@@ -253,79 +452,8 @@ body.dark-mode form button {
 
 body.dark-mode form button:hover {
   background: #888;
-
-  .cv-btn {
-    display: inline-block;
-    margin-top: 25px;
-    padding: 12px 25px;
-    background-color: #26c6da;
-    color: white;
-    border-radius: 30px;
-    font-weight: 600;
-    font-size: 1.1rem;
-    text-decoration: none;
-    transition: background 0.3s ease;
-  }
-  .cv-section {
-  margin-top: 30px;
-  display: flex;
-  justify-content: center;
-  gap: 15px;
-  flex-wrap: wrap;
 }
 
-.cv-btn {
-  background: #26c6da;
-  color: white;
-  padding: 12px 25px;
-  border: none;
-  border-radius: 30px;
-  text-decoration: none;
-  font-weight: 600;
-  font-size: 1.1rem;
-  transition: background 0.3s ease;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
-}
-
-.cv-btn:hover {
-  background: #6a1b9a;
-  transform: scale(1.05);
-}
-
-.cv-btn.download::after {
-  content: " 📥";
-
-}
-.cv-section {
-  margin-top: 30px;
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-  flex-wrap: wrap;
-}
-
-.cv-btn {
-  display: inline-block;
-  padding: 12px 25px;
-  background: #26c6da;
-  color: white;
-  border-radius: 30px;
-  font-weight: 600;
-  font-size: 1.1rem;
-  text-decoration: none;
-  transition: all 0.3s ease;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
-}
-
-.cv-btn:hover {
-  background: #6a1b9a;
-  transform: scale(1.05);
-}
-
-/* Style spécial pour le bouton "Télécharger" */
-.cv-btn.download::after {
-  content: " 📄";
-}
 body.dark-mode .cv-btn {
   background: #444;
   color: #fff;
@@ -333,7 +461,5 @@ body.dark-mode .cv-btn {
 
 body.dark-mode .cv-btn:hover {
   background: #888;
-}
 
-  }
-  
+}
