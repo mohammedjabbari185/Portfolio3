@@ -1,5 +1,6 @@
 
 
+
 <!DOCTYPE html> 
 <html lang="fr">
 <head>
@@ -9,11 +10,19 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="style_premium.css">
+
 
 </head>
 <body>
+<video autoplay muted loop id="bg-video">
+  <source src="video.mp4" type="video/mp4">
+  Votre navigateur ne supporte pas la vidéo HTML5.
+</video>
+<div class="video-overlay"></div>
 
   <header>
+
     <img src="profil professionnel 1.png" alt="Photo de profil de Mohammed Jabbari">
     <h1>Mohammed Jabbari</h1>
     <nav>
@@ -231,6 +240,11 @@ Management consulting essential training -Udemy- </h3>
 
 <footer>
     <p>&copy; 2025 Mohammed Jabbari. Tous droits réservés.</p>
+
+
+  <div id="welcome" class="welcome-banner" style="display:none;">
+    </div>
+
 <script>
   document.addEventListener("DOMContentLoaded", () => {
     const sections = document.querySelectorAll("section");
@@ -387,6 +401,10 @@ Management consulting essential training -Udemy- </h3>
   window.addEventListener('scroll', activateOnlyTopSection);
   window.addEventListener('load', activateOnlyTopSection);
 
+    window.onload = function() {
+      const banner = document.getElementById('welcome');
+      banner.style.display = 'block';
+    };
 
 </script>
 
