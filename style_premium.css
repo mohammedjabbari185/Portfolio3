@@ -846,3 +846,398 @@ h2::after {
     background-position: 0% 50%;
   }
 }
+.miniature {
+  width: 100%;
+  max-width: 300px;
+  height: auto;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  margin-bottom: 15px;
+}
+.btn-voir-plus, .btn-telecharger {
+  display: inline-block;
+  background-color: #0066cc;
+  color: #fff;
+  padding: 10px 20px;
+  margin-top: 10px;
+  text-decoration: none;
+  border-radius: 8px;
+  transition: background 0.3s;
+}
+
+.btn-voir-plus:hover, .btn-telecharger:hover {
+  background-color: #004d99;
+}
+
+.galerie {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+  margin-top: 20px;
+}
+
+.galerie img {
+  max-width: 300px;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+.btn-voir-plus {
+  display: inline-block;
+  padding: 10px 20px;
+  background: linear-gradient(to right, #4a90e2, #007aff);
+  color: white;
+  border: none;
+  border-radius: 30px;
+  font-weight: bold;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 122, 255, 0.3);
+}
+
+.btn-voir-plus:hover {
+  transform: translateY(-2px);
+  background: linear-gradient(to right, #007aff, #4a90e2);
+  box-shadow: 0 6px 20px rgba(0, 122, 255, 0.4);
+}
+.page-projet {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(to right, #f9f9f9, #e0eaff);
+  min-height: 100vh;
+  padding: 40px 20px;
+}
+
+.contenu-projet {
+  background: white;
+  padding: 30px;
+  max-width: 900px;
+  margin: auto;
+  border-radius: 20px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+}
+
+.titre-projet {
+  text-align: center;
+  font-size: 2.5em;
+  color: #007aff;
+  margin-bottom: 20px;
+}
+
+.btn-telecharger {
+  display: inline-block;
+  margin-top: 30px;
+  padding: 12px 25px;
+  background: #28a745;
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+  border-radius: 30px;
+  transition: background 0.3s ease;
+  box-shadow: 0 4px 10px rgba(40, 167, 69, 0.3);
+}
+
+.btn-telecharger:hover {
+  background: #218838;
+}
+/* === PAGE PROJET === */
+.page-projet {
+  font-family: 'Segoe UI', sans-serif;
+  background: #f4f6fa;
+  color: #333;
+  padding: 50px 20px;
+  min-height: 100vh;
+}
+
+.header-projet {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.titre-projet {
+  font-size: 2.8em;
+  color: #0077cc;
+  margin-bottom: 10px;
+}
+
+.btn-retour {
+  display: inline-block;
+  margin-top: 10px;
+  text-decoration: none;
+  color: #0077cc;
+  font-weight: bold;
+  transition: color 0.3s;
+}
+
+.btn-retour:hover {
+  color: #004d80;
+}
+
+.contenu-projet {
+  max-width: 900px;
+  margin: auto;
+  background: #fff;
+  padding: 30px;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+}
+
+.infos-projet p {
+  font-size: 1.1em;
+  margin: 10px 0;
+}
+
+.galerie {
+  display: flex;
+  gap: 20px;
+  margin: 30px 0;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.galerie img {
+  max-width: 280px;
+  border-radius: 10px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.btn-telecharger {
+  display: block;
+  text-align: center;
+  background-color: #28a745;
+  color: white;
+  font-weight: bold;
+  text-decoration: none;
+  padding: 15px 30px;
+  border-radius: 30px;
+  margin: 0 auto;
+  max-width: 250px;
+  box-shadow: 0 5px 20px rgba(40, 167, 69, 0.3);
+  transition: background-color 0.3s ease;
+}
+
+.btn-telecharger:hover {
+  background-color: #218838;
+}
+/* === DARK + NEON STYLE === */
+.page-projet-neon {
+  background: #0f111a;
+  color: #cfd9ff;
+  font-family: 'Segoe UI', sans-serif;
+  min-height: 100vh;
+  padding: 50px 20px;
+}
+
+.header-projet-neon {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.titre-projet-neon {
+  font-size: 2.8em;
+  color: #00ffff;
+  text-shadow: 0 0 8px #00ffff, 0 0 20px #0077ff;
+  margin-bottom: 10px;
+}
+
+.btn-retour-neon {
+  display: inline-block;
+  margin-top: 10px;
+  text-decoration: none;
+  color: #00ffff;
+  border: 2px solid #00ffff;
+  padding: 8px 16px;
+  border-radius: 30px;
+  transition: all 0.3s;
+  text-shadow: 0 0 5px #00ffff;
+}
+
+.btn-retour-neon:hover {
+  background: #00ffff;
+  color: #0f111a;
+  box-shadow: 0 0 10px #00ffff, 0 0 25px #00ffff;
+}
+
+.contenu-projet-neon {
+  max-width: 900px;
+  margin: auto;
+  background: #1a1c2c;
+  padding: 30px;
+  border-radius: 20px;
+  box-shadow: 0 0 20px rgba(0, 255, 255, 0.15);
+}
+
+.contenu-projet-neon h2 {
+  color: #00ffff;
+  text-shadow: 0 0 5px #00ffff;
+  margin-top: 30px;
+}
+
+.resume-projet p, .infos-projet p {
+  font-size: 1.1em;
+  line-height: 1.6;
+}
+
+.galerie-neon {
+  display: flex;
+  gap: 20px;
+  margin: 30px 0;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.galerie-neon img {
+  max-width: 280px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0,255,255,0.3), 0 0 30px rgba(0,255,255,0.2);
+  transition: transform 0.3s ease;
+}
+
+.galerie-neon img:hover {
+  transform: scale(1.05);
+}
+
+.btn-telecharger-neon {
+  display: block;
+  text-align: center;
+  background: transparent;
+  color: #00ff99;
+  font-weight: bold;
+  text-decoration: none;
+  padding: 15px 30px;
+  border-radius: 30px;
+  border: 2px solid #00ff99;
+  margin: 0 auto;
+  max-width: 300px;
+  box-shadow: 0 0 12px #00ff99;
+  transition: all 0.3s ease;
+}
+
+.btn-telecharger-neon:hover {
+  background: #00ff99;
+  color: #0f111a;
+  box-shadow: 0 0 20px #00ff99, 0 0 40px #00ff99;
+}
+/* === TITRE SOBRE === */
+.titre-projet-neon {
+  font-size: 2.8em;
+  color: #ffffff;
+  margin-bottom: 10px;
+  text-shadow: none;
+}
+
+/* === HEADER === */
+.header-projet-neon {
+  text-align: center;
+  margin-bottom: 40px;
+  border-bottom: 2px solid #00ffff;
+  padding-bottom: 20px;
+  box-shadow: 0 2px 10px rgba(0, 255, 255, 0.2);
+}
+
+/* === CADRE PRINCIPAL === */
+.contenu-projet-neon {
+  max-width: 900px;
+  margin: auto;
+  background: #1a1c2c;
+  padding: 30px;
+  border-radius: 20px;
+  border: 1px solid #00ffff;
+  box-shadow: 0 0 15px rgba(0, 255, 255, 0.2);
+}
+
+/* === SOUS-TITRES (pas néon) === */
+.contenu-projet-neon h2 {
+  color: #ffffff;
+  margin-top: 30px;
+  border-left: 4px solid #00ffff;
+  padding-left: 15px;
+}
+
+/* === IMAGE GALLERY === */
+.galerie-neon img {
+  max-width: 280px;
+  border-radius: 10px;
+  border: 1px solid #00ffff;
+  box-shadow: 0 0 8px rgba(0,255,255,0.2);
+  transition: transform 0.3s ease;
+}
+
+.galerie-neon img:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 16px rgba(0,255,255,0.4);
+}
+/* === MINIATURE DE PROJET === */
+.miniature-projet {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 40px 0;
+}
+
+.miniature-projet img {
+  max-width: 100%;
+  width: 100%;
+  max-height: 450px;
+  object-fit: cover;
+  border-radius: 20px;
+  box-shadow: 0 0 20px rgba(0, 255, 255, 0.15), 0 0 40px rgba(0, 255, 255, 0.1);
+  border: 2px solid #00ffff;
+  transition: transform 0.4s ease;
+}
+
+.miniature-projet img:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 30px rgba(0, 255, 255, 0.25);
+}
+/* MINIATURE PROJET CENTRÉE ET RESPONSIVE */
+.miniature-projet {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 40px auto;
+  max-width: 1000px;
+  padding: 0 20px;
+}
+
+.miniature-projet img {
+  width: 100%;
+  height: auto;
+  max-height: 450px;
+  object-fit: contain;
+  border-radius: 20px;
+  border: 2px solid #00ffff;
+  box-shadow: 0 0 20px rgba(0, 255, 255, 0.15), 0 0 40px rgba(0, 255, 255, 0.1);
+  transition: transform 0.4s ease;
+}
+
+.miniature-projet img:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 30px rgba(0, 255, 255, 0.25);
+}
+/* MINIATURE AVEC CADRE NÉON AJUSTÉ */
+.miniature-projet {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 50px auto;
+  padding: 20px;
+  max-width: 960px;
+  border: 2px solid #00ffff;
+  border-radius: 20px;
+  background: linear-gradient(145deg, #0f111a, #1a1c2c);
+  box-shadow: 0 0 20px rgba(0, 255, 255, 0.15), 0 0 60px rgba(0, 255, 255, 0.1);
+}
+
+.miniature-projet img {
+  width: 100%;
+  height: auto;
+  max-height: 450px;
+  object-fit: cover;
+  border-radius: 12px;
+  box-shadow: 0 0 12px rgba(0,255,255,0.2);
+  transition: transform 0.4s ease, box-shadow 0.3s ease;
+}
+
+.miniature-projet img:hover {
+  transform: scale(1.01);
+  box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+}
