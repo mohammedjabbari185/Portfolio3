@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Projet 1 – Portfolio</title>
+  <link rel="stylesheet" href="../style_premium.css">
+</head>
+<body class="page-projet-neon">
+  <header class="header-projet-neon">
+    <h1 class="titre-projet-neon">Projet 3</h1>
+    <a href="../index.html" class="btn-retour-neon">← Retour au portfolio</a>
+  </header>
+<section class="miniature-projet">
+  <img src="../images/miniature_projet3.jpg" alt="Miniature du projet 3">
+</section>
+
+
+  <main class="contenu-projet-neon">
+    <section class="resume-projet">
+      <h2>Résumé du projet</h2>
+     <main>
+  <section>
+    <h2>Présentation Générale</h2>
+    <p>
+      Dans le cadre de ma formation en génie électrique à l’École Mohammadia d’Ingénieurs, j’ai eu l’opportunité de réaliser un projet de régulation thermique en mettant en œuvre une stratégie de commande PID (Proportionnel – Intégral – Dérivé). L’objectif principal de ce projet était de développer un système capable de maintenir de manière automatique et stable la température d'une chambre, malgré les perturbations extérieures et les variations de consigne.
+    </p>
+  </section>
+
+  <section>
+    <h2>Objectif du Projet</h2>
+    <p>
+      Ce projet visait à étudier, modéliser et simuler différentes approches de régulation (PI, PD et PID), afin d’identifier la méthode la plus efficace pour garantir un contrôle précis et stable de la température. L’enjeu consistait à analyser les performances de ces régulateurs selon plusieurs critères : rapidité de réponse, précision à l’état stationnaire, et capacité à rejeter les perturbations. Une attention particulière a été portée sur l’optimisation des paramètres du PID pour atteindre une régulation fiable dans un contexte réaliste.
+    </p>
+  </section>
+
+  <section>
+    <h2>Choix de la Régulation PID</h2>
+    <p>
+      Le régulateur PID a été sélectionné pour sa capacité à offrir un bon compromis entre simplicité de mise en œuvre, robustesse face aux perturbations, et précision de régulation. Le terme proportionnel (P) permet une réponse rapide, le terme intégral (I) élimine l’erreur statique, et le terme dérivé (D) anticipe les variations brusques du signal. Ce contrôle est largement utilisé dans les systèmes industriels comme le chauffage, la motorisation, ou encore la chimie des procédés.
+    </p>
+  </section>
+
+  <section>
+    <h2>Outils Utilisés</h2>
+    <p>
+      Pour la simulation du système de régulation, j’ai utilisé <strong>MATLAB Simulink</strong>, une plateforme de référence pour la modélisation de systèmes dynamiques. Ce logiciel m’a permis de représenter graphiquement le comportement thermique de la chambre, de modéliser les différents types de contrôleurs, et de comparer leurs réponses dans des conditions identiques. Des perturbations ont été introduites pour évaluer la robustesse de chaque stratégie de commande.
+    </p>
+  </section>
+
+  <section>
+    <h2>Déroulement de la Simulation</h2>
+    <p>
+      La première étape a consisté à modéliser la dynamique thermique de la chambre, en intégrant les paramètres physiques tels que l’inertie thermique et les pertes de chaleur. Ensuite, plusieurs régulateurs (PI, PD et PID) ont été implémentés sur Simulink. Pour chaque configuration, j’ai analysé la réponse temporelle, le dépassement, le temps de montée, le temps de stabilisation et l’erreur permanente. Une phase d’ajustement fin des coefficients PID a été nécessaire pour atteindre les performances désirées.
+    </p>
+  </section>
+
+  <section>
+    <h2>Résultats et Interprétation</h2>
+    <p>
+      Les simulations ont démontré que le contrôleur <strong>PID complet</strong> offrait les meilleures performances globales. Il présentait une bonne rapidité de réponse tout en conservant une stabilité appréciable, même en présence de perturbations. Les contrôleurs PI et PD, bien que plus simples, ont montré certaines limitations, notamment en termes de précision ou de stabilité selon les scénarios. Ces observations ont permis de valider le PID comme solution optimale pour cette application spécifique.
+    </p>
+  </section>
+
+  <section>
+    <h2>Compétences Acquises</h2>
+    <p>
+      Ce projet m’a permis de renforcer mes compétences en <strong>automatique</strong>, en <strong>modélisation de systèmes dynamiques</strong> et en <strong>utilisation de MATLAB/Simulink</strong>. J’ai acquis une compréhension approfondie du fonctionnement des correcteurs PID et de leurs effets respectifs sur la régulation d’un système. J’ai également développé un sens critique pour l’analyse comparative de solutions de commande, tout en m’habituant à l’ajustement de paramètres pour atteindre un équilibre entre performance et stabilité.
+    </p>
+  </section>
+
+  <section>
+    <h2>Conclusion</h2>
+    <p>
+      Ce projet a été une expérience très formatrice dans mon parcours en automatisme. Il m’a permis d’appliquer concrètement des notions théoriques à un cas réel, de développer une rigueur dans la simulation et l’analyse des résultats, et de mieux comprendre les enjeux industriels liés à la régulation automatique. La méthode PID, avec sa souplesse d’application et sa puissance, s’est révélée être un outil incontournable dans l’arsenal de l’ingénieur automaticien.
+    </p>
+  </section>
+</main>
+
+    </section>
+
+    <section class="infos-projet">
+      <h2>Détails</h2>
+      <p><strong>Date :</strong> Décembre 2024</p>
+      <p><strong>Compétences acquises :</strong> modélisation de systèmes dynamiques, compréhension approfondie du fonctionnement des correcteurs PID </p>
+      <p><strong>Logiciels utilisés :</strong> MATLAB/Simulink</p>
+    </section>
+
+    <section class="galerie-neon">
+      <img src="../images/projet3_etape1.png" alt="étape 1">
+      <img src="../images/projet3_etape2.png" alt="étape 2">
+    </section>
+
+    <a href="../docs/rapport_projet1.pdf" class="btn-telecharger-neon" download>Télécharger le rapport</a>
+  </main>
+</body>
+<footer>
+    <p>&copy; 2025 Mohammed Jabbari. Tous droits réservés.</p>
+</footer>
+</html>
