@@ -4,156 +4,97 @@
   <meta charset="UTF-8">
   <title>Projet 1 – Portfolio</title>
   <link rel="stylesheet" href="../style_premium.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body class="page-projet-neon">
+
   <header class="header-projet-neon">
-    <h1 class="titre-projet-neon">Projet 1 </h1>
+    <h1 class="titre-projet-neon">Projet 1 – Système de prévention contre les gaz toxiques</h1>
     <a href="../index.html" class="btn-retour-neon">← Retour au portfolio</a>
   </header>
-<section class="miniature-projet">
-  <img src="../images/miniature_projet1.jpg" alt="Miniature du projet 1">
-</section>
 
+  <section class="miniature-projet">
+    <img src="../images/miniature_projet1.jpg" alt="Miniature du projet 1">
+  </section>
 
   <main class="contenu-projet-neon">
     <section class="resume-projet">
       <h2>Résumé du projet</h2>
-      <!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Projet TIPE - Conception d'un Système de Prévention contre les Gaz Toxiques</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            line-height: 1.6;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f4;
-            color: #333;
-        }
-        header {
-            background-color: #333;
-            color: white;
-            padding: 1rem;
-            text-align: center;
-        }
-        main {
-            padding: 2rem;
-        }
-        h1 {
-            color: #444;
-        }
-        h2 {
-            color: #444;
-            font-size: 1.5rem; /* Taille réduite pour les sous-titres */
-        }
-        section {
-            margin-bottom: 2rem;
-        }
-        ul {
-            list-style-type: disc;
-            margin-left: 20px;
-        }
-        .highlight {
-            background-color: #e0e0e0;
-            padding: 5px;
-        }
-        footer {
-            text-align: center;
-            padding: 1rem;
-            background-color: #333;
-            color: white;
-        }
-    </style>
-</head>
-<body>
 
-
-
-<main>
-    <section>
-        <h2>Contexte et Objectif du Projet</h2>
+      <section>
+        <h3>Contexte et Objectif du Projet</h3>
         <p>
-            Dans le cadre de mon projet de TIPE (Travaux d'Initiative Personnelle Encadrée) de deuxième année en CPGE, spécialité mathématiques et physique, j'ai choisi de travailler sur la conception d'un système innovant visant à prévenir la présence de gaz toxiques dans un environnement clos. L'objectif était de concevoir et de mettre en œuvre un dispositif permettant de détecter la présence de gaz dangereux à l'aide d'un détecteur spécifique (MQ2), de déclencher une alarme en cas de dépassement d'un seuil critique, puis de corriger la situation en activant un système de ventilation pour réduire les niveaux de gaz.
+          Dans le cadre de mon projet de TIPE (Travaux d'Initiative Personnelle Encadrée) en deuxième année de CPGE, spécialité mathématiques et physique, j'ai conçu un système visant à détecter et prévenir la présence de gaz toxiques dans un environnement clos. L’objectif était de détecter les gaz à l’aide d’un capteur MQ2, de déclencher une alarme en cas de danger, et d’activer un système de ventilation pour rétablir un environnement sûr.
         </p>
         <p>
-            Ce projet a été une première expérience dans le domaine de l’électronique et de l’automatisation, et m’a permis d'acquérir des compétences tant techniques que pratiques.
+          Ce projet m’a permis de découvrir le domaine de l’électronique et de l’automatisation, tout en développant des compétences pratiques.
         </p>
-    </section>
+      </section>
 
-    <section>
-        <h2>Description du Système et des Composants</h2>
+      <section>
+        <h3>Description du Système et des Composants</h3>
         <ul>
-            <li><strong>Le Détecteur de Gaz MQ2 :</strong> Le cœur du système repose sur un capteur de gaz MQ2, capable de détecter différents types de gaz, notamment les gaz inflammables comme le méthane et le propane, ainsi que la fumée. Le détecteur est programmé pour mesurer la concentration de gaz dans l’air et la comparer à un seuil prédéfini.</li>
-            <li><strong>Carte Arduino Uno :</strong> La carte Arduino Uno est utilisée comme contrôleur central du système. Elle gère l'ensemble des opérations du dispositif, à savoir la lecture des données du capteur de gaz, l'activation de l'alarme et le contrôle du système de ventilation pour rétablir une atmosphère sécurisée.</li>
-            <li><strong>Le Système d'Alarme :</strong> Une alarme sonore est connectée à la carte Arduino et se déclenche dès qu’un seuil critique de gaz est détecté. Son rôle est d'avertir les utilisateurs de la présence d’un danger imminent.</li>
-            <li><strong>Le Système de Ventilation :</strong> Un ventilateur ou autre dispositif de ventilation est activé lorsque la concentration de gaz devient trop élevée. Ce système est géré par la carte Arduino.</li>
-            <li><strong>Alimentation et Circuit :</strong> Le système est alimenté par une source adéquate. Les connexions entre la carte Arduino, le capteur de gaz, l'alarme et le système de ventilation sont réalisées via des câbles et des connexions électriques.</li>
+          <li><strong>Détecteur de Gaz MQ2 :</strong> Capteur capable de détecter différents types de gaz inflammables et fumées. Il mesure la concentration dans l’air et déclenche une action si un seuil est dépassé.</li>
+          <li><strong>Carte Arduino Uno :</strong> Cerveau du système, elle lit les données du capteur, active l’alarme et gère la ventilation.</li>
+          <li><strong>Système d’Alarme :</strong> Une alarme sonore se déclenche en cas de seuil critique.</li>
+          <li><strong>Système de Ventilation :</strong> Un ventilateur est activé pour évacuer les gaz et améliorer la sécurité.</li>
+          <li><strong>Alimentation et Circuit :</strong> Le tout est relié et alimenté via un circuit électrique adapté.</li>
         </ul>
-    </section>
+      </section>
 
-    <section>
-        <h2>Méthodologie et Approche Scientifique</h2>
-        <p>
-            Ce projet m’a permis d'explorer la démarche scientifique à travers plusieurs étapes clés :
-        </p>
+      <section>
+        <h3>Méthodologie et Approche Scientifique</h3>
         <ul>
-            <li><strong>Recherche et Revue Bibliographique :</strong> J’ai étudié les différents types de capteurs de gaz, leurs principes de fonctionnement et les composants nécessaires pour la réalisation du projet.</li>
-            <li><strong>Modélisation et Conception :</strong> J’ai conçu le système en prenant en compte la modularité et la possibilité d’ajuster les composants en fonction des besoins spécifiques du projet.</li>
-            <li><strong>Programmation et Tests :</strong> L’une des étapes majeures a été la programmation de la carte Arduino. Le code permet de gérer les différentes étapes du processus, depuis la détection des gaz jusqu’à l’activation des systèmes de sécurité.</li>
-            <li><strong>Gestion du Temps et Stress :</strong> Cette expérience a été formatrice pour la gestion de projet, en parallèle des révisions pour les concours. J’ai appris à organiser mon emploi du temps pour gérer efficacement les délais tout en respectant mes engagements académiques.</li>
-            <li><strong>Présentation devant un Jury :</strong> J’ai appris à présenter le projet de manière claire et concise devant un jury, en mettant en avant les choix techniques, les difficultés rencontrées et les solutions apportées.</li>
+          <li><strong>Recherche :</strong> Étude des capteurs de gaz et composants nécessaires.</li>
+          <li><strong>Modélisation :</strong> Conception modulaire du système avec évolutivité.</li>
+          <li><strong>Programmation :</strong> Écriture du code pour la carte Arduino.</li>
+          <li><strong>Tests :</strong> Vérification de chaque phase du projet.</li>
+          <li><strong>Gestion du temps :</strong> Organisation entre travail scolaire et réalisation du projet.</li>
+          <li><strong>Présentation orale :</strong> Explication technique du projet devant un jury.</li>
         </ul>
-    </section>
+      </section>
 
-    <section>
-        <h2>Compétences Acquises</h2>
+      <section>
+        <h3>Compétences Acquises</h3>
         <ul>
-            <li><strong>Compétences Techniques :</strong> Compréhension du fonctionnement des détecteurs de gaz, programmation avec Arduino, conception de circuits électroniques et gestion des systèmes d’alimentation et de ventilation.</li>
-            <li><strong>Compétences Organisationnelles et Personnelles :</strong> Gestion du temps et du stress, capacité à travailler de manière autonome et à résoudre des problèmes techniques de manière créative, et présentation scientifique efficace.</li>
+          <li><strong>Techniques :</strong> Capteurs, circuits, codage Arduino, gestion d'alarmes et de ventilateurs.</li>
+          <li><strong>Organisationnelles :</strong> Gestion de projet, autonomie, présentation scientifique.</li>
         </ul>
-    </section>
+      </section>
 
-    <section>
-        <h2>Impact sur Mon Orientation Professionnelle</h2>
+      <section>
+        <h3>Impact sur Mon Orientation Professionnelle</h3>
         <p>
-            Ce projet a été un véritable tournant dans mon parcours académique, me permettant de confirmer mon intérêt pour le domaine de l’ingénierie, en particulier l’électronique et l’automatisation. Il m’a conforté dans mon choix de m’orienter vers une formation en génie électrique, et j’ai ainsi intégré l’École Mohammadia d’Ingénieurs pour poursuivre mes études dans cette voie.
+          Ce projet a confirmé mon intérêt pour l’ingénierie, particulièrement en électronique et automatisation. J’ai ainsi décidé d’intégrer l’École Mohammadia d’Ingénieurs pour poursuivre cette voie.
         </p>
-    </section>
+      </section>
 
-    <section>
-        <h2>Conclusion</h2>
+      <section>
+        <h3>Conclusion</h3>
         <p>
-            Ce projet de TIPE a été une expérience enrichissante tant sur le plan technique que personnel. Il m’a permis de découvrir l’ingénierie sous un angle pratique et m’a fourni des bases solides pour ma future carrière en génie électrique. Grâce à ce travail, j'ai appris non seulement à concevoir un système complexe, mais aussi à gérer efficacement un projet sous pression et à présenter mes travaux de manière professionnelle.
+          Ce projet de TIPE a été extrêmement formateur. Il m’a permis de comprendre et concevoir un système complet, de gérer les contraintes du temps, et de présenter mon travail avec professionnalisme. Une vraie première pierre dans mon parcours en génie électrique.
         </p>
-    </section>
-</main>
-
-
-</body>
-</html>
-
+      </section>
     </section>
 
     <section class="infos-projet">
       <h2>Détails</h2>
       <p><strong>Date :</strong> Avril 2022</p>
-      <p><strong>Compétences acquises :</strong> IDE Arduino, Gestion de stress et du temps, Autonomie</p>
+      <p><strong>Compétences acquises :</strong> IDE Arduino, Gestion du stress et du temps, Autonomie</p>
       <p><strong>Logiciels utilisés :</strong> IDE Arduino</p>
     </section>
 
     <section class="galerie-neon">
-      <img src="../images/projet1_etape1.png" alt="étape 1">
-      <img src="../images/projet1_etape2.png" alt="étape 2">
+      <img src="../images/projet1_etape1.png" alt="Étape 1 du projet">
+      <img src="../images/projet1_etape2.png" alt="Étape 2 du projet">
     </section>
 
     <a href="../docs/rapport_projet1.pdf" class="btn-telecharger-neon" download>Télécharger le rapport</a>
   </main>
 
-</body>
-<footer>
+  <footer>
     <p>&copy; 2025 Mohammed Jabbari. Tous droits réservés.</p>
-</footer>
+  </footer>
+
+</body>
 </html>
