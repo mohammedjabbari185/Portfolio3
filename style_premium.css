@@ -156,7 +156,7 @@ h2 i {
 .details {
   display: none;
   margin-top: 15px;
-  color: #555;
+  color: #bed3de;
   font-size: 0.95rem;
 }
 
@@ -415,7 +415,7 @@ body.dark-mode {
 }
 
 body.dark-mode header {
-  background: linear-gradient(135deg, #cccccc, #555);
+  background: linear-gradient(135deg, #cccccc,#240438);
 }
 
 body.dark-mode nav a,
