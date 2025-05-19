@@ -1241,3 +1241,66 @@ h2::after {
   transform: scale(1.01);
   box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
 }
+/* === BREAKPOINT TABLETTE (≤ 768 px) === */
+@media (max-width: 768px) {
+
+  body { font-size: 16px; }
+
+  header {
+    padding: 40px 15px;
+  }
+
+  nav {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .skills,
+  .projects,
+  .certs,
+  .education {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  }
+
+  .side-menu {
+    width: 50px;
+  }
+}
+
+/* === BREAKPOINT MOBILE (≤ 480 px) === */
+@media (max-width: 480px) {
+
+  body { font-size: 15px; }
+
+  h1 { font-size: 1.9rem; }
+  h2 { font-size: 1.5rem; }
+
+  header img {
+    width: 90px;
+    height: 90px;
+  }
+
+  nav a {
+    font-size: 0.95rem;
+    margin: 6px 0;
+  }
+
+  section {
+    padding: 40px 15px;
+    margin: 25px 10px;
+  }
+
+  /* cartes en une colonne */
+  .skills,
+  .projects,
+  .certs,
+  .education {
+    grid-template-columns: 1fr;
+  }
+
+  /* vidéo de fond désactivée pour gagner en perf mobile */
+  #bg-video { display: none; }
+
+  /* menu latéral caché, on utilise le nav standard */
+  .side-menu { display: none; }
+}
