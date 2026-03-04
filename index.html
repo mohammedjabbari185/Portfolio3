@@ -1,1951 +1,1848 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr" data-theme="dark">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Mohammed Jabbari — Ingénieur Électrique</title>
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" />
-  <style>
-    /* =============================================
-       DESIGN SYSTEM & VARIABLES
-    ============================================= */
-    :root {
-      --bg: #05050a;
-      --bg2: #0a0a14;
-      --surface: rgba(255,255,255,0.03);
-      --surface2: rgba(255,255,255,0.06);
-      --border: rgba(255,255,255,0.08);
-      --border2: rgba(255,255,255,0.14);
-      --cyan: #00e5ff;
-      --violet: #9b5de5;
-      --amber: #f5a623;
-      --green: #00f5a0;
-      --text: #e8e8f0;
-      --text2: #888899;
-      --text3: #555568;
-      --r: 16px;
-      --r2: 24px;
-      --font-head: 'Syne', sans-serif;
-      --font-body: 'DM Sans', sans-serif;
-      --glow-cyan: 0 0 40px rgba(0,229,255,0.15);
-      --glow-violet: 0 0 40px rgba(155,93,229,0.15);
-    }
-
-    [data-theme="light"] {
-      --bg: #f0f0f7;
-      --bg2: #e4e4f0;
-      --surface: rgba(0,0,0,0.04);
-      --surface2: rgba(0,0,0,0.07);
-      --border: rgba(0,0,0,0.08);
-      --border2: rgba(0,0,0,0.14);
-      --text: #0a0a18;
-      --text2: #44445a;
-      --text3: #8888a0;
-    }
-
-    /* =============================================
-       RESET & BASE
-    ============================================= */
-    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
-
-    html { scroll-behavior: smooth; overflow-x: hidden; }
-
-    body {
-      font-family: var(--font-body);
-      background: var(--bg);
-      color: var(--text);
-      line-height: 1.65;
-      font-size: 16px;
-      overflow-x: hidden;
-      transition: background 0.4s, color 0.4s;
-    }
-
-    /* =============================================
-       ANIMATED BACKGROUND
-    ============================================= */
-    #canvas-bg {
-      position: fixed; top:0; left:0;
-      width:100vw; height:100vh;
-      z-index: 0; pointer-events: none;
-      opacity: 0.55;
-    }
-
-    /* =============================================
-       CUSTOM CURSOR
-    ============================================= */
-    .cursor-dot {
-      width: 8px; height: 8px;
-      background: var(--cyan);
-      border-radius: 50%;
-      position: fixed; top: 0; left: 0;
-      pointer-events: none;
-      z-index: 9999;
-      transform: translate(-50%, -50%);
-      transition: width 0.2s, height 0.2s, background 0.2s;
-    }
-    .cursor-ring {
-      width: 36px; height: 36px;
-      border: 1.5px solid rgba(0,229,255,0.5);
-      border-radius: 50%;
-      position: fixed; top:0; left:0;
-      pointer-events: none;
-      z-index: 9998;
-      transform: translate(-50%, -50%);
-      transition: transform 0.12s ease-out, width 0.3s, height 0.3s, border-color 0.3s;
-    }
-    body:hover .cursor-dot { opacity: 1; }
-
-    /* =============================================
-       SCROLL PROGRESS
-    ============================================= */
-    #scroll-progress {
-      position: fixed; top: 0; left: 0;
-      height: 3px; width: 0%;
-      background: linear-gradient(90deg, var(--cyan), var(--violet));
-      z-index: 9997;
-      transition: width 0.1s linear;
-    }
-
-    /* =============================================
-       PRELOADER
-    ============================================= */
-    #preloader {
-      position: fixed; inset: 0;
-      background: var(--bg);
-      z-index: 99999;
-      display: flex; align-items: center; justify-content: center;
-      flex-direction: column; gap: 24px;
-      transition: opacity 0.6s ease, visibility 0.6s ease;
-    }
-    #preloader.hidden { opacity: 0; visibility: hidden; }
-
-    .loader-name {
-      font-family: var(--font-head);
-      font-size: clamp(2rem, 5vw, 3.5rem);
-      font-weight: 800;
-      letter-spacing: -1px;
-      background: linear-gradient(135deg, var(--cyan), var(--violet));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-    .loader-bar {
-      width: 200px; height: 2px;
-      background: var(--border);
-      border-radius: 99px; overflow: hidden;
-    }
-    .loader-fill {
-      height: 100%;
-      background: linear-gradient(90deg, var(--cyan), var(--violet));
-      width: 0%;
-      border-radius: 99px;
-      animation: loaderAnim 1.8s ease forwards;
-    }
-    @keyframes loaderAnim { to { width: 100%; } }
-
-    /* =============================================
-       LAYOUT WRAPPER
-    ============================================= */
-    .page-wrap { position: relative; z-index: 1; }
-
-    /* =============================================
-       NAVIGATION — TOPBAR
-    ============================================= */
-    #topbar {
-      position: fixed; top: 0; left: 0; right: 0;
-      z-index: 1000;
-      padding: 0 clamp(20px, 4vw, 60px);
-      height: 70px;
-      display: flex; align-items: center; justify-content: space-between;
-      background: rgba(5,5,10,0.6);
-      backdrop-filter: blur(24px) saturate(1.4);
-      border-bottom: 1px solid var(--border);
-      transition: background 0.4s;
-    }
-    [data-theme="light"] #topbar { background: rgba(240,240,247,0.75); }
-
-    .logo {
-      font-family: var(--font-head);
-      font-weight: 800; font-size: 1.25rem;
-      letter-spacing: -0.5px;
-      background: linear-gradient(135deg, var(--cyan), var(--violet));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      text-decoration: none;
-    }
-
-    .nav-links {
-      display: flex; gap: 4px; list-style: none;
-    }
-    .nav-links a {
-      font-family: var(--font-body); font-size: 0.875rem; font-weight: 500;
-      color: var(--text2); text-decoration: none;
-      padding: 7px 14px; border-radius: 99px;
-      transition: color 0.25s, background 0.25s;
-      cursor: pointer;
-    }
-    .nav-links a:hover, .nav-links a.active {
-      color: var(--text);
-      background: var(--surface2);
-    }
-    .nav-links a.active { color: var(--cyan); }
-
-    .nav-actions { display: flex; align-items: center; gap: 10px; }
-
-    .btn-icon {
-      width: 38px; height: 38px; border-radius: 50%;
-      background: var(--surface2); border: 1px solid var(--border);
-      color: var(--text2); cursor: pointer;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 0.95rem; transition: all 0.25s;
-    }
-    .btn-icon:hover { color: var(--cyan); border-color: var(--cyan); }
-
-    .hamburger {
-      display: none; flex-direction: column; gap: 5px;
-      background: none; border: none; cursor: pointer;
-      padding: 6px;
-    }
-    .hamburger span {
-      display: block; width: 22px; height: 2px;
-      background: var(--text); border-radius: 2px;
-      transition: transform 0.3s, opacity 0.3s;
-    }
-    .hamburger.open span:nth-child(1) { transform: rotate(45deg) translate(5px,5px); }
-    .hamburger.open span:nth-child(2) { opacity: 0; }
-    .hamburger.open span:nth-child(3) { transform: rotate(-45deg) translate(5px,-5px); }
-
-    /* Mobile nav */
-    .mobile-nav {
-      position: fixed; inset: 0; z-index: 990;
-      background: rgba(5,5,10,0.97);
-      backdrop-filter: blur(30px);
-      display: flex; flex-direction: column;
-      align-items: center; justify-content: center;
-      gap: 28px;
-      transform: translateX(100%);
-      transition: transform 0.4s cubic-bezier(0.77,0,0.175,1);
-    }
-    .mobile-nav.open { transform: translateX(0); }
-    .mobile-nav a {
-      font-family: var(--font-head); font-size: 2rem; font-weight: 700;
-      color: var(--text); text-decoration: none;
-      transition: color 0.2s; cursor: pointer;
-    }
-    .mobile-nav a:hover { color: var(--cyan); }
-
-    /* =============================================
-       SIDE DOCK
-    ============================================= */
-    #side-dock {
-      position: fixed; left: 24px; top: 50%;
-      transform: translateY(-50%);
-      z-index: 500;
-      display: flex; flex-direction: column; gap: 6px;
-      opacity: 0; transition: opacity 0.4s;
-    }
-    #side-dock.visible { opacity: 1; }
-    .dock-item {
-      width: 40px; height: 40px; border-radius: 12px;
-      background: var(--surface2); border: 1px solid var(--border);
-      display: flex; align-items: center; justify-content: center;
-      color: var(--text3); font-size: 1rem; text-decoration: none;
-      cursor: pointer; transition: all 0.25s; position: relative;
-    }
-    .dock-item:hover, .dock-item.active {
-      color: var(--cyan); border-color: rgba(0,229,255,0.3);
-      background: rgba(0,229,255,0.06);
-      transform: scale(1.1);
-    }
-    .dock-item .tooltip {
-      position: absolute; left: 52px;
-      background: var(--surface2); border: 1px solid var(--border);
-      color: var(--text); font-size: 0.75rem; font-family: var(--font-body);
-      padding: 4px 10px; border-radius: 8px; white-space: nowrap;
-      pointer-events: none; opacity: 0;
-      transition: opacity 0.2s, transform 0.2s;
-      transform: translateX(-4px);
-    }
-    .dock-item:hover .tooltip { opacity: 1; transform: translateX(0); }
-
-    /* =============================================
-       SECTIONS COMMON
-    ============================================= */
-    section {
-      padding: clamp(80px, 10vw, 120px) clamp(20px, 5vw, 80px);
-      max-width: 1200px;
-      margin: 0 auto;
-      position: relative;
-    }
-
-    .section-label {
-      font-family: var(--font-body); font-size: 0.75rem; font-weight: 500;
-      letter-spacing: 3px; text-transform: uppercase;
-      color: var(--cyan); margin-bottom: 16px;
-      display: flex; align-items: center; gap: 10px;
-    }
-    .section-label::before {
-      content: ''; display: block;
-      width: 28px; height: 1px; background: var(--cyan);
-    }
-
-    .section-title {
-      font-family: var(--font-head); font-size: clamp(2rem, 4vw, 3rem);
-      font-weight: 800; letter-spacing: -1px;
-      color: var(--text); line-height: 1.1;
-      margin-bottom: 48px;
-    }
-
-    /* =============================================
-       HERO SECTION
-    ============================================= */
-    #hero {
-      min-height: 100vh;
-      display: flex; flex-direction: column;
-      justify-content: center;
-      padding-top: 70px;
-      max-width: none;
-      padding-left: clamp(24px, 8vw, 120px);
-      padding-right: clamp(24px, 8vw, 120px);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .hero-eyebrow {
-      display: inline-flex; align-items: center; gap: 10px;
-      font-size: 0.8rem; font-weight: 500; letter-spacing: 2.5px;
-      text-transform: uppercase; color: var(--cyan);
-      margin-bottom: 24px;
-      animation: fadeUp 0.8s 0.3s both;
-    }
-    .hero-eyebrow .dot {
-      width: 7px; height: 7px; border-radius: 50%;
-      background: var(--cyan);
-      animation: pulse 2s infinite;
-    }
-    @keyframes pulse {
-      0%,100% { box-shadow: 0 0 0 0 rgba(0,229,255,0.4); }
-      50% { box-shadow: 0 0 0 8px rgba(0,229,255,0); }
-    }
-
-    .hero-name {
-      font-family: var(--font-head);
-      font-size: clamp(3.5rem, 9vw, 8rem);
-      font-weight: 800; letter-spacing: -3px; line-height: 0.92;
-      color: var(--text); margin-bottom: 12px;
-      animation: fadeUp 0.8s 0.45s both;
-    }
-    .hero-name .highlight {
-      background: linear-gradient(135deg, var(--cyan) 0%, var(--violet) 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-
-    .hero-title-row {
-      display: flex; align-items: center; gap: 16px;
-      margin-bottom: 32px;
-      animation: fadeUp 0.8s 0.6s both;
-    }
-    .hero-role {
-      font-family: var(--font-head); font-size: clamp(1.2rem, 2.5vw, 1.8rem);
-      font-weight: 600; color: var(--text2);
-    }
-    .hero-divider { width: 2px; height: 28px; background: var(--border2); }
-    .hero-school {
-      font-size: 0.95rem; color: var(--text3);
-      font-weight: 400;
-    }
-
-    .hero-bio {
-      max-width: 560px;
-      font-size: 1.05rem; color: var(--text2); line-height: 1.75;
-      margin-bottom: 40px;
-      animation: fadeUp 0.8s 0.75s both;
-    }
-
-    .hero-ctas {
-      display: flex; flex-wrap: wrap; gap: 14px;
-      animation: fadeUp 0.8s 0.9s both;
-    }
-
-    .btn-primary {
-      display: inline-flex; align-items: center; gap: 9px;
-      padding: 13px 28px; border-radius: 99px;
-      background: linear-gradient(135deg, var(--cyan), var(--violet));
-      color: #05050a; font-weight: 700; font-size: 0.9rem;
-      text-decoration: none; border: none; cursor: pointer;
-      transition: transform 0.25s, box-shadow 0.25s;
-      font-family: var(--font-body);
-    }
-    .btn-primary:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 12px 30px rgba(0,229,255,0.25);
-    }
-
-    .btn-outline {
-      display: inline-flex; align-items: center; gap: 9px;
-      padding: 12px 28px; border-radius: 99px;
-      background: transparent;
-      border: 1.5px solid var(--border2);
-      color: var(--text); font-weight: 500; font-size: 0.9rem;
-      text-decoration: none; cursor: pointer;
-      transition: all 0.25s;
-      font-family: var(--font-body);
-    }
-    .btn-outline:hover {
-      border-color: var(--cyan); color: var(--cyan);
-      background: rgba(0,229,255,0.05);
-    }
-
-    .hero-stats {
-      position: absolute; right: clamp(24px, 8vw, 120px); bottom: 80px;
-      display: flex; flex-direction: column; gap: 28px;
-      animation: fadeLeft 0.8s 1.1s both;
-    }
-    .stat-item { text-align: right; }
-    .stat-num {
-      font-family: var(--font-head); font-size: 2.4rem; font-weight: 800;
-      background: linear-gradient(135deg, var(--cyan), var(--violet));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      line-height: 1;
-    }
-    .stat-label { font-size: 0.75rem; color: var(--text3); font-weight: 400; margin-top: 4px; }
-
-    .hero-scroll {
-      position: absolute; bottom: 32px; left: 50%;
-      transform: translateX(-50%);
-      display: flex; flex-direction: column; align-items: center; gap: 8px;
-      color: var(--text3); font-size: 0.7rem; letter-spacing: 2px;
-      text-transform: uppercase; animation: fadeUp 0.8s 1.3s both;
-    }
-    .scroll-line {
-      width: 1px; height: 44px;
-      background: linear-gradient(to bottom, var(--text3), transparent);
-      animation: scrollAnim 2s ease-in-out infinite;
-    }
-    @keyframes scrollAnim {
-      0%,100% { transform: scaleY(1); opacity: 0.5; }
-      50% { transform: scaleY(0.6); opacity: 1; }
-    }
-
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(28px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    @keyframes fadeLeft {
-      from { opacity: 0; transform: translateX(28px); }
-      to { opacity: 1; transform: translateX(0); }
-    }
-
-    /* =============================================
-       ABOUT SECTION
-    ============================================= */
-    #about {
-      padding-top: 60px;
-    }
-
-    .about-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 60px; align-items: start;
-    }
-
-    .about-photo-wrap {
-      position: relative;
-    }
-    .about-photo-frame {
-      position: relative;
-      width: 100%; max-width: 400px;
-    }
-    .about-photo-frame::before {
-      content: '';
-      position: absolute; inset: -2px;
-      border-radius: 28px;
-      background: linear-gradient(135deg, var(--cyan), var(--violet), transparent);
-      z-index: 0;
-    }
-    .about-photo-frame img {
-      position: relative; z-index: 1;
-      width: 100%; border-radius: 26px;
-      object-fit: cover; display: block;
-      filter: grayscale(10%) contrast(1.05);
-    }
-    .about-photo-badge {
-      position: absolute; bottom: -20px; right: -20px; z-index: 10;
-      background: var(--surface2);
-      backdrop-filter: blur(20px);
-      border: 1px solid var(--border2);
-      border-radius: 16px;
-      padding: 14px 18px;
-      display: flex; align-items: center; gap: 10px;
-    }
-    .badge-icon { font-size: 1.5rem; }
-    .badge-text { font-size: 0.75rem; color: var(--text2); }
-    .badge-text strong { display: block; color: var(--text); font-weight: 600; font-size: 0.85rem; }
-
-    .about-content {}
-    .about-content p {
-      color: var(--text2); line-height: 1.8; margin-bottom: 20px;
-      font-size: 1rem;
-    }
-    .about-content p strong { color: var(--text); font-weight: 600; }
-
-    .about-tags {
-      display: flex; flex-wrap: wrap; gap: 8px;
-      margin: 28px 0;
-    }
-    .tag {
-      padding: 6px 14px; border-radius: 99px;
-      background: var(--surface2); border: 1px solid var(--border);
-      font-size: 0.8rem; color: var(--text2); font-weight: 500;
-      transition: all 0.2s;
-    }
-    .tag:hover { border-color: var(--cyan); color: var(--cyan); }
-    .tag.cyan { background: rgba(0,229,255,0.08); border-color: rgba(0,229,255,0.25); color: var(--cyan); }
-    .tag.violet { background: rgba(155,93,229,0.08); border-color: rgba(155,93,229,0.25); color: var(--violet); }
-
-    .about-cv-row { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 32px; }
-
-    /* =============================================
-       SKILLS SECTION
-    ============================================= */
-    #skills { background: none; }
-
-    .skills-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-      gap: 20px;
-    }
-
-    .skill-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--r2);
-      padding: 28px;
-      cursor: pointer;
-      transition: all 0.3s;
-      position: relative; overflow: hidden;
-    }
-    .skill-card::before {
-      content: '';
-      position: absolute; top: 0; left: 0; right: 0;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, var(--cyan), transparent);
-      opacity: 0; transition: opacity 0.3s;
-    }
-    .skill-card:hover { border-color: rgba(0,229,255,0.25); background: var(--surface2); transform: translateY(-4px); }
-    .skill-card:hover::before { opacity: 1; }
-
-    .skill-card-icon {
-      width: 44px; height: 44px; border-radius: 12px;
-      background: rgba(0,229,255,0.1);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 1.2rem; color: var(--cyan);
-      margin-bottom: 18px;
-    }
-    .skill-card.violet .skill-card-icon { background: rgba(155,93,229,0.1); color: var(--violet); }
-    .skill-card.amber .skill-card-icon { background: rgba(245,166,35,0.1); color: var(--amber); }
-    .skill-card.green .skill-card-icon { background: rgba(0,245,160,0.1); color: var(--green); }
-
-    .skill-card h3 {
-      font-family: var(--font-head); font-size: 1.05rem; font-weight: 700;
-      color: var(--text); margin-bottom: 10px;
-    }
-    .skill-card > p { font-size: 0.875rem; color: var(--text2); line-height: 1.6; }
-
-    .skill-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 16px; }
-    .skill-tag {
-      padding: 3px 10px; border-radius: 99px;
-      background: var(--surface2); border: 1px solid var(--border);
-      font-size: 0.75rem; color: var(--text3);
-    }
-
-    .skill-expand { display: none; margin-top: 16px; }
-    .skill-card.open .skill-expand { display: block; }
-    .skill-expand p { font-size: 0.85rem; color: var(--text2); line-height: 1.7; }
-
-    .toggle-skill {
-      margin-top: 14px;
-      background: none; border: none;
-      color: var(--cyan); font-size: 0.8rem; cursor: pointer;
-      font-family: var(--font-body); font-weight: 500;
-      display: flex; align-items: center; gap: 6px;
-      padding: 0;
-    }
-    .toggle-skill .arrow { transition: transform 0.3s; }
-    .skill-card.open .toggle-skill .arrow { transform: rotate(180deg); }
-
-    /* Progress bars */
-    .skill-bars { margin-top: 20px; display: flex; flex-direction: column; gap: 10px; }
-    .skill-bar-item { }
-    .skill-bar-label { display: flex; justify-content: space-between; font-size: 0.78rem; color: var(--text2); margin-bottom: 5px; }
-    .skill-bar-track {
-      height: 4px; background: var(--border); border-radius: 99px; overflow: hidden;
-    }
-    .skill-bar-fill {
-      height: 100%; border-radius: 99px;
-      background: linear-gradient(90deg, var(--cyan), var(--violet));
-      width: 0%; transition: width 1.2s cubic-bezier(0.4,0,0.2,1);
-    }
-
-    /* =============================================
-       EDUCATION SECTION
-    ============================================= */
-    .timeline {
-      position: relative;
-      padding-left: 32px;
-    }
-    .timeline::before {
-      content: '';
-      position: absolute; left: 0; top: 8px; bottom: 8px;
-      width: 1px; background: var(--border);
-    }
-
-    .timeline-item {
-      position: relative; margin-bottom: 48px;
-    }
-    .timeline-item::before {
-      content: '';
-      position: absolute; left: -37px; top: 6px;
-      width: 10px; height: 10px; border-radius: 50%;
-      background: var(--cyan); border: 2px solid var(--bg);
-      box-shadow: 0 0 0 3px rgba(0,229,255,0.2);
-    }
-
-    .timeline-date {
-      font-size: 0.78rem; color: var(--cyan); font-weight: 500;
-      letter-spacing: 1.5px; text-transform: uppercase;
-      margin-bottom: 8px;
-    }
-    .timeline-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--r2);
-      padding: 24px 28px;
-      transition: border-color 0.3s, background 0.3s;
-    }
-    .timeline-card:hover { border-color: rgba(0,229,255,0.2); background: var(--surface2); }
-    .timeline-card h3 {
-      font-family: var(--font-head); font-size: 1.1rem; font-weight: 700;
-      color: var(--text); margin-bottom: 4px;
-    }
-    .timeline-card .school {
-      font-size: 0.85rem; color: var(--text2); margin-bottom: 10px;
-    }
-    .timeline-card p { font-size: 0.875rem; color: var(--text3); line-height: 1.65; }
-
-    .edu-grid {
-      display: grid; grid-template-columns: 1fr 1fr;
-      gap: 48px; align-items: start;
-    }
-
-    /* =============================================
-       PROJECTS SECTION
-    ============================================= */
-    .projects-filter {
-      display: flex; gap: 8px; flex-wrap: wrap;
-      margin-bottom: 40px;
-    }
-    .filter-btn {
-      padding: 7px 16px; border-radius: 99px;
-      background: var(--surface); border: 1px solid var(--border);
-      color: var(--text2); font-size: 0.82rem; font-weight: 500;
-      cursor: pointer; transition: all 0.25s;
-      font-family: var(--font-body);
-    }
-    .filter-btn.active, .filter-btn:hover {
-      background: rgba(0,229,255,0.1);
-      border-color: rgba(0,229,255,0.3);
-      color: var(--cyan);
-    }
-
-    .projects-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-      gap: 24px;
-    }
-
-    .project-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--r2);
-      overflow: hidden;
-      transition: all 0.35s cubic-bezier(0.4,0,0.2,1);
-      position: relative;
-    }
-    .project-card:hover { border-color: rgba(0,229,255,0.25); transform: translateY(-6px); box-shadow: 0 20px 50px rgba(0,0,0,0.3); }
-
-    .project-img {
-      width: 100%; height: 200px; object-fit: cover;
-      display: block;
-      transition: transform 0.4s ease;
-    }
-    .project-card:hover .project-img { transform: scale(1.04); }
-
-    .project-img-placeholder {
-      width: 100%; height: 200px;
-      background: linear-gradient(135deg, rgba(0,229,255,0.08), rgba(155,93,229,0.08));
-      display: flex; align-items: center; justify-content: center;
-      font-size: 3rem; color: var(--border2);
-    }
-
-    .project-body { padding: 24px; }
-    .project-badge {
-      display: inline-block;
-      padding: 3px 10px; border-radius: 99px;
-      font-size: 0.72rem; font-weight: 500; letter-spacing: 1px;
-      text-transform: uppercase; margin-bottom: 12px;
-    }
-    .project-badge.embedded { background: rgba(0,229,255,0.1); color: var(--cyan); }
-    .project-badge.vlsi { background: rgba(155,93,229,0.1); color: var(--violet); }
-    .project-badge.control { background: rgba(245,166,35,0.1); color: var(--amber); }
-    .project-badge.energy { background: rgba(0,245,160,0.1); color: var(--green); }
-
-    .project-body h3 {
-      font-family: var(--font-head); font-size: 1.05rem; font-weight: 700;
-      color: var(--text); margin-bottom: 10px; line-height: 1.3;
-    }
-    .project-body p { font-size: 0.875rem; color: var(--text2); line-height: 1.65; margin-bottom: 18px; }
-
-    .project-techs { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 18px; }
-    .tech-pill {
-      padding: 3px 9px; border-radius: 99px;
-      background: var(--surface2); border: 1px solid var(--border);
-      font-size: 0.72rem; color: var(--text3);
-    }
-
-    .project-link {
-      display: inline-flex; align-items: center; gap: 7px;
-      font-size: 0.82rem; font-weight: 600; color: var(--cyan);
-      text-decoration: none; transition: gap 0.2s;
-    }
-    .project-link:hover { gap: 10px; }
-
-    /* =============================================
-       CERTIFICATIONS
-    ============================================= */
-    .certs-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: 20px;
-    }
-    .cert-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--r2);
-      padding: 24px;
-      display: flex; flex-direction: column; gap: 14px;
-      transition: all 0.3s;
-    }
-    .cert-card:hover { border-color: rgba(155,93,229,0.3); transform: translateY(-3px); }
-
-    .cert-icon {
-      width: 44px; height: 44px; border-radius: 12px;
-      background: rgba(155,93,229,0.1);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 1.2rem; color: var(--violet);
-    }
-    .cert-card h3 { font-family: var(--font-head); font-size: 0.95rem; font-weight: 700; color: var(--text); line-height: 1.3; }
-    .cert-card .issuer { font-size: 0.78rem; color: var(--text3); display: flex; align-items: center; gap: 6px; }
-    .cert-card p { font-size: 0.825rem; color: var(--text2); line-height: 1.6; }
-
-    /* =============================================
-       CONTACT SECTION
-    ============================================= */
-    .contact-grid {
-      display: grid; grid-template-columns: 1fr 1fr;
-      gap: 60px; align-items: start;
-    }
-
-    .contact-info h3 {
-      font-family: var(--font-head); font-size: 1.8rem; font-weight: 800;
-      color: var(--text); line-height: 1.2; margin-bottom: 16px;
-    }
-    .contact-info p { font-size: 1rem; color: var(--text2); line-height: 1.75; margin-bottom: 32px; }
-
-    .contact-links { display: flex; flex-direction: column; gap: 14px; }
-    .contact-link {
-      display: flex; align-items: center; gap: 14px;
-      padding: 14px 18px; border-radius: 14px;
-      background: var(--surface); border: 1px solid var(--border);
-      text-decoration: none; transition: all 0.25s;
-    }
-    .contact-link:hover { border-color: rgba(0,229,255,0.25); background: var(--surface2); }
-    .contact-link-icon {
-      width: 38px; height: 38px; border-radius: 10px;
-      background: rgba(0,229,255,0.1); color: var(--cyan);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 1rem; flex-shrink: 0;
-    }
-    .contact-link-text { font-size: 0.875rem; }
-    .contact-link-text strong { display: block; color: var(--text); font-weight: 600; }
-    .contact-link-text span { color: var(--text3); font-size: 0.8rem; }
-
-    /* Contact form */
-    .contact-form-wrap {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--r2);
-      padding: 32px;
-    }
-    .form-group { margin-bottom: 18px; }
-    .form-group label {
-      display: block; font-size: 0.8rem; font-weight: 500;
-      color: var(--text2); margin-bottom: 7px;
-    }
-    .form-control {
-      width: 100%; padding: 12px 16px;
-      background: rgba(255,255,255,0.04);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      color: var(--text); font-size: 0.9rem;
-      font-family: var(--font-body);
-      transition: border-color 0.25s, background 0.25s;
-      outline: none;
-      resize: none;
-    }
-    .form-control:focus { border-color: var(--cyan); background: rgba(0,229,255,0.03); }
-    .form-control::placeholder { color: var(--text3); }
-    textarea.form-control { min-height: 130px; }
-
-    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-
-    /* =============================================
-       FEEDBACK / RATING
-    ============================================= */
-    #feedback {
-      max-width: 700px; margin: 0 auto;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--r2);
-      padding: 40px;
-    }
-
-    .stars-row {
-      display: flex; gap: 6px; direction: rtl;
-      justify-content: flex-start;
-    }
-    .stars-row input[type="radio"] { display: none; }
-    .stars-row label {
-      font-size: 2rem; color: var(--border2); cursor: pointer;
-      transition: color 0.15s, transform 0.15s;
-    }
-    .stars-row label:hover,
-    .stars-row label:hover ~ label,
-    .stars-row input[type="radio"]:checked ~ label { color: var(--amber); }
-    .stars-row label:hover { transform: scale(1.2); }
-
-    /* =============================================
-       FOOTER
-    ============================================= */
-    footer {
-      border-top: 1px solid var(--border);
-      padding: 32px clamp(24px, 5vw, 80px);
-      display: flex; justify-content: space-between; align-items: center;
-      flex-wrap: wrap; gap: 16px;
-      background: var(--bg);
-    }
-    .footer-copy { font-size: 0.82rem; color: var(--text3); }
-    .footer-socials { display: flex; gap: 10px; }
-    .footer-social {
-      width: 36px; height: 36px; border-radius: 50%;
-      background: var(--surface2); border: 1px solid var(--border);
-      display: flex; align-items: center; justify-content: center;
-      color: var(--text2); font-size: 0.9rem; text-decoration: none;
-      transition: all 0.25s;
-    }
-    .footer-social:hover { color: var(--cyan); border-color: rgba(0,229,255,0.3); }
-
-    /* =============================================
-       TOAST NOTIFICATION
-    ============================================= */
-    #toast {
-      position: fixed; bottom: 28px; right: 28px;
-      background: var(--surface2); border: 1px solid var(--border2);
-      backdrop-filter: blur(20px);
-      border-radius: 14px; padding: 14px 20px;
-      font-size: 0.875rem; color: var(--text);
-      display: flex; align-items: center; gap: 10px;
-      z-index: 8888; opacity: 0;
-      transform: translateY(10px);
-      transition: opacity 0.3s, transform 0.3s;
-      pointer-events: none;
-    }
-    #toast.show { opacity: 1; transform: translateY(0); }
-    #toast .toast-icon { color: var(--green); font-size: 1.1rem; }
-
-    /* =============================================
-       SECTION DIVIDERS
-    ============================================= */
-    .section-divider {
-      width: 100%; height: 1px;
-      background: linear-gradient(90deg, transparent, var(--border), transparent);
-      max-width: 1200px; margin: 0 auto;
-    }
-
-    /* =============================================
-       SCROLL ANIMATIONS
-    ============================================= */
-    .reveal {
-      opacity: 0; transform: translateY(24px);
-      transition: opacity 0.7s ease, transform 0.7s ease;
-    }
-    .reveal.visible { opacity: 1; transform: translateY(0); }
-    .reveal-delay-1 { transition-delay: 0.1s; }
-    .reveal-delay-2 { transition-delay: 0.2s; }
-    .reveal-delay-3 { transition-delay: 0.3s; }
-
-    /* =============================================
-       GLITCH EFFECT FOR NAME
-    ============================================= */
-    .glitch {
-      position: relative;
-    }
-    .glitch::before, .glitch::after {
-      content: attr(data-text);
-      position: absolute; top: 0; left: 0;
-      background: none;
-      -webkit-background-clip: initial;
-      -webkit-text-fill-color: initial;
-      background-clip: initial;
-    }
-    .glitch::before {
-      color: var(--cyan); left: 2px;
-      opacity: 0;
-      clip-path: polygon(0 20%, 100% 20%, 100% 40%, 0 40%);
-      animation: glitch1 5s infinite 3s;
-    }
-    .glitch::after {
-      color: var(--violet); left: -2px;
-      opacity: 0;
-      clip-path: polygon(0 60%, 100% 60%, 100% 80%, 0 80%);
-      animation: glitch2 5s infinite 3s;
-    }
-    @keyframes glitch1 {
-      0%,90%,100% { opacity: 0; }
-      92% { opacity: 0.8; transform: translateX(-2px); }
-      94% { opacity: 0; }
-      96% { opacity: 0.6; transform: translateX(2px); }
-    }
-    @keyframes glitch2 {
-      0%,90%,100% { opacity: 0; }
-      93% { opacity: 0.7; transform: translateX(2px); }
-      95% { opacity: 0; }
-      97% { opacity: 0.5; transform: translateX(-2px); }
-    }
-
-    /* =============================================
-       FLOATING PARTICLES
-    ============================================= */
-    .particle {
-      position: fixed; border-radius: 50%;
-      pointer-events: none; z-index: 0;
-      animation: floatParticle linear infinite;
-    }
-    @keyframes floatParticle {
-      0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
-      10% { opacity: 1; }
-      90% { opacity: 1; }
-      100% { transform: translateY(-100px) rotate(720deg); opacity: 0; }
-    }
-
-    /* =============================================
-       RESPONSIVE
-    ============================================= */
-    @media (max-width: 1024px) {
-      .about-grid { grid-template-columns: 1fr; }
-      .about-photo-wrap { display: flex; justify-content: center; }
-      .contact-grid { grid-template-columns: 1fr; }
-      .edu-grid { grid-template-columns: 1fr; }
-      .hero-stats { position: static; flex-direction: row; gap: 32px; margin-top: 40px; }
-      .stat-item { text-align: left; }
-    }
-
-    @media (max-width: 768px) {
-      .nav-links { display: none; }
-      .hamburger { display: flex; }
-      #side-dock { display: none; }
-      .projects-grid { grid-template-columns: 1fr; }
-      .skills-grid { grid-template-columns: 1fr; }
-      .certs-grid { grid-template-columns: 1fr; }
-      .hero-stats { flex-wrap: wrap; }
-      .form-row { grid-template-columns: 1fr; }
-    }
-
-    @media (max-width: 480px) {
-      .hero-name { font-size: 3rem; }
-      .hero-title-row { flex-wrap: wrap; }
-      .hero-divider { display: none; }
-    }
-
-    /* =============================================
-       THEME — LIGHT MODE OVERRIDES
-    ============================================= */
-    [data-theme="light"] .skill-card,
-    [data-theme="light"] .timeline-card,
-    [data-theme="light"] .cert-card,
-    [data-theme="light"] .project-card,
-    [data-theme="light"] .contact-form-wrap,
-    [data-theme="light"] .contact-link,
-    [data-theme="light"] #feedback {
-      background: rgba(255,255,255,0.7);
-      backdrop-filter: blur(12px);
-    }
-    [data-theme="light"] #topbar {
-      border-bottom-color: rgba(0,0,0,0.08);
-    }
-    [data-theme="light"] .form-control {
-      background: rgba(0,0,0,0.04); color: #0a0a18;
-    }
-
-    /* =============================================
-       TYPING CURSOR
-    ============================================= */
-    .typed-cursor {
-      display: inline-block; width: 3px;
-      background: var(--cyan); margin-left: 2px;
-      animation: blink 1s infinite;
-    }
-    @keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: 0; } }
-
-    /* =============================================
-       BACK TO TOP
-    ============================================= */
-    #back-top {
-      position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%);
-      width: 44px; height: 44px; border-radius: 50%;
-      background: var(--surface2); border: 1px solid var(--border2);
-      display: flex; align-items: center; justify-content: center;
-      color: var(--text2); cursor: pointer; font-size: 1rem;
-      opacity: 0; pointer-events: none;
-      transition: all 0.3s; z-index: 500;
-    }
-    #back-top.visible { opacity: 1; pointer-events: auto; }
-    #back-top:hover { color: var(--cyan); border-color: rgba(0,229,255,0.3); transform: translateX(-50%) translateY(-3px); }
-
-    /* =============================================
-       MISC UTILITIES
-    ============================================= */
-    .text-cyan { color: var(--cyan); }
-    .text-violet { color: var(--violet); }
-    .gradient-text {
-      background: linear-gradient(135deg, var(--cyan), var(--violet));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-
-    hr.fancy {
-      border: none;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, var(--border2), transparent);
-      margin: 20px 0;
-    }
-  </style>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Mohammed Jabbari — Ingénieur Électrique & Automatisation</title>
+<meta name="description" content="Portfolio de Mohammed Jabbari, élève ingénieur en Génie Électrique et Automatisation Industrielle à l'École Mohammadia d'Ingénieurs."/>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous"/>
+<style>
+/* ═══════════════════════════════════════════
+   DESIGN TOKENS
+═══════════════════════════════════════════ */
+:root {
+  --ink: #0b0c10;
+  --ink2: #111318;
+  --ink3: #1a1c24;
+  --surface: rgba(255,255,255,0.035);
+  --surface2: rgba(255,255,255,0.065);
+  --surface3: rgba(255,255,255,0.10);
+  --border: rgba(255,255,255,0.07);
+  --border2: rgba(255,255,255,0.13);
+  --text: #f0f1f5;
+  --text2: #9a9db0;
+  --text3: #555770;
+  --gold: #e8c96d;
+  --gold2: #f5dfa0;
+  --teal: #2dd4bf;
+  --orange: #fb8c3e;
+  --red: #ff5f7a;
+  --blue: #5b9cf6;
+  --head: 'Cabinet Grotesk', sans-serif;
+  --serif: 'Instrument Serif', serif;
+  --mono: 'JetBrains Mono', monospace;
+  --body: 'Cabinet Grotesk', sans-serif;
+  --ease: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+[data-theme="light"] {
+  --ink: #f5f4f0;
+  --ink2: #eceae3;
+  --ink3: #dfdcd3;
+  --surface: rgba(0,0,0,0.03);
+  --surface2: rgba(0,0,0,0.055);
+  --surface3: rgba(0,0,0,0.085);
+  --border: rgba(0,0,0,0.07);
+  --border2: rgba(0,0,0,0.13);
+  --text: #0e0f14;
+  --text2: #4a4d60;
+  --text3: #9a9db0;
+}
+
+/* ═══════════════════════════════════════════
+   RESET
+═══════════════════════════════════════════ */
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;overflow-x:hidden;}
+body{
+  font-family:var(--body);
+  background:var(--ink);
+  color:var(--text);
+  line-height:1.6;
+  overflow-x:hidden;
+  transition:background .5s,color .5s;
+  cursor:none;
+}
+a{text-decoration:none;color:inherit;}
+img{max-width:100%;display:block;}
+button{cursor:none;font-family:var(--body);}
+input,textarea{font-family:var(--body);}
+::selection{background:rgba(232,201,109,0.25);color:var(--gold);}
+
+/* ═══════════════════════════════════════════
+   CURSOR
+═══════════════════════════════════════════ */
+#cur-dot{
+  position:fixed;width:6px;height:6px;border-radius:50%;
+  background:var(--gold);top:0;left:0;pointer-events:none;
+  z-index:99999;transform:translate(-50%,-50%);
+  transition:width .15s,height .15s,background .15s;
+}
+#cur-circle{
+  position:fixed;width:32px;height:32px;border-radius:50%;
+  border:1.5px solid rgba(232,201,109,.45);top:0;left:0;
+  pointer-events:none;z-index:99998;
+  transform:translate(-50%,-50%);
+  transition:width .3s var(--ease),height .3s var(--ease),border-color .3s;
+}
+body.cursor-hover #cur-dot{width:12px;height:12px;background:var(--gold2);}
+body.cursor-hover #cur-circle{width:48px;height:48px;border-color:rgba(232,201,109,.7);}
+body.cursor-click #cur-dot{transform:translate(-50%,-50%) scale(.7);}
+
+/* ═══════════════════════════════════════════
+   SCROLL PROGRESS
+═══════════════════════════════════════════ */
+#sp{
+  position:fixed;top:0;left:0;height:2px;
+  width:0%;z-index:9990;
+  background:linear-gradient(90deg,var(--gold),var(--orange));
+  transition:width .08s linear;
+}
+
+/* ═══════════════════════════════════════════
+   LOADER
+═══════════════════════════════════════════ */
+#loader{
+  position:fixed;inset:0;z-index:99990;
+  background:var(--ink);
+  display:flex;align-items:center;justify-content:center;
+  flex-direction:column;gap:28px;
+  transition:opacity .8s var(--ease),visibility .8s;
+}
+#loader.gone{opacity:0;visibility:hidden;}
+.loader-letters{
+  display:flex;gap:4px;overflow:hidden;
+}
+.loader-letters span{
+  font-family:var(--head);font-size:clamp(3rem,8vw,6rem);
+  font-weight:900;letter-spacing:-3px;
+  background:linear-gradient(135deg,var(--gold),var(--orange));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;
+  animation:letterIn .7s var(--ease-spring) both;
+}
+.loader-letters span:nth-child(2){animation-delay:.05s;}
+.loader-letters span:nth-child(3){animation-delay:.1s;}
+.loader-letters span:nth-child(4){animation-delay:.15s;}
+.loader-letters span:nth-child(5){animation-delay:.2s;}
+.loader-letters span:nth-child(6){animation-delay:.25s;}
+.loader-letters span:nth-child(7){animation-delay:.3s;}
+.loader-letters span:nth-child(8){animation-delay:.35s;}
+.loader-letters span:nth-child(9){animation-delay:.4s;}
+.loader-letters span:nth-child(10){animation-delay:.45s;}
+.loader-letters span:nth-child(11){animation-delay:.5s;}
+.loader-letters span:nth-child(12){animation-delay:.55s;}
+.loader-letters span:nth-child(13){animation-delay:.6s;}
+@keyframes letterIn{
+  from{opacity:0;transform:translateY(40px) rotateX(-90deg);}
+  to{opacity:1;transform:translateY(0) rotateX(0);}
+}
+.loader-line{
+  width:180px;height:1px;background:var(--border2);
+  position:relative;overflow:hidden;
+}
+.loader-line::after{
+  content:'';position:absolute;inset-y:0;left:-100%;width:100%;
+  background:linear-gradient(90deg,transparent,var(--gold),transparent);
+  animation:lineSlide 1.4s ease forwards .5s;
+}
+@keyframes lineSlide{to{left:100%;}}
+.loader-sub{
+  font-family:var(--mono);font-size:.72rem;color:var(--text3);
+  letter-spacing:3px;text-transform:uppercase;opacity:0;
+  animation:fadeIn .6s ease forwards 1s;
+}
+
+/* ═══════════════════════════════════════════
+   CANVAS
+═══════════════════════════════════════════ */
+#bg-canvas{
+  position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.4;
+}
+
+/* ═══════════════════════════════════════════
+   TOPBAR
+═══════════════════════════════════════════ */
+#topbar{
+  position:fixed;top:0;left:0;right:0;z-index:1000;
+  height:66px;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 clamp(20px,4vw,64px);
+  background:rgba(11,12,16,.7);
+  backdrop-filter:blur(28px) saturate(1.6);
+  border-bottom:1px solid var(--border);
+  transition:background .4s;
+}
+[data-theme="light"] #topbar{background:rgba(245,244,240,.8);}
+.logo-wrap{display:flex;align-items:center;gap:10px;}
+.logo-mark{
+  width:34px;height:34px;border-radius:9px;
+  background:linear-gradient(135deg,var(--gold),var(--orange));
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--head);font-weight:900;font-size:.95rem;color:#0b0c10;
+}
+.logo-text{
+  font-family:var(--head);font-weight:800;font-size:1rem;
+  color:var(--text);letter-spacing:-.5px;
+}
+.logo-text span{color:var(--gold);}
+
+nav.main-nav{display:flex;gap:2px;}
+nav.main-nav a{
+  font-size:.82rem;font-weight:500;color:var(--text2);
+  padding:6px 13px;border-radius:8px;cursor:pointer;
+  transition:color .2s,background .2s;
+}
+nav.main-nav a:hover,nav.main-nav a.active{color:var(--text);background:var(--surface2);}
+nav.main-nav a.active{color:var(--gold);}
+
+.nav-right{display:flex;align-items:center;gap:8px;}
+.icon-btn{
+  width:36px;height:36px;border-radius:9px;
+  background:var(--surface2);border:1px solid var(--border);
+  color:var(--text2);display:flex;align-items:center;justify-content:center;
+  font-size:.88rem;transition:all .2s;cursor:pointer;
+}
+.icon-btn:hover{color:var(--gold);border-color:rgba(232,201,109,.35);}
+.status-badge{
+  display:flex;align-items:center;gap:7px;
+  padding:5px 12px;border-radius:99px;
+  background:rgba(45,212,191,.08);border:1px solid rgba(45,212,191,.2);
+  font-size:.72rem;font-weight:600;color:var(--teal);letter-spacing:.5px;
+}
+.status-dot{
+  width:7px;height:7px;border-radius:50%;background:var(--teal);
+  animation:statusPulse 2s infinite;
+}
+@keyframes statusPulse{
+  0%,100%{box-shadow:0 0 0 0 rgba(45,212,191,.4);}
+  50%{box-shadow:0 0 0 6px rgba(45,212,191,0);}
+}
+
+.burger{
+  display:none;flex-direction:column;gap:5px;
+  background:none;border:none;padding:4px;cursor:pointer;
+}
+.burger span{
+  display:block;width:22px;height:2px;border-radius:2px;
+  background:var(--text);transition:transform .3s,opacity .3s;
+}
+.burger.open span:nth-child(1){transform:rotate(45deg) translate(5px,5px);}
+.burger.open span:nth-child(2){opacity:0;}
+.burger.open span:nth-child(3){transform:rotate(-45deg) translate(5px,-5px);}
+
+/* MOBILE MENU */
+.mob-nav{
+  position:fixed;inset:0;z-index:990;
+  background:rgba(11,12,16,.97);backdrop-filter:blur(40px);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:20px;transform:translateX(110%);
+  transition:transform .5s cubic-bezier(.77,0,.175,1);
+}
+.mob-nav.open{transform:none;}
+.mob-nav a{
+  font-family:var(--head);font-size:2.4rem;font-weight:900;
+  color:var(--text);cursor:pointer;transition:color .2s;
+  letter-spacing:-1px;
+}
+.mob-nav a:hover{color:var(--gold);}
+
+/* ═══════════════════════════════════════════
+   SIDE RAIL
+═══════════════════════════════════════════ */
+#rail{
+  position:fixed;left:20px;top:50%;transform:translateY(-50%);
+  z-index:500;display:flex;flex-direction:column;gap:5px;
+  opacity:0;transition:opacity .4s;pointer-events:none;
+}
+#rail.show{opacity:1;pointer-events:auto;}
+.rail-dot{
+  display:block;width:8px;height:8px;border-radius:50%;
+  background:var(--border2);cursor:pointer;transition:all .3s;
+  position:relative;
+}
+.rail-dot::after{
+  content:attr(data-label);position:absolute;left:18px;top:50%;
+  transform:translateY(-50%);font-size:.7rem;font-family:var(--mono);
+  color:var(--text2);white-space:nowrap;opacity:0;
+  transition:opacity .2s,transform .2s;pointer-events:none;
+  background:var(--surface2);padding:3px 9px;border-radius:6px;
+  border:1px solid var(--border2);
+}
+.rail-dot:hover::after,.rail-dot.active::after{opacity:1;}
+.rail-dot:hover,.rail-dot.active{background:var(--gold);transform:scale(1.4);}
+
+/* ═══════════════════════════════════════════
+   BACK TO TOP
+═══════════════════════════════════════════ */
+#btt{
+  position:fixed;bottom:28px;right:28px;z-index:500;
+  width:44px;height:44px;border-radius:12px;
+  background:var(--surface3);border:1px solid var(--border2);
+  color:var(--text2);display:flex;align-items:center;justify-content:center;
+  font-size:.9rem;cursor:pointer;opacity:0;pointer-events:none;
+  transition:all .3s;
+}
+#btt.show{opacity:1;pointer-events:auto;}
+#btt:hover{color:var(--gold);border-color:rgba(232,201,109,.35);transform:translateY(-3px);}
+
+/* ═══════════════════════════════════════════
+   TOAST
+═══════════════════════════════════════════ */
+#toast{
+  position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(10px);
+  background:var(--surface3);border:1px solid var(--border2);
+  backdrop-filter:blur(24px);border-radius:12px;
+  padding:12px 20px;font-size:.85rem;color:var(--text);
+  display:flex;align-items:center;gap:10px;z-index:8888;
+  opacity:0;transition:opacity .3s,transform .3s;white-space:nowrap;
+}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+#toast i{color:var(--teal);}
+
+/* ═══════════════════════════════════════════
+   PAGE LAYOUT
+═══════════════════════════════════════════ */
+.page{position:relative;z-index:1;}
+section.sec{
+  padding:clamp(80px,10vw,130px) clamp(24px,6vw,90px);
+  max-width:1280px;margin:0 auto;
+}
+.sec-label{
+  display:inline-flex;align-items:center;gap:10px;
+  font-family:var(--mono);font-size:.7rem;letter-spacing:3px;
+  text-transform:uppercase;color:var(--gold);margin-bottom:16px;
+}
+.sec-label::before{content:'';width:20px;height:1px;background:var(--gold);}
+.sec-title{
+  font-family:var(--head);font-size:clamp(2rem,4vw,3.2rem);
+  font-weight:900;letter-spacing:-1.5px;color:var(--text);
+  line-height:1.05;margin-bottom:56px;
+}
+.sec-title em{
+  font-family:var(--serif);font-style:italic;
+  background:linear-gradient(135deg,var(--gold),var(--orange));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+.divider{
+  max-width:1280px;margin:0 auto;
+  height:1px;background:linear-gradient(90deg,transparent,var(--border2),transparent);
+}
+
+/* ═══════════════════════════════════════════
+   HERO
+═══════════════════════════════════════════ */
+#hero{
+  min-height:100vh;max-width:none;
+  padding:0 clamp(24px,7vw,100px);
+  display:grid;grid-template-columns:1fr 1fr;
+  align-items:center;gap:60px;padding-top:66px;
+  position:relative;
+}
+.hero-left{}
+.hero-tag{
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(232,201,109,.07);border:1px solid rgba(232,201,109,.18);
+  color:var(--gold);font-family:var(--mono);font-size:.72rem;
+  padding:6px 14px;border-radius:99px;letter-spacing:2px;
+  text-transform:uppercase;margin-bottom:28px;
+  animation:fadeUp .7s .3s both;
+}
+.hero-tag .dot{
+  width:6px;height:6px;border-radius:50%;background:var(--gold);
+  animation:statusPulse 2s infinite;
+}
+.hero-h1{
+  font-family:var(--head);font-size:clamp(3.5rem,8vw,7.5rem);
+  font-weight:900;letter-spacing:-4px;line-height:.9;
+  margin-bottom:20px;animation:fadeUp .7s .45s both;
+}
+.hero-h1 .n1{color:var(--text);}
+.hero-h1 .n2{
+  background:linear-gradient(135deg,var(--gold) 20%,var(--orange) 80%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+.hero-h1 .n3{
+  font-family:var(--serif);font-style:italic;
+  font-size:.55em;color:var(--text2);letter-spacing:0;
+  display:block;margin-top:6px;
+}
+.hero-sub{
+  font-size:1.05rem;color:var(--text2);max-width:500px;
+  line-height:1.75;margin-bottom:36px;
+  animation:fadeUp .7s .6s both;
+}
+.hero-sub strong{color:var(--text);}
+.hero-actions{
+  display:flex;flex-wrap:wrap;gap:12px;
+  animation:fadeUp .7s .75s both;
+}
+.btn-gold{
+  display:inline-flex;align-items:center;gap:9px;
+  padding:13px 26px;border-radius:10px;
+  background:linear-gradient(135deg,var(--gold),var(--orange));
+  color:#0b0c10;font-weight:800;font-size:.88rem;
+  border:none;cursor:pointer;letter-spacing:.3px;
+  transition:transform .25s var(--ease-spring),box-shadow .25s;
+}
+.btn-gold:hover{transform:translateY(-3px);box-shadow:0 16px 40px rgba(232,201,109,.25);}
+.btn-ghost{
+  display:inline-flex;align-items:center;gap:9px;
+  padding:12px 26px;border-radius:10px;
+  background:var(--surface2);border:1px solid var(--border2);
+  color:var(--text);font-weight:600;font-size:.88rem;
+  cursor:pointer;transition:all .25s;
+}
+.btn-ghost:hover{border-color:rgba(232,201,109,.4);color:var(--gold);background:rgba(232,201,109,.04);}
+
+.hero-metrics{
+  display:flex;gap:32px;margin-top:48px;
+  animation:fadeUp .7s .9s both;
+}
+.metric{}
+.metric-num{
+  font-family:var(--head);font-size:2.6rem;font-weight:900;
+  letter-spacing:-2px;line-height:1;
+  background:linear-gradient(135deg,var(--gold),var(--orange));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+.metric-label{font-size:.78rem;color:var(--text3);margin-top:4px;font-weight:500;}
+
+.hero-right{
+  display:flex;flex-direction:column;gap:16px;
+  animation:fadeLeft .8s 1s both;
+}
+.hero-card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:16px;padding:20px 24px;
+  display:flex;align-items:center;gap:16px;
+  transition:border-color .3s,transform .3s;
+}
+.hero-card:hover{border-color:rgba(232,201,109,.25);transform:translateX(-4px);}
+.hc-icon{
+  width:46px;height:46px;border-radius:12px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;font-size:1.2rem;
+}
+.hc-icon.gold{background:rgba(232,201,109,.1);color:var(--gold);}
+.hc-icon.teal{background:rgba(45,212,191,.1);color:var(--teal);}
+.hc-icon.orange{background:rgba(251,140,62,.1);color:var(--orange);}
+.hc-icon.blue{background:rgba(91,156,246,.1);color:var(--blue);}
+.hc-text strong{display:block;font-weight:700;font-size:.9rem;color:var(--text);}
+.hc-text span{font-size:.78rem;color:var(--text3);}
+
+.hero-scroll{
+  position:absolute;bottom:36px;left:50%;transform:translateX(-50%);
+  display:flex;flex-direction:column;align-items:center;gap:6px;
+  font-family:var(--mono);font-size:.65rem;color:var(--text3);
+  letter-spacing:2px;text-transform:uppercase;
+  animation:fadeUp .7s 1.2s both;
+}
+.scroll-track{
+  width:1px;height:48px;
+  background:linear-gradient(to bottom,var(--text3),transparent);
+  animation:scrollBob 2s infinite;
+}
+@keyframes scrollBob{
+  0%,100%{transform:scaleY(1);opacity:.5;}
+  50%{transform:scaleY(.7);opacity:1;}
+}
+
+/* ═══════════════════════════════════════════
+   ABOUT
+═══════════════════════════════════════════ */
+.about-grid{
+  display:grid;grid-template-columns:360px 1fr;gap:64px;align-items:start;
+}
+.about-photo-outer{position:relative;}
+.about-photo-frame{
+  position:relative;border-radius:24px;overflow:hidden;
+  background:linear-gradient(135deg,rgba(232,201,109,.12),rgba(251,140,62,.08));
+  border:1px solid rgba(232,201,109,.15);
+}
+.about-photo-frame img{
+  width:100%;aspect-ratio:3/4;object-fit:cover;
+  display:block;transition:transform .5s var(--ease);
+}
+.about-photo-frame:hover img{transform:scale(1.03);}
+.photo-placeholder{
+  width:100%;aspect-ratio:3/4;
+  display:flex;align-items:center;justify-content:center;
+  font-size:5rem;color:var(--border2);background:var(--surface);
+}
+.about-badge{
+  position:absolute;bottom:-18px;right:-18px;z-index:10;
+  background:var(--surface2);backdrop-filter:blur(20px);
+  border:1px solid var(--border2);border-radius:14px;
+  padding:14px 18px;display:flex;align-items:center;gap:12px;min-width:180px;
+}
+.ab-icon{font-size:1.6rem;}
+.ab-info strong{display:block;font-weight:700;font-size:.9rem;color:var(--text);}
+.ab-info span{font-size:.75rem;color:var(--text3);}
+
+.about-content p{
+  font-size:.975rem;color:var(--text2);line-height:1.8;margin-bottom:18px;
+}
+.about-content p strong{color:var(--text);}
+.about-kv{
+  display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:28px 0;
+}
+.kv{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:12px;padding:14px 18px;
+}
+.kv-label{font-family:var(--mono);font-size:.68rem;color:var(--text3);letter-spacing:2px;text-transform:uppercase;margin-bottom:4px;}
+.kv-val{font-size:.9rem;color:var(--text);font-weight:600;}
+.lang-pills{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px;}
+.lpill{
+  padding:5px 14px;border-radius:99px;font-size:.78rem;font-weight:600;
+  background:var(--surface2);border:1px solid var(--border2);color:var(--text2);
+}
+.lpill.active{background:rgba(232,201,109,.09);border-color:rgba(232,201,109,.25);color:var(--gold);}
+
+/* ═══════════════════════════════════════════
+   SKILLS
+═══════════════════════════════════════════ */
+.skills-layout{
+  display:grid;grid-template-columns:300px 1fr;gap:48px;align-items:start;
+}
+.skill-cats{display:flex;flex-direction:column;gap:4px;}
+.cat-btn{
+  display:flex;align-items:center;gap:12px;
+  padding:13px 16px;border-radius:12px;
+  background:none;border:1px solid transparent;
+  color:var(--text2);font-size:.88rem;font-weight:600;
+  cursor:pointer;transition:all .2s;text-align:left;
+  font-family:var(--body);
+}
+.cat-btn:hover{background:var(--surface2);color:var(--text);}
+.cat-btn.active{background:var(--surface2);border-color:rgba(232,201,109,.25);color:var(--gold);}
+.cat-btn .cat-icon{
+  width:34px;height:34px;border-radius:9px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;font-size:.95rem;
+  background:var(--surface2);
+}
+.cat-btn.active .cat-icon{background:rgba(232,201,109,.12);color:var(--gold);}
+
+.skill-panel{display:none;}
+.skill-panel.active{display:block;}
+.skill-panel h3{
+  font-family:var(--head);font-size:1.4rem;font-weight:800;
+  letter-spacing:-.5px;color:var(--text);margin-bottom:8px;
+}
+.skill-panel > p{font-size:.9rem;color:var(--text2);line-height:1.7;margin-bottom:28px;}
+.skill-bars{display:flex;flex-direction:column;gap:16px;margin-bottom:28px;}
+.sbar{cursor:default;}
+.sbar-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:7px;}
+.sbar-name{font-size:.875rem;font-weight:600;color:var(--text);}
+.sbar-pct{font-family:var(--mono);font-size:.78rem;color:var(--text3);}
+.sbar-track{height:5px;background:var(--border2);border-radius:99px;overflow:hidden;}
+.sbar-fill{
+  height:100%;border-radius:99px;width:0%;
+  background:linear-gradient(90deg,var(--gold),var(--orange));
+  transition:width 1.3s var(--ease);
+}
+.skill-tools{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px;}
+.tool-chip{
+  padding:5px 12px;border-radius:8px;font-size:.78rem;font-weight:500;
+  background:var(--surface2);border:1px solid var(--border2);
+  color:var(--text2);transition:all .2s;
+}
+.tool-chip:hover{border-color:rgba(232,201,109,.3);color:var(--gold);}
+
+/* ═══════════════════════════════════════════
+   EDUCATION
+═══════════════════════════════════════════ */
+.timeline{position:relative;padding-left:30px;}
+.timeline::before{
+  content:'';position:absolute;left:0;top:8px;bottom:8px;
+  width:1px;background:var(--border2);
+}
+.tl-item{position:relative;margin-bottom:44px;}
+.tl-dot{
+  position:absolute;left:-34px;top:8px;
+  width:9px;height:9px;border-radius:50%;
+  background:var(--gold);border:2px solid var(--ink);
+  box-shadow:0 0 0 3px rgba(232,201,109,.2);
+}
+.tl-year{
+  font-family:var(--mono);font-size:.7rem;color:var(--gold);
+  letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;
+}
+.tl-card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:16px;padding:22px 26px;
+  transition:border-color .3s,background .3s;
+}
+.tl-card:hover{border-color:rgba(232,201,109,.2);background:var(--surface2);}
+.tl-card h3{
+  font-family:var(--head);font-size:1.05rem;font-weight:800;
+  letter-spacing:-.3px;color:var(--text);margin-bottom:4px;
+}
+.tl-school{font-size:.82rem;color:var(--text3);margin-bottom:10px;display:flex;align-items:center;gap:7px;}
+.tl-card p{font-size:.85rem;color:var(--text2);line-height:1.65;}
+.tl-badge{
+  display:inline-flex;align-items:center;gap:6px;
+  margin-top:12px;padding:4px 10px;border-radius:99px;
+  font-size:.72rem;font-weight:600;
+  background:rgba(45,212,191,.08);border:1px solid rgba(45,212,191,.2);color:var(--teal);
+}
+
+/* ═══════════════════════════════════════════
+   PROJECTS
+═══════════════════════════════════════════ */
+.proj-tabs{
+  display:flex;gap:6px;flex-wrap:wrap;margin-bottom:40px;
+}
+.proj-tab{
+  padding:7px 16px;border-radius:9px;
+  background:var(--surface);border:1px solid var(--border);
+  color:var(--text2);font-size:.8rem;font-weight:600;
+  cursor:pointer;transition:all .2s;font-family:var(--body);
+}
+.proj-tab.active,.proj-tab:hover{
+  background:rgba(232,201,109,.08);
+  border-color:rgba(232,201,109,.28);color:var(--gold);
+}
+.proj-grid{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));
+  gap:22px;
+}
+.proj-card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:18px;overflow:hidden;
+  transition:all .35s var(--ease);position:relative;
+}
+.proj-card:hover{
+  border-color:rgba(232,201,109,.22);
+  transform:translateY(-8px);
+  box-shadow:0 24px 60px rgba(0,0,0,.35);
+}
+.proj-thumb{
+  height:190px;overflow:hidden;position:relative;
+  background:var(--surface2);
+}
+.proj-thumb-inner{
+  width:100%;height:100%;display:flex;align-items:center;
+  justify-content:center;font-size:3.5rem;
+  transition:transform .4s var(--ease);
+}
+.proj-card:hover .proj-thumb-inner{transform:scale(1.08);}
+.proj-cat-pill{
+  position:absolute;top:12px;left:12px;z-index:5;
+  padding:4px 10px;border-radius:99px;font-size:.7rem;font-weight:700;
+  letter-spacing:.5px;text-transform:uppercase;backdrop-filter:blur(12px);
+}
+.cat-emb{background:rgba(45,212,191,.15);color:var(--teal);border:1px solid rgba(45,212,191,.3);}
+.cat-vls{background:rgba(91,156,246,.15);color:var(--blue);border:1px solid rgba(91,156,246,.3);}
+.cat-aut{background:rgba(251,140,62,.15);color:var(--orange);border:1px solid rgba(251,140,62,.3);}
+.cat-nrg{background:rgba(232,201,109,.15);color:var(--gold);border:1px solid rgba(232,201,109,.3);}
+.proj-body{padding:22px;}
+.proj-body h3{
+  font-family:var(--head);font-size:1rem;font-weight:800;
+  letter-spacing:-.3px;color:var(--text);margin-bottom:8px;line-height:1.3;
+}
+.proj-body p{font-size:.85rem;color:var(--text2);line-height:1.65;margin-bottom:16px;}
+.proj-stack{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px;}
+.stack-chip{
+  padding:3px 9px;border-radius:6px;font-size:.72rem;
+  background:var(--surface2);border:1px solid var(--border);color:var(--text3);
+}
+.proj-link{
+  display:inline-flex;align-items:center;gap:7px;
+  font-size:.82rem;font-weight:700;color:var(--gold);
+  transition:gap .2s;
+}
+.proj-link:hover{gap:11px;}
+
+/* ═══════════════════════════════════════════
+   CERTIFICATIONS
+═══════════════════════════════════════════ */
+.certs-grid{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));
+  gap:18px;
+}
+.cert-card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:16px;padding:22px;
+  display:flex;flex-direction:column;gap:12px;
+  transition:all .3s;
+}
+.cert-card:hover{border-color:rgba(232,201,109,.22);transform:translateY(-4px);}
+.cert-icon{
+  width:42px;height:42px;border-radius:10px;
+  background:rgba(232,201,109,.08);border:1px solid rgba(232,201,109,.18);
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.1rem;color:var(--gold);
+}
+.cert-card h3{font-family:var(--head);font-size:.92rem;font-weight:700;color:var(--text);line-height:1.35;}
+.cert-issuer{font-family:var(--mono);font-size:.7rem;color:var(--text3);letter-spacing:1px;}
+.cert-card p{font-size:.82rem;color:var(--text2);line-height:1.6;}
+
+/* ═══════════════════════════════════════════
+   BLOG
+═══════════════════════════════════════════ */
+.blog-featured{
+  display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:24px;
+}
+.blog-card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:18px;overflow:hidden;
+  transition:all .35s var(--ease);cursor:pointer;
+}
+.blog-card:hover{
+  border-color:rgba(232,201,109,.22);
+  transform:translateY(-6px);box-shadow:0 20px 50px rgba(0,0,0,.3);
+}
+.blog-card.featured{grid-column:1/-1;}
+.blog-img{
+  height:200px;display:flex;align-items:center;justify-content:center;
+  font-size:3rem;position:relative;overflow:hidden;
+}
+.blog-img-grad{
+  position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(232,201,109,.07),rgba(251,140,62,.05));
+}
+.blog-img.maroc{background:linear-gradient(135deg,#1a1208,#0f1a10);}
+.blog-img.world{background:linear-gradient(135deg,#080d1a,#0f0820);}
+.blog-img.auto{background:linear-gradient(135deg,#0a1820,#080a18);}
+.blog-img.energy{background:linear-gradient(135deg,#0a150a,#181208);}
+.blog-img.emb{background:linear-gradient(135deg,#0d0d18,#180810);}
+.blog-body{padding:24px;}
+.blog-meta{
+  display:flex;align-items:center;gap:10px;margin-bottom:10px;flex-wrap:wrap;
+}
+.blog-cat{
+  padding:3px 10px;border-radius:99px;font-size:.7rem;font-weight:700;
+  letter-spacing:.5px;text-transform:uppercase;
+}
+.bc-ind{background:rgba(45,212,191,.1);color:var(--teal);border:1px solid rgba(45,212,191,.2);}
+.bc-tech{background:rgba(91,156,246,.1);color:var(--blue);border:1px solid rgba(91,156,246,.2);}
+.bc-auto{background:rgba(251,140,62,.1);color:var(--orange);border:1px solid rgba(251,140,62,.2);}
+.bc-nrg{background:rgba(232,201,109,.1);color:var(--gold);border:1px solid rgba(232,201,109,.2);}
+.bc-emb{background:rgba(255,95,122,.1);color:var(--red);border:1px solid rgba(255,95,122,.2);}
+.blog-date{font-family:var(--mono);font-size:.68rem;color:var(--text3);}
+.blog-card h3{
+  font-family:var(--head);font-size:1.1rem;font-weight:800;
+  letter-spacing:-.4px;color:var(--text);margin-bottom:10px;line-height:1.25;
+}
+.blog-card.featured h3{font-size:1.35rem;}
+.blog-card p{font-size:.875rem;color:var(--text2);line-height:1.7;margin-bottom:16px;}
+.blog-read{
+  display:inline-flex;align-items:center;gap:7px;
+  font-size:.8rem;font-weight:700;color:var(--gold);transition:gap .2s;
+}
+.blog-read:hover{gap:11px;}
+.blog-grid-small{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));
+  gap:18px;
+}
+
+/* ═══════════════════════════════════════════
+   NEWS
+═══════════════════════════════════════════ */
+.news-layout{display:grid;grid-template-columns:1fr 380px;gap:40px;align-items:start;}
+.news-list{display:flex;flex-direction:column;gap:16px;}
+.news-item{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:16px;padding:22px 24px;
+  display:grid;grid-template-columns:1fr auto;gap:20px;align-items:start;
+  transition:all .3s;cursor:pointer;
+}
+.news-item:hover{border-color:rgba(232,201,109,.22);background:var(--surface2);}
+.news-source-row{display:flex;align-items:center;gap:10px;margin-bottom:8px;flex-wrap:wrap;}
+.news-source-badge{
+  padding:3px 9px;border-radius:99px;font-family:var(--mono);
+  font-size:.65rem;letter-spacing:1px;text-transform:uppercase;font-weight:600;
+}
+.ns-ma{background:rgba(45,212,191,.08);color:var(--teal);border:1px solid rgba(45,212,191,.18);}
+.ns-eu{background:rgba(91,156,246,.08);color:var(--blue);border:1px solid rgba(91,156,246,.18);}
+.ns-gl{background:rgba(232,201,109,.08);color:var(--gold);border:1px solid rgba(232,201,109,.18);}
+.news-date-badge{font-family:var(--mono);font-size:.65rem;color:var(--text3);}
+.news-item h3{
+  font-family:var(--head);font-size:.98rem;font-weight:800;
+  letter-spacing:-.3px;color:var(--text);margin-bottom:8px;line-height:1.3;
+}
+.news-item p{font-size:.838rem;color:var(--text2);line-height:1.65;}
+.news-comment{
+  margin-top:12px;padding:12px 14px;border-radius:10px;
+  background:rgba(232,201,109,.05);border:1px solid rgba(232,201,109,.12);
+  font-size:.8rem;color:var(--gold);font-style:italic;line-height:1.55;
+}
+.news-comment::before{content:'"';margin-right:4px;font-size:1.1rem;}
+.news-comment::after{content:'"';margin-left:4px;font-size:1.1rem;}
+.news-thumb{
+  width:90px;height:70px;border-radius:10px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.8rem;background:var(--surface2);border:1px solid var(--border);
+}
+.news-sidebar{}
+.news-sidebar h4{
+  font-family:var(--head);font-size:1rem;font-weight:800;
+  color:var(--text);margin-bottom:16px;letter-spacing:-.3px;
+}
+.trending-list{display:flex;flex-direction:column;gap:10px;}
+.trending-item{
+  display:flex;align-items:center;gap:12px;
+  padding:12px 14px;border-radius:12px;
+  background:var(--surface);border:1px solid var(--border);
+  cursor:pointer;transition:all .25s;
+}
+.trending-item:hover{border-color:rgba(232,201,109,.2);background:var(--surface2);}
+.trending-num{
+  font-family:var(--head);font-size:1.4rem;font-weight:900;
+  color:var(--border2);width:28px;text-align:center;flex-shrink:0;
+}
+.trending-text{font-size:.82rem;color:var(--text2);font-weight:500;line-height:1.4;}
+.newsletter-box{
+  margin-top:24px;background:linear-gradient(135deg,rgba(232,201,109,.06),rgba(251,140,62,.04));
+  border:1px solid rgba(232,201,109,.15);border-radius:16px;padding:24px;
+}
+.newsletter-box h4{font-family:var(--head);font-size:1rem;font-weight:800;color:var(--text);margin-bottom:6px;}
+.newsletter-box p{font-size:.82rem;color:var(--text2);margin-bottom:16px;line-height:1.5;}
+.nl-form{display:flex;gap:8px;flex-direction:column;}
+.nl-input{
+  width:100%;padding:10px 14px;border-radius:9px;
+  background:var(--surface2);border:1px solid var(--border2);
+  color:var(--text);font-size:.85rem;font-family:var(--body);outline:none;
+  transition:border-color .2s;
+}
+.nl-input:focus{border-color:rgba(232,201,109,.4);}
+.nl-input::placeholder{color:var(--text3);}
+
+/* ═══════════════════════════════════════════
+   CONTACT
+═══════════════════════════════════════════ */
+.contact-layout{display:grid;grid-template-columns:1fr 1.2fr;gap:64px;align-items:start;}
+.contact-left h3{
+  font-family:var(--head);font-size:2rem;font-weight:900;
+  letter-spacing:-1px;color:var(--text);margin-bottom:14px;line-height:1.15;
+}
+.contact-left h3 em{
+  font-family:var(--serif);font-style:italic;
+  background:linear-gradient(135deg,var(--gold),var(--orange));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+.contact-left p{font-size:.95rem;color:var(--text2);line-height:1.75;margin-bottom:32px;}
+.contact-links{display:flex;flex-direction:column;gap:10px;}
+.clink{
+  display:flex;align-items:center;gap:14px;
+  padding:13px 16px;border-radius:12px;
+  background:var(--surface);border:1px solid var(--border);
+  transition:all .25s;
+}
+.clink:hover{border-color:rgba(232,201,109,.25);background:var(--surface2);}
+.clink-icon{
+  width:38px;height:38px;border-radius:10px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;font-size:.95rem;
+}
+.ci-gold{background:rgba(232,201,109,.1);color:var(--gold);}
+.ci-blue{background:rgba(91,156,246,.1);color:var(--blue);}
+.ci-teal{background:rgba(45,212,191,.1);color:var(--teal);}
+.ci-none{background:var(--surface2);color:var(--text2);}
+.clink-txt strong{display:block;font-weight:700;font-size:.88rem;color:var(--text);}
+.clink-txt span{font-size:.78rem;color:var(--text3);}
+
+.form-wrap{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:20px;padding:32px;
+}
+.form-wrap h4{
+  font-family:var(--head);font-size:1.15rem;font-weight:800;
+  color:var(--text);margin-bottom:24px;letter-spacing:-.3px;
+}
+.fg{margin-bottom:16px;}
+.fg label{display:block;font-size:.78rem;font-weight:600;color:var(--text2);margin-bottom:6px;}
+.fc{
+  width:100%;padding:11px 15px;border-radius:10px;
+  background:rgba(255,255,255,.03);border:1px solid var(--border2);
+  color:var(--text);font-size:.88rem;font-family:var(--body);
+  outline:none;transition:border-color .25s;resize:none;
+}
+.fc:focus{border-color:rgba(232,201,109,.4);}
+.fc::placeholder{color:var(--text3);}
+textarea.fc{min-height:120px;}
+.fg-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+
+/* ═══════════════════════════════════════════
+   FEEDBACK
+═══════════════════════════════════════════ */
+.feedback-wrap{
+  max-width:680px;margin:0 auto;
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:20px;padding:40px;
+}
+.stars-pick{display:flex;gap:4px;direction:rtl;margin-top:8px;}
+.stars-pick input{display:none;}
+.stars-pick label{
+  font-size:1.9rem;color:var(--border2);cursor:pointer;
+  transition:color .15s,transform .15s;
+}
+.stars-pick label:hover,
+.stars-pick label:hover~label,
+.stars-pick input:checked~label{color:var(--gold);}
+.stars-pick label:hover{transform:scale(1.2);}
+
+/* ═══════════════════════════════════════════
+   FOOTER
+═══════════════════════════════════════════ */
+footer{
+  border-top:1px solid var(--border);
+  padding:32px clamp(24px,6vw,90px);
+  display:flex;justify-content:space-between;align-items:center;
+  flex-wrap:wrap;gap:16px;
+  background:var(--ink2);
+}
+.footer-brand{display:flex;align-items:center;gap:10px;}
+.footer-brand .logo-mark{width:28px;height:28px;font-size:.8rem;}
+.footer-copy{font-size:.78rem;color:var(--text3);}
+.footer-socials{display:flex;gap:8px;}
+.fsoc{
+  width:34px;height:34px;border-radius:9px;
+  background:var(--surface2);border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  color:var(--text2);font-size:.85rem;transition:all .25s;
+}
+.fsoc:hover{color:var(--gold);border-color:rgba(232,201,109,.3);}
+
+/* ═══════════════════════════════════════════
+   ANIMATIONS / UTILITIES
+═══════════════════════════════════════════ */
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(28px);}
+  to{opacity:1;transform:translateY(0);}
+}
+@keyframes fadeLeft{
+  from{opacity:0;transform:translateX(30px);}
+  to{opacity:1;transform:translateX(0);}
+}
+@keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+.reveal{opacity:0;transform:translateY(22px);transition:opacity .7s var(--ease),transform .7s var(--ease);}
+.reveal.in{opacity:1;transform:none;}
+.reveal-l{opacity:0;transform:translateX(-22px);transition:opacity .7s var(--ease),transform .7s var(--ease);}
+.reveal-l.in{opacity:1;transform:none;}
+.d1{transition-delay:.08s;}.d2{transition-delay:.16s;}.d3{transition-delay:.24s;}.d4{transition-delay:.32s;}.d5{transition-delay:.40s;}
+
+/* ═══════════════════════════════════════════
+   RESPONSIVE
+═══════════════════════════════════════════ */
+@media(max-width:1100px){
+  #hero{grid-template-columns:1fr;gap:40px;padding-top:100px;padding-bottom:60px;}
+  .hero-right{display:none;}
+  .hero-scroll{display:none;}
+  .about-grid{grid-template-columns:1fr;}
+  .skills-layout{grid-template-columns:1fr;}
+  .skill-cats{flex-direction:row;flex-wrap:wrap;}
+  .news-layout{grid-template-columns:1fr;}
+  .contact-layout{grid-template-columns:1fr;}
+  .blog-featured{grid-template-columns:1fr;}
+  .blog-card.featured{grid-column:auto;}
+  .edu-grid{grid-template-columns:1fr;}
+}
+@media(max-width:768px){
+  nav.main-nav{display:none;}
+  .burger{display:flex;}
+  .status-badge{display:none;}
+  #rail{display:none;}
+  .proj-grid{grid-template-columns:1fr;}
+  .certs-grid{grid-template-columns:1fr;}
+  .blog-grid-small{grid-template-columns:1fr;}
+  .hero-metrics{gap:18px;flex-wrap:wrap;}
+  .fg-row{grid-template-columns:1fr;}
+  .about-kv{grid-template-columns:1fr;}
+  .news-item{grid-template-columns:1fr;}
+  .news-thumb{display:none;}
+  footer{flex-direction:column;text-align:center;}
+}
+@media(max-width:480px){
+  .hero-h1{font-size:3rem;letter-spacing:-2px;}
+  #topbar{padding:0 16px;}
+  .sec{padding-left:16px;padding-right:16px;}
+}
+
+/* ═══════════════════════════════════════════
+   LIGHT MODE OVERRIDES
+═══════════════════════════════════════════ */
+[data-theme="light"] .hero-card,
+[data-theme="light"] .tl-card,
+[data-theme="light"] .cert-card,
+[data-theme="light"] .proj-card,
+[data-theme="light"] .blog-card,
+[data-theme="light"] .news-item,
+[data-theme="light"] .form-wrap,
+[data-theme="light"] .clink,
+[data-theme="light"] .feedback-wrap,
+[data-theme="light"] .kv,
+[data-theme="light"] .cat-btn,
+[data-theme="light"] .newsletter-box,
+[data-theme="light"] .trending-item{
+  background:rgba(255,255,255,.7);
+}
+[data-theme="light"] .skill-panel p,
+[data-theme="light"] .about-content p{color:var(--text2);}
+[data-theme="light"] .fc{background:rgba(0,0,0,.03);color:var(--text);}
+
+/* ═══════════════════════════════════════════
+   BLOG MODAL
+═══════════════════════════════════════════ */
+#blog-modal{
+  position:fixed;inset:0;z-index:5000;
+  background:rgba(11,12,16,.92);backdrop-filter:blur(30px);
+  display:flex;align-items:center;justify-content:center;
+  padding:20px;opacity:0;visibility:hidden;
+  transition:opacity .3s,visibility .3s;
+}
+#blog-modal.open{opacity:1;visibility:visible;}
+.modal-inner{
+  background:var(--ink2);border:1px solid var(--border2);
+  border-radius:20px;max-width:680px;width:100%;
+  max-height:85vh;overflow-y:auto;padding:40px;
+  position:relative;
+  animation:modalIn .3s var(--ease-spring) both;
+}
+@keyframes modalIn{
+  from{transform:scale(.95) translateY(20px);}
+  to{transform:scale(1) translateY(0);}
+}
+.modal-close{
+  position:absolute;top:16px;right:16px;
+  width:34px;height:34px;border-radius:50%;
+  background:var(--surface2);border:1px solid var(--border);
+  color:var(--text2);display:flex;align-items:center;justify-content:center;
+  font-size:.9rem;cursor:pointer;transition:all .2s;
+}
+.modal-close:hover{color:var(--gold);border-color:rgba(232,201,109,.3);}
+.modal-inner h2{
+  font-family:var(--head);font-size:1.5rem;font-weight:900;
+  letter-spacing:-.5px;color:var(--text);margin-bottom:8px;line-height:1.2;
+}
+.modal-inner .modal-date{font-family:var(--mono);font-size:.7rem;color:var(--text3);margin-bottom:20px;display:block;}
+.modal-inner p{font-size:.92rem;color:var(--text2);line-height:1.8;margin-bottom:14px;}
+.modal-inner h4{font-family:var(--head);font-size:1rem;font-weight:700;color:var(--text);margin:20px 0 8px;}
+
+/* ═══════════════════════════════════════════
+   SECTION HERO BACKGROUND ORBS
+═══════════════════════════════════════════ */
+.hero-orb{
+  position:absolute;border-radius:50%;filter:blur(80px);
+  pointer-events:none;z-index:0;
+}
+.orb1{
+  width:500px;height:500px;top:-100px;right:-100px;
+  background:radial-gradient(circle,rgba(232,201,109,.06),transparent 70%);
+}
+.orb2{
+  width:400px;height:400px;bottom:100px;left:-80px;
+  background:radial-gradient(circle,rgba(251,140,62,.05),transparent 70%);
+}
+
+/* GLITCH */
+.glitch{position:relative;display:inline-block;}
+.glitch::before,.glitch::after{
+  content:attr(data-g);position:absolute;top:0;left:0;
+  background:none;-webkit-background-clip:initial;-webkit-text-fill-color:initial;background-clip:initial;
+  opacity:0;
+}
+.glitch::before{color:var(--orange);left:2px;clip-path:polygon(0 20%,100% 20%,100% 38%,0 38%);animation:g1 6s infinite 4s;}
+.glitch::after{color:var(--teal);left:-2px;clip-path:polygon(0 60%,100% 60%,100% 78%,0 78%);animation:g2 6s infinite 4s;}
+@keyframes g1{0%,88%,100%{opacity:0;}90%{opacity:.8;transform:translateX(-2px);}92%{opacity:0;}94%{opacity:.5;transform:translateX(2px);}}
+@keyframes g2{0%,88%,100%{opacity:0;}91%{opacity:.6;transform:translateX(2px);}93%{opacity:0;}}
+
+/* TYPED */
+.typed-text{color:var(--gold);}
+.typed-cur{
+  display:inline-block;width:2px;height:1em;background:var(--gold);
+  margin-left:2px;vertical-align:text-bottom;
+  animation:blink 1s infinite;
+}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:0;}}
+</style>
 </head>
 <body>
 
 <!-- CURSOR -->
-<div class="cursor-dot" id="cursorDot"></div>
-<div class="cursor-ring" id="cursorRing"></div>
+<div id="cur-dot"></div>
+<div id="cur-circle"></div>
+<div id="sp"></div>
 
-<!-- SCROLL PROGRESS -->
-<div id="scroll-progress"></div>
-
-<!-- PRELOADER -->
-<div id="preloader">
-  <div class="loader-name">MJ</div>
-  <div class="loader-bar"><div class="loader-fill"></div></div>
+<!-- LOADER -->
+<div id="loader">
+  <div class="loader-letters">
+    <span>M</span><span>o</span><span>h</span><span>a</span><span>m</span><span>m</span><span>e</span><span>d</span>
+    <span style="opacity:.2;font-size:.5em;padding:0 6px;align-self:center;">✦</span>
+    <span>J</span><span>a</span><span>b</span><span>b</span><span>a</span><span>r</span><span>i</span>
+  </div>
+  <div class="loader-line"></div>
+  <div class="loader-sub">Élève Ingénieur · EMI Rabat</div>
 </div>
 
-<!-- CANVAS BACKGROUND -->
-<canvas id="canvas-bg"></canvas>
+<!-- CANVAS BG -->
+<canvas id="bg-canvas"></canvas>
 
 <!-- TOPBAR -->
-<nav id="topbar">
-  <a class="logo" href="#hero">MJ.</a>
-  <ul class="nav-links">
-    <li><a data-section="hero" class="active">Accueil</a></li>
-    <li><a data-section="about">À propos</a></li>
-    <li><a data-section="skills">Compétences</a></li>
-    <li><a data-section="education">Formation</a></li>
-    <li><a data-section="projects">Projets</a></li>
-    <li><a data-section="certs">Certifications</a></li>
-    <li><a data-section="contact">Contact</a></li>
-  </ul>
-  <div class="nav-actions">
-    <button class="btn-icon" id="theme-btn" title="Changer le thème">
-      <i class="fas fa-moon" id="theme-icon"></i>
-    </button>
-    <button class="hamburger" id="hamburger" aria-label="Menu">
-      <span></span><span></span><span></span>
-    </button>
+<header id="topbar">
+  <div class="logo-wrap">
+    <div class="logo-mark">MJ</div>
+    <div class="logo-text">Mohammed<span>.dev</span></div>
   </div>
-</nav>
+  <nav class="main-nav">
+    <a data-s="hero" class="active">Accueil</a>
+    <a data-s="about">À propos</a>
+    <a data-s="skills">Compétences</a>
+    <a data-s="education">Formation</a>
+    <a data-s="projects">Projets</a>
+    <a data-s="certs">Certifications</a>
+    <a data-s="blog">Blog</a>
+    <a data-s="news">Actualités</a>
+    <a data-s="contact">Contact</a>
+  </nav>
+  <div class="nav-right">
+    <div class="status-badge"><div class="status-dot"></div>Disponible</div>
+    <button class="icon-btn" id="theme-btn" title="Thème"><i class="fas fa-moon" id="ticon"></i></button>
+    <button class="burger" id="burger"><span></span><span></span><span></span></button>
+  </div>
+</header>
 
 <!-- MOBILE NAV -->
-<div class="mobile-nav" id="mobileNav">
-  <a data-section="hero">Accueil</a>
-  <a data-section="about">À propos</a>
-  <a data-section="skills">Compétences</a>
-  <a data-section="education">Formation</a>
-  <a data-section="projects">Projets</a>
-  <a data-section="certs">Certifications</a>
-  <a data-section="contact">Contact</a>
+<div class="mob-nav" id="mob-nav">
+  <a data-s="hero">Accueil</a>
+  <a data-s="about">À propos</a>
+  <a data-s="skills">Compétences</a>
+  <a data-s="education">Formation</a>
+  <a data-s="projects">Projets</a>
+  <a data-s="certs">Certifications</a>
+  <a data-s="blog">Blog</a>
+  <a data-s="news">Actualités</a>
+  <a data-s="contact">Contact</a>
 </div>
 
-<!-- SIDE DOCK -->
-<div id="side-dock">
-  <a class="dock-item" data-section="hero"><i class="fas fa-home"></i><span class="tooltip">Accueil</span></a>
-  <a class="dock-item" data-section="about"><i class="fas fa-user"></i><span class="tooltip">À propos</span></a>
-  <a class="dock-item" data-section="skills"><i class="fas fa-tools"></i><span class="tooltip">Compétences</span></a>
-  <a class="dock-item" data-section="education"><i class="fas fa-graduation-cap"></i><span class="tooltip">Formation</span></a>
-  <a class="dock-item" data-section="projects"><i class="fas fa-project-diagram"></i><span class="tooltip">Projets</span></a>
-  <a class="dock-item" data-section="certs"><i class="fas fa-certificate"></i><span class="tooltip">Certifications</span></a>
-  <a class="dock-item" data-section="contact"><i class="fas fa-envelope"></i><span class="tooltip">Contact</span></a>
+<!-- RAIL DOTS -->
+<div id="rail">
+  <span class="rail-dot active" data-s="hero" data-label="Accueil"></span>
+  <span class="rail-dot" data-s="about" data-label="À propos"></span>
+  <span class="rail-dot" data-s="skills" data-label="Compétences"></span>
+  <span class="rail-dot" data-s="education" data-label="Formation"></span>
+  <span class="rail-dot" data-s="projects" data-label="Projets"></span>
+  <span class="rail-dot" data-s="certs" data-label="Certifications"></span>
+  <span class="rail-dot" data-s="blog" data-label="Blog"></span>
+  <span class="rail-dot" data-s="news" data-label="Actualités"></span>
+  <span class="rail-dot" data-s="contact" data-label="Contact"></span>
 </div>
 
 <!-- BACK TO TOP -->
-<button id="back-top" onclick="scrollToSection('hero')"><i class="fas fa-arrow-up"></i></button>
+<button id="btt" onclick="goTo('hero')"><i class="fas fa-arrow-up"></i></button>
 
 <!-- TOAST -->
-<div id="toast"><span class="toast-icon"><i class="fas fa-check-circle"></i></span><span id="toastMsg">Message envoyé !</span></div>
+<div id="toast"><i class="fas fa-check-circle"></i><span id="tmsg">Envoyé !</span></div>
 
-<!-- ============================================================
-     MAIN CONTENT
-============================================================ -->
-<div class="page-wrap">
+<!-- BLOG MODAL -->
+<div id="blog-modal" onclick="closeBlogModal(event)">
+  <div class="modal-inner">
+    <button class="modal-close" onclick="document.getElementById('blog-modal').classList.remove('open')"><i class="fas fa-times"></i></button>
+    <div id="modal-content"></div>
+  </div>
+</div>
 
-  <!-- HERO -->
-  <section id="hero">
-    <div class="hero-eyebrow">
-      <span class="dot"></span>
-      Disponible pour stages &amp; collaborations
-    </div>
-    <h1 class="hero-name">
-      <span class="glitch" data-text="Mohammed">Mohammed</span><br>
-      <span class="highlight">Jabbari</span>
+<!-- ═══════════════════════════════════════════
+     PAGE
+═══════════════════════════════════════════ -->
+<div class="page">
+
+<!-- ══ HERO ══════════════════════════════════ -->
+<section id="hero" style="position:relative;min-height:100vh;max-width:none;padding:0 clamp(24px,7vw,100px);display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:60px;padding-top:66px;">
+  <div class="hero-orb orb1"></div>
+  <div class="hero-orb orb2"></div>
+
+  <div class="hero-left" style="position:relative;z-index:2;">
+    <div class="hero-tag"><span class="dot"></span> Disponible · Stage &amp; Collaboration 2025</div>
+    <h1 class="hero-h1">
+      <span class="n1 glitch" data-g="Mohammed">Mohammed</span><br>
+      <span class="n2">Jabbari</span>
+      <span class="n3"><span class="typed-text" id="typed"></span><span class="typed-cur"></span></span>
     </h1>
-    <div class="hero-title-row">
-      <span class="hero-role">Élève Ingénieur <span id="typed-text"></span><span class="typed-cursor"></span></span>
-      <span class="hero-divider"></span>
-      <span class="hero-school"><i class="fas fa-map-marker-alt" style="color:var(--cyan);margin-right:5px;"></i>École Mohammadia d'Ingénieurs, Rabat</span>
-    </div>
-    <p class="hero-bio">
-      Passionné par l'innovation technologique et les systèmes intelligents.
-      Je conçois des solutions à haute valeur ajoutée en <strong style="color:var(--text)">génie électrique</strong>,
-      <strong style="color:var(--text)">automatisation industrielle</strong> et <strong style="color:var(--text)">systèmes embarqués</strong>.
+    <p class="hero-sub">
+      Élève ingénieur à l'<strong>École Mohammadia d'Ingénieurs</strong> — spécialisé en
+      <strong>Génie Électrique</strong>, <strong>Automatisation Industrielle</strong> et <strong>Systèmes Embarqués</strong>.
+      Passionné par l'innovation technologique à fort impact.
     </p>
-    <div class="hero-ctas">
-      <a href="CV Mohammed JABBARI.pdf" target="_blank" class="btn-primary">
-        <i class="fas fa-eye"></i> Voir mon CV
-      </a>
-      <a href="CV Mohammed JABBARI.pdf" download class="btn-outline">
-        <i class="fas fa-download"></i> Télécharger
-      </a>
-      <a data-section="contact" class="btn-outline" style="cursor:pointer">
-        <i class="fas fa-envelope"></i> Me contacter
-      </a>
+    <div class="hero-actions">
+      <a href="CV Mohammed JABBARI.pdf" target="_blank" class="btn-gold"><i class="fas fa-eye"></i> Voir le CV</a>
+      <a href="CV Mohammed JABBARI.pdf" download class="btn-ghost"><i class="fas fa-download"></i> Télécharger</a>
+      <button class="btn-ghost" onclick="goTo('contact')"><i class="fas fa-envelope"></i> Contact</button>
     </div>
-    <div class="hero-stats">
-      <div class="stat-item">
-        <div class="stat-num">3+</div>
-        <div class="stat-label">Années d'études ingénieur</div>
-      </div>
-      <div class="stat-item">
-        <div class="stat-num">10+</div>
-        <div class="stat-label">Projets réalisés</div>
-      </div>
-      <div class="stat-item">
-        <div class="stat-num">5+</div>
-        <div class="stat-label">Certifications</div>
-      </div>
+    <div class="hero-metrics">
+      <div class="metric"><div class="metric-num">3+</div><div class="metric-label">Années EMI</div></div>
+      <div class="metric"><div class="metric-num">10+</div><div class="metric-label">Projets</div></div>
+      <div class="metric"><div class="metric-num">5+</div><div class="metric-label">Certifs</div></div>
+      <div class="metric"><div class="metric-num">8</div><div class="metric-label">Outils maîtrisés</div></div>
     </div>
-    <div class="hero-scroll">
-      <span>Défiler</span>
-      <div class="scroll-line"></div>
-    </div>
-  </section>
+  </div>
 
-  <div class="section-divider"></div>
+  <div class="hero-right" style="position:relative;z-index:2;">
+    <div class="hero-card">
+      <div class="hc-icon gold"><i class="fas fa-bolt"></i></div>
+      <div class="hc-text"><strong>Génie Électrique</strong><span>Électrotechnique · Réseaux · Énergies renouvelables</span></div>
+    </div>
+    <div class="hero-card">
+      <div class="hc-icon teal"><i class="fas fa-cogs"></i></div>
+      <div class="hc-text"><strong>Automatisation</strong><span>TIA Portal · EcoStruxure · PID · API/PLC</span></div>
+    </div>
+    <div class="hero-card">
+      <div class="hc-icon orange"><i class="fas fa-microchip"></i></div>
+      <div class="hc-text"><strong>Systèmes Embarqués</strong><span>Arduino · VHDL · FPGA · C/C++</span></div>
+    </div>
+    <div class="hero-card">
+      <div class="hc-icon blue"><i class="fas fa-chart-line"></i></div>
+      <div class="hc-text"><strong>Simulation &amp; Modélisation</strong><span>MATLAB · Simulink · PSpice · LTspice</span></div>
+    </div>
+    <div class="hero-card" style="border-style:dashed;background:transparent;">
+      <div class="hc-icon" style="background:rgba(255,255,255,.04);color:var(--text3);"><i class="fas fa-map-marker-alt"></i></div>
+      <div class="hc-text"><strong style="color:var(--text2);">Rabat, Maroc</strong><span>École Mohammadia d'Ingénieurs</span></div>
+    </div>
+  </div>
 
-  <!-- ABOUT -->
-  <section id="about">
-    <div class="section-label reveal">À propos</div>
-    <h2 class="section-title reveal reveal-delay-1">Qui suis-je ?</h2>
-    <div class="about-grid">
-      <div class="about-photo-wrap reveal reveal-delay-1">
-        <div class="about-photo-frame">
-          <img src="profil professionnel 1.png" alt="Mohammed Jabbari" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-          <div style="display:none;width:100%;height:340px;background:linear-gradient(135deg,rgba(0,229,255,0.12),rgba(155,93,229,0.12));border-radius:26px;align-items:center;justify-content:center;font-size:5rem;color:var(--border2);">
-            <i class="fas fa-user"></i>
-          </div>
-        </div>
-        <div class="about-photo-badge">
-          <div class="badge-icon">🎓</div>
-          <div class="badge-text">
-            <strong>Élève Ingénieur</strong>
-            Génie Électrique &amp; Automatisation
-          </div>
-        </div>
+  <div class="hero-scroll">
+    <span>Scroll</span>
+    <div class="scroll-track"></div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══ ABOUT ═════════════════════════════════ -->
+<section id="about" class="sec">
+  <div class="sec-label reveal">À propos</div>
+  <h2 class="sec-title reveal d1">Qui <em>suis-je</em> ?</h2>
+  <div class="about-grid">
+    <div class="about-photo-outer reveal-l">
+      <div class="about-photo-frame">
+        <img src="profil professionnel 1.png" alt="Mohammed Jabbari" onerror="this.style.display='none';document.getElementById('pp').style.display='flex'">
+        <div id="pp" class="photo-placeholder" style="display:none;"><i class="fas fa-user"></i></div>
       </div>
-      <div class="about-content reveal reveal-delay-2">
-        <p>
-          Je suis <strong>Mohammed Jabbari</strong>, élève ingénieur à l'<strong>École Mohammadia d'Ingénieurs</strong>
-          en Génie Électrique et Automatisation Industrielle. Mon parcours est guidé par une volonté constante de
-          comprendre, concevoir et optimiser des solutions à haute valeur ajoutée.
-        </p>
-        <p>
-          Fort de solides compétences en <strong>programmation embarquée</strong>, <strong>automatisation industrielle</strong>,
-          modélisation de systèmes et électrotechnique, je m'investis pleinement dans les projets qui combinent
-          rigueur scientifique, créativité et impact concret.
-        </p>
-        <p>
-          🎯 <strong>Objectif :</strong> Contribuer à bâtir un avenir technologique plus intelligent, plus sûr et plus responsable.
-        </p>
-        <div class="about-tags">
-          <span class="tag cyan"><i class="fas fa-microchip" style="margin-right:5px;"></i>Systèmes embarqués</span>
-          <span class="tag violet"><i class="fas fa-robot" style="margin-right:5px;"></i>Automatisation</span>
-          <span class="tag"><i class="fas fa-bolt" style="margin-right:5px;"></i>Génie Électrique</span>
-          <span class="tag"><i class="fas fa-code" style="margin-right:5px;"></i>Python / C / VHDL</span>
-          <span class="tag"><i class="fas fa-drafting-compass" style="margin-right:5px;"></i>CAO / SolidWorks</span>
-          <span class="tag cyan"><i class="fas fa-users" style="margin-right:5px;"></i>Leadership</span>
-        </div>
-        <hr class="fancy">
-        <p style="font-size:0.85rem;color:var(--text3);">
-          <i class="fas fa-language" style="color:var(--cyan);margin-right:8px;"></i>
-          <strong style="color:var(--text2)">Langues :</strong> Arabe (natif) · Français (courant) · Anglais (intermédiaire)
-        </p>
-        <div class="about-cv-row">
-          <a href="CV Mohammed JABBARI.pdf" target="_blank" class="btn-primary">
-            <i class="fas fa-eye"></i> Visualiser le CV
-          </a>
-          <a href="CV Mohammed JABBARI.pdf" download class="btn-outline">
-            <i class="fas fa-download"></i> Télécharger
-          </a>
-        </div>
+      <div class="about-badge">
+        <div class="ab-icon">🎓</div>
+        <div class="ab-info"><strong>Élève Ingénieur</strong><span>Génie Électrique — EMI</span></div>
       </div>
     </div>
-  </section>
-
-  <div class="section-divider"></div>
-
-  <!-- SKILLS -->
-  <section id="skills">
-    <div class="section-label reveal">Expertise</div>
-    <h2 class="section-title reveal reveal-delay-1">Mes Compétences</h2>
-    <div class="skills-grid">
-
-      <div class="skill-card reveal reveal-delay-1">
-        <div class="skill-card-icon"><i class="fas fa-code"></i></div>
-        <h3>Programmation &amp; Développement</h3>
-        <p>Maîtrise de plusieurs langages et environnements de développement.</p>
-        <div class="skill-tags">
-          <span class="skill-tag">Python</span>
-          <span class="skill-tag">C / C++</span>
-          <span class="skill-tag">JavaScript</span>
-          <span class="skill-tag">VHDL</span>
-          <span class="skill-tag">HTML / CSS</span>
-        </div>
-        <div class="skill-expand">
-          <div class="skill-bars">
-            <div class="skill-bar-item">
-              <div class="skill-bar-label"><span>Python</span><span>85%</span></div>
-              <div class="skill-bar-track"><div class="skill-bar-fill" data-width="85"></div></div>
-            </div>
-            <div class="skill-bar-item">
-              <div class="skill-bar-label"><span>C / C++</span><span>80%</span></div>
-              <div class="skill-bar-track"><div class="skill-bar-fill" data-width="80"></div></div>
-            </div>
-            <div class="skill-bar-item">
-              <div class="skill-bar-label"><span>VHDL (FPGA)</span><span>70%</span></div>
-              <div class="skill-bar-track"><div class="skill-bar-fill" data-width="70"></div></div>
-            </div>
-            <div class="skill-bar-item">
-              <div class="skill-bar-label"><span>JavaScript</span><span>65%</span></div>
-              <div class="skill-bar-track"><div class="skill-bar-fill" data-width="65"></div></div>
-            </div>
-          </div>
-          <p style="margin-top:14px">Programmation d'API/PLC via <strong>Siemens TIA Portal</strong> et <strong>Schneider EcoStruxure</strong>. Systèmes embarqués Arduino pour des prototypes électroniques.</p>
-        </div>
-        <button class="toggle-skill">Détails <span class="arrow"><i class="fas fa-chevron-down"></i></span></button>
+    <div class="about-content reveal d1">
+      <p>Je suis <strong>Mohammed Jabbari</strong>, élève ingénieur en cycle de formation à l'<strong>École Mohammadia d'Ingénieurs (EMI)</strong> de Rabat, l'une des grandes écoles d'ingénieurs les plus prestigieuses du Maroc. Ma spécialisation couvre le <strong>Génie Électrique</strong> et l'<strong>Automatisation Industrielle</strong>.</p>
+      <p>Mon parcours académique, marqué par deux années de <strong>classes préparatoires scientifiques MP</strong> et une admission à l'EMI, m'a forgé une rigueur analytique et une capacité d'abstraction que j'applique à des projets techniques concrets, de la conception <strong>VLSI</strong> aux systèmes embarqués intelligents.</p>
+      <p>Je suis convaincu que l'ingénieur de demain doit maîtriser à la fois les <strong>fondements techniques</strong>, les <strong>outils numériques</strong> et les <strong>compétences humaines</strong>. C'est cette vision holistique qui guide mon développement professionnel.</p>
+      <p>🎯 <strong>Objectif :</strong> Contribuer à l'industrialisation intelligente et durable du Maroc et du monde arabe.</p>
+      <div class="about-kv">
+        <div class="kv"><div class="kv-label">École</div><div class="kv-val">EMI Rabat</div></div>
+        <div class="kv"><div class="kv-label">Spécialité</div><div class="kv-val">Génie Électrique</div></div>
+        <div class="kv"><div class="kv-label">Promotion</div><div class="kv-val">2025</div></div>
+        <div class="kv"><div class="kv-label">Localisation</div><div class="kv-val">Rabat, Maroc</div></div>
       </div>
-
-      <div class="skill-card violet reveal reveal-delay-2">
-        <div class="skill-card-icon"><i class="fas fa-cogs"></i></div>
-        <h3>Simulation &amp; Analyse Systèmes</h3>
-        <p>Modélisation et simulation de systèmes électriques et automatiques.</p>
-        <div class="skill-tags">
-          <span class="skill-tag">MATLAB</span>
-          <span class="skill-tag">Simulink</span>
-          <span class="skill-tag">PSpice</span>
-          <span class="skill-tag">LTspice</span>
-        </div>
-        <div class="skill-expand">
-          <div class="skill-bars">
-            <div class="skill-bar-item">
-              <div class="skill-bar-label"><span>MATLAB / Simulink</span><span>82%</span></div>
-              <div class="skill-bar-track"><div class="skill-bar-fill" data-width="82"></div></div>
-            </div>
-            <div class="skill-bar-item">
-              <div class="skill-bar-label"><span>PSpice / LTspice</span><span>75%</span></div>
-              <div class="skill-bar-track"><div class="skill-bar-fill" data-width="75"></div></div>
-            </div>
-          </div>
-          <p style="margin-top:14px">Analyse de comportement dynamique, optimisation de régulation, simulation de circuits électroniques du régime transitoire au permanent.</p>
-        </div>
-        <button class="toggle-skill">Détails <span class="arrow"><i class="fas fa-chevron-down"></i></span></button>
+      <div class="lang-pills">
+        <span class="lpill active">🇲🇦 Arabe natif</span>
+        <span class="lpill active">🇫🇷 Français C1</span>
+        <span class="lpill">🇬🇧 Anglais B2</span>
       </div>
-
-      <div class="skill-card amber reveal reveal-delay-3">
-        <div class="skill-card-icon"><i class="fas fa-drafting-compass"></i></div>
-        <h3>Conception &amp; Modélisation CAO</h3>
-        <p>Conception 3D industrielle et schémas électriques professionnels.</p>
-        <div class="skill-tags">
-          <span class="skill-tag">SolidWorks</span>
-          <span class="skill-tag">AutoCAD</span>
-          <span class="skill-tag">EPLAN P8</span>
-          <span class="skill-tag">Dialux</span>
-        </div>
-        <div class="skill-expand">
-          <div class="skill-bars">
-            <div class="skill-bar-item">
-              <div class="skill-bar-label"><span>SolidWorks</span><span>78%</span></div>
-              <div class="skill-bar-track"><div class="skill-bar-fill" data-width="78"></div></div>
-            </div>
-            <div class="skill-bar-item">
-              <div class="skill-bar-label"><span>AutoCAD / EPLAN</span><span>80%</span></div>
-              <div class="skill-bar-track"><div class="skill-bar-fill" data-width="80"></div></div>
-            </div>
-          </div>
-          <p style="margin-top:14px">Schémas électriques industriels complexes, conception mécanique 3D précise, simulation d'éclairage avec Dialux.</p>
-        </div>
-        <button class="toggle-skill">Détails <span class="arrow"><i class="fas fa-chevron-down"></i></span></button>
+      <div style="margin-top:28px;display:flex;gap:12px;flex-wrap:wrap;">
+        <a href="CV Mohammed JABBARI.pdf" target="_blank" class="btn-gold"><i class="fas fa-eye"></i> Visualiser CV</a>
+        <a href="CV Mohammed JABBARI.pdf" download class="btn-ghost"><i class="fas fa-download"></i> Télécharger</a>
       </div>
+    </div>
+  </div>
+</section>
 
-      <div class="skill-card green reveal reveal-delay-1">
-        <div class="skill-card-icon"><i class="fas fa-database"></i></div>
-        <h3>Bases de Données &amp; Bureautique</h3>
-        <p>Gestion de données et automatisation de tâches analytiques.</p>
-        <div class="skill-tags">
-          <span class="skill-tag">SQL</span>
-          <span class="skill-tag">Excel</span>
-          <span class="skill-tag">VBA</span>
+<div class="divider"></div>
+
+<!-- ══ SKILLS ════════════════════════════════ -->
+<section id="skills" class="sec">
+  <div class="sec-label reveal">Expertise</div>
+  <h2 class="sec-title reveal d1">Mes <em>compétences</em></h2>
+  <div class="skills-layout">
+    <div class="skill-cats reveal">
+      <button class="cat-btn active" data-cat="prog"><div class="cat-icon"><i class="fas fa-code"></i></div>Programmation</button>
+      <button class="cat-btn" data-cat="simu"><div class="cat-icon"><i class="fas fa-chart-area"></i></div>Simulation</button>
+      <button class="cat-btn" data-cat="cad"><div class="cat-icon"><i class="fas fa-drafting-compass"></i></div>CAO / Conception</button>
+      <button class="cat-btn" data-cat="auto"><div class="cat-icon"><i class="fas fa-industry"></i></div>Automatisation</button>
+      <button class="cat-btn" data-cat="data"><div class="cat-icon"><i class="fas fa-database"></i></div>Données & Office</button>
+      <button class="cat-btn" data-cat="soft"><div class="cat-icon"><i class="fas fa-users"></i></div>Soft Skills</button>
+    </div>
+    <div class="reveal d1">
+      <!-- PROG -->
+      <div class="skill-panel active" id="cat-prog">
+        <h3>Programmation & Développement</h3>
+        <p>Maîtrise de plusieurs langages couvrant le développement logiciel, les systèmes embarqués et le web. Je m'efforce toujours de produire un code propre, documenté et maintenable.</p>
+        <div class="skill-bars">
+          <div class="sbar"><div class="sbar-top"><span class="sbar-name">Python</span><span class="sbar-pct">85%</span></div><div class="sbar-track"><div class="sbar-fill" data-w="85"></div></div></div>
+          <div class="sbar"><div class="sbar-top"><span class="sbar-name">C / C++</span><span class="sbar-pct">80%</span></div><div class="sbar-track"><div class="sbar-fill" data-w="80"></div></div></div>
+          <div class="sbar"><div class="sbar-top"><span class="sbar-name">VHDL (FPGA)</span><span class="sbar-pct">72%</span></div><div class="sbar-track"><div class="sbar-fill" data-w="72"></div></div></div>
+          <div class="sbar"><div class="sbar-top"><span class="sbar-name">JavaScript</span><span class="sbar-pct">65%</span></div><div class="sbar-track"><div class="sbar-fill" data-w="65"></div></div></div>
+          <div class="sbar"><div class="sbar-top"><span class="sbar-name">HTML / CSS</span><span class="sbar-pct">75%</span></div><div class="sbar-track"><div class="sbar-fill" data-w="75"></div></div></div>
         </div>
-        <div class="skill-expand">
-          <p style="margin-top:10px">Requêtage SQL de bases de données relationnelles. Automatisation et analyse de données sous Excel avec macros VBA.</p>
-        </div>
-        <button class="toggle-skill">Détails <span class="arrow"><i class="fas fa-chevron-down"></i></span></button>
+        <div class="skill-tools"><span class="tool-chip">Arduino IDE</span><span class="tool-chip">VS Code</span><span class="tool-chip">Vivado</span><span class="tool-chip">Git</span><span class="tool-chip">TIA Portal</span></div>
       </div>
-
-      <div class="skill-card reveal reveal-delay-2">
-        <div class="skill-card-icon"><i class="fas fa-users"></i></div>
-        <h3>Soft Skills &amp; Leadership</h3>
-        <p>Compétences humaines essentielles développées au fil de mon parcours.</p>
-        <div class="skill-tags">
-          <span class="skill-tag">Leadership</span>
-          <span class="skill-tag">Travail en équipe</span>
-          <span class="skill-tag">Public speaking</span>
-          <span class="skill-tag">Gestion du temps</span>
+      <!-- SIMU -->
+      <div class="skill-panel" id="cat-simu">
+        <h3>Simulation & Analyse Systèmes</h3>
+        <p>Utilisation d'outils de modélisation pour analyser le comportement dynamique de systèmes électriques et automatiques complexes, de l'état transitoire à la validation fonctionnelle.</p>
+        <div class="skill-bars">
+          <div class="sbar"><div class="sbar-top"><span class="sbar-name">MATLAB / Simulink</span><span class="sbar-pct">84%</span></div><div class="sbar-track"><div class="sbar-fill" data-w="84"></div></div></div>
+          <div class="sbar"><div class="sbar-top"><span class="sbar-name">PSpice</span><span class="sbar-pct">76%</span></div><div class="sbar-track"><div class="sbar-fill" data-w="76"></div></div></div>
+          <div class="sbar"><div class="sbar-top"><span class="sbar-name">LTspice</span><span class="sbar-pct">74%</span></div><div class="sbar-track"><div class="sbar-fill" data-w="74"></div></div></div>
         </div>
-        <div class="skill-expand">
-          <p style="margin-top:10px">Leadership développé à travers des projets académiques collectifs. Prise de parole en public pour présentations et réunions. Gestion rigoureuse des délais dans des contextes exigeants.</p>
-        </div>
-        <button class="toggle-skill">Détails <span class="arrow"><i class="fas fa-chevron-down"></i></span></button>
+        <div class="skill-tools"><span class="tool-chip">Control System Toolbox</span><span class="tool-chip">Signal Processing</span><span class="tool-chip">SPICE</span></div>
       </div>
-
-      <div class="skill-card violet reveal reveal-delay-3">
-        <div class="skill-card-icon"><i class="fas fa-industry"></i></div>
+      <!-- CAD -->
+      <div class="skill-panel" id="cat-cad">
+        <h3>Conception & Modélisation CAO</h3>
+        <p>Du schéma électrique industriel à la pièce mécanique 3D, je couvre l'ensemble de la chaîne de conception avec des outils professionnels reconnus dans l'industrie.</p>
+        <div class="skill-bars">
+          <div class="sbar"><div class="sbar-top"><span class="sbar-name">AutoCAD</span><span class="sbar-pct">80%</span></div><div class="sbar-track"><div class="sbar-fill" data-w="80"></div></div></div>
+          <div class="sbar"><div class="sbar-top"><span class="sbar-name">SolidWorks</span><span class="sbar-pct">75%</span></div><div class="sbar-track"><div class="sbar-fill" data-w="75"></div></div></div>
+          <div class="sbar"><div class="sbar-top"><span class="sbar-name">EPLAN Electric P8</span><span class="sbar-pct">78%</span></div><div class="sbar-track"><div class="sbar-fill" data-w="78"></div></div></div>
+          <div class="sbar"><div class="sbar-top"><span class="sbar-name">Dialux</span><span class="sbar-pct">70%</span></div><div class="sbar-track"><div class="sbar-fill" data-w="70"></div></div></div>
+        </div>
+        <div class="skill-tools"><span class="tool-chip">CAO 2D/3D</span><span class="tool-chip">Schémas élec.</span><span class="tool-chip">Éclairage</span><span class="tool-chip">Normes IEC</span></div>
+      </div>
+      <!-- AUTO -->
+      <div class="skill-panel" id="cat-auto">
         <h3>Automatisation Industrielle</h3>
-        <p>Programmation d'automates et intégration de systèmes industriels.</p>
-        <div class="skill-tags">
-          <span class="skill-tag">TIA Portal</span>
-          <span class="skill-tag">EcoStruxure</span>
-          <span class="skill-tag">Arduino</span>
-          <span class="skill-tag">PLC / API</span>
+        <p>Programmation et mise en service d'automates industriels, intégration de systèmes SCADA et développement de solutions d'automatisation pour l'industrie 4.0.</p>
+        <div class="skill-bars">
+          <div class="sbar"><div class="sbar-top"><span class="sbar-name">Siemens TIA Portal</span><span class="sbar-pct">78%</span></div><div class="sbar-track"><div class="sbar-fill" data-w="78"></div></div></div>
+          <div class="sbar"><div class="sbar-top"><span class="sbar-name">Schneider EcoStruxure</span><span class="sbar-pct">72%</span></div><div class="sbar-track"><div class="sbar-fill" data-w="72"></div></div></div>
+          <div class="sbar"><div class="sbar-top"><span class="sbar-name">Arduino / Embarqué</span><span class="sbar-pct">85%</span></div><div class="sbar-track"><div class="sbar-fill" data-w="85"></div></div></div>
         </div>
-        <div class="skill-expand">
-          <div class="skill-bars">
-            <div class="skill-bar-item">
-              <div class="skill-bar-label"><span>Siemens TIA Portal</span><span>75%</span></div>
-              <div class="skill-bar-track"><div class="skill-bar-fill" data-width="75"></div></div>
-            </div>
-            <div class="skill-bar-item">
-              <div class="skill-bar-label"><span>Schneider EcoStruxure</span><span>70%</span></div>
-              <div class="skill-bar-track"><div class="skill-bar-fill" data-width="70"></div></div>
-            </div>
-          </div>
-          <p style="margin-top:14px">Conception, programmation et mise en service d'automates industriels pour des applications d'automatisation complexes.</p>
-        </div>
-        <button class="toggle-skill">Détails <span class="arrow"><i class="fas fa-chevron-down"></i></span></button>
+        <div class="skill-tools"><span class="tool-chip">Ladder / FBD</span><span class="tool-chip">SCADA</span><span class="tool-chip">Capteurs IoT</span><span class="tool-chip">PID</span><span class="tool-chip">Profibus</span></div>
       </div>
-
+      <!-- DATA -->
+      <div class="skill-panel" id="cat-data">
+        <h3>Données & Bureautique Avancée</h3>
+        <p>Gestion et exploitation de bases de données relationnelles, automatisation de tâches analytiques et reporting avec les outils bureautiques professionnels.</p>
+        <div class="skill-bars">
+          <div class="sbar"><div class="sbar-top"><span class="sbar-name">SQL</span><span class="sbar-pct">72%</span></div><div class="sbar-track"><div class="sbar-fill" data-w="72"></div></div></div>
+          <div class="sbar"><div class="sbar-top"><span class="sbar-name">Excel / VBA</span><span class="sbar-pct">80%</span></div><div class="sbar-track"><div class="sbar-fill" data-w="80"></div></div></div>
+        </div>
+        <div class="skill-tools"><span class="tool-chip">SQL Server</span><span class="tool-chip">Macros VBA</span><span class="tool-chip">Tableaux croisés</span><span class="tool-chip">Power Query</span></div>
+      </div>
+      <!-- SOFT -->
+      <div class="skill-panel" id="cat-soft">
+        <h3>Soft Skills & Leadership</h3>
+        <p>Des compétences humaines que j'ai développées tout au long de mon parcours académique et associatif, essentielles pour mener des projets techniques à fort impact.</p>
+        <div class="skill-bars">
+          <div class="sbar"><div class="sbar-top"><span class="sbar-name">Leadership</span><span class="sbar-pct">88%</span></div><div class="sbar-track"><div class="sbar-fill" data-w="88"></div></div></div>
+          <div class="sbar"><div class="sbar-top"><span class="sbar-name">Travail en équipe</span><span class="sbar-pct">92%</span></div><div class="sbar-track"><div class="sbar-fill" data-w="92"></div></div></div>
+          <div class="sbar"><div class="sbar-top"><span class="sbar-name">Public Speaking</span><span class="sbar-pct">80%</span></div><div class="sbar-track"><div class="sbar-fill" data-w="80"></div></div></div>
+          <div class="sbar"><div class="sbar-top"><span class="sbar-name">Gestion de projet</span><span class="sbar-pct">78%</span></div><div class="sbar-track"><div class="sbar-fill" data-w="78"></div></div></div>
+        </div>
+        <div class="skill-tools"><span class="tool-chip">Agile / Scrum</span><span class="tool-chip">Présentation</span><span class="tool-chip">Mentorat</span><span class="tool-chip">Résolution de conflits</span></div>
+      </div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <div class="section-divider"></div>
+<div class="divider"></div>
 
-  <!-- EDUCATION -->
-  <section id="education">
-    <div class="section-label reveal">Parcours</div>
-    <h2 class="section-title reveal reveal-delay-1">Formation Académique</h2>
-    <div class="edu-grid">
-      <div class="timeline reveal reveal-delay-1">
-        <div class="timeline-item">
-          <div class="timeline-date">2022 — 2025</div>
-          <div class="timeline-card">
-            <h3>Cycle Ingénieur en Génie Électrique</h3>
-            <div class="school"><i class="fas fa-university" style="color:var(--cyan);margin-right:8px;"></i>École Mohammadia d'Ingénieurs — Rabat</div>
-            <p>Spécialisation en Génie Électrique et Automatisation Industrielle. Formation d'excellence couvrant l'électrotechnique, les systèmes automatiques, l'informatique industrielle et les énergies renouvelables.</p>
-          </div>
-        </div>
-        <div class="timeline-item">
-          <div class="timeline-date">2020 — 2022</div>
-          <div class="timeline-card">
-            <h3>Classes Préparatoires Scientifiques</h3>
-            <div class="school"><i class="fas fa-school" style="color:var(--violet);margin-right:8px;"></i>Lycée Charif Al Idrissi — Taza</div>
-            <p>Filière Mathématiques-Physique (MP). Préparation intensive aux concours des grandes écoles d'ingénieurs, développement d'une rigueur scientifique et d'une capacité d'abstraction avancée.</p>
-          </div>
-        </div>
-        <div class="timeline-item">
-          <div class="timeline-date">2019 — 2020</div>
-          <div class="timeline-card">
-            <h3>Baccalauréat Sciences Mathématiques A</h3>
-            <div class="school"><i class="fas fa-graduation-cap" style="color:var(--amber);margin-right:8px;"></i>Lycée El Mansour Dahbi — Tissa</div>
-            <p>Mention <strong style="color:var(--green)">Très Bien</strong>. Solides bases en mathématiques, physique-chimie et sciences de l'ingénieur qui ont fondé mon parcours technologique.</p>
-          </div>
+<!-- ══ EDUCATION ═══════════════════════════ -->
+<section id="education" class="sec">
+  <div class="sec-label reveal">Parcours</div>
+  <h2 class="sec-title reveal d1">Formation <em>académique</em></h2>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:60px;" class="edu-grid">
+    <div class="timeline reveal-l">
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-year">2022 — 2025</div>
+        <div class="tl-card">
+          <h3>Cycle Ingénieur — Génie Électrique &amp; Automatisation</h3>
+          <div class="tl-school"><i class="fas fa-university" style="color:var(--gold)"></i> École Mohammadia d'Ingénieurs — Rabat</div>
+          <p>Spécialisation en Génie Électrique et Automatisation Industrielle. Formation complète couvrant l'électrotechnique, les systèmes automatiques, l'électronique de puissance, l'informatique industrielle et les énergies renouvelables.</p>
+          <div class="tl-badge"><i class="fas fa-fire"></i> Grande école d'ingénieurs nationale</div>
         </div>
       </div>
-      <div class="reveal reveal-delay-2">
-        <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--r2);padding:32px;margin-bottom:24px;">
-          <h3 style="font-family:var(--font-head);font-size:1.1rem;font-weight:700;color:var(--text);margin-bottom:20px;">🏆 Points forts académiques</h3>
-          <div style="display:flex;flex-direction:column;gap:14px;">
-            <div style="display:flex;align-items:center;gap:14px;">
-              <div style="width:40px;height:40px;border-radius:10px;background:rgba(0,229,255,0.1);display:flex;align-items:center;justify-content:center;color:var(--cyan);flex-shrink:0;"><i class="fas fa-star"></i></div>
-              <div><strong style="color:var(--text);font-size:0.9rem;">Mention Très Bien au Bac</strong><br><span style="font-size:0.8rem;color:var(--text3);">Sciences Mathématiques A</span></div>
-            </div>
-            <div style="display:flex;align-items:center;gap:14px;">
-              <div style="width:40px;height:40px;border-radius:10px;background:rgba(155,93,229,0.1);display:flex;align-items:center;justify-content:center;color:var(--violet);flex-shrink:0;"><i class="fas fa-trophy"></i></div>
-              <div><strong style="color:var(--text);font-size:0.9rem;">Admission à l'EMI</strong><br><span style="font-size:0.8rem;color:var(--text3);">Grande école d'ingénieurs nationale</span></div>
-            </div>
-            <div style="display:flex;align-items:center;gap:14px;">
-              <div style="width:40px;height:40px;border-radius:10px;background:rgba(0,245,160,0.1);display:flex;align-items:center;justify-content:center;color:var(--green);flex-shrink:0;"><i class="fas fa-book-open"></i></div>
-              <div><strong style="color:var(--text);font-size:0.9rem;">Classes Préparatoires MP</strong><br><span style="font-size:0.8rem;color:var(--text3);">2 ans de formation intensive</span></div>
-            </div>
-          </div>
+      <div class="tl-item">
+        <div class="tl-dot" style="background:var(--orange);box-shadow:0 0 0 3px rgba(251,140,62,.2);"></div>
+        <div class="tl-year">2020 — 2022</div>
+        <div class="tl-card">
+          <h3>Classes Préparatoires Scientifiques MP</h3>
+          <div class="tl-school"><i class="fas fa-school" style="color:var(--orange)"></i> Lycée Charif Al Idrissi — Taza</div>
+          <p>Filière Mathématiques-Physique. Formation intensive préparant aux concours des grandes écoles. Développement d'une rigueur scientifique exceptionnelle en mathématiques, physique et sciences de l'ingénieur.</p>
+          <div class="tl-badge" style="background:rgba(251,140,62,.08);border-color:rgba(251,140,62,.2);color:var(--orange);"><i class="fas fa-brain"></i> 2 ans de formation intensive</div>
         </div>
-        <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--r2);padding:32px;">
-          <h3 style="font-family:var(--font-head);font-size:1.1rem;font-weight:700;color:var(--text);margin-bottom:20px;">📚 Modules clés</h3>
-          <div style="display:flex;flex-wrap:wrap;gap:8px;">
-            <span class="tag">Électrotechnique</span>
-            <span class="tag">Automatique</span>
-            <span class="tag">Électronique de puissance</span>
-            <span class="tag">Traitement du signal</span>
-            <span class="tag">Systèmes embarqués</span>
-            <span class="tag">Réseaux électriques</span>
-            <span class="tag">Énergies renouvelables</span>
-            <span class="tag">Robotique</span>
-          </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot" style="background:var(--teal);box-shadow:0 0 0 3px rgba(45,212,191,.2);"></div>
+        <div class="tl-year">2019 — 2020</div>
+        <div class="tl-card">
+          <h3>Baccalauréat Sciences Mathématiques A</h3>
+          <div class="tl-school"><i class="fas fa-graduation-cap" style="color:var(--teal)"></i> Lycée El Mansour Dahbi — Tissa</div>
+          <p>Diplôme avec mention <strong style="color:#4ade80">Très Bien</strong>. Solides fondations en mathématiques, physique-chimie et sciences qui ont lancé mon parcours d'ingénieur.</p>
+          <div class="tl-badge" style="background:rgba(74,222,128,.08);border-color:rgba(74,222,128,.2);color:#4ade80;"><i class="fas fa-star"></i> Mention Très Bien</div>
         </div>
       </div>
     </div>
-  </section>
-
-  <div class="section-divider"></div>
-
-  <!-- PROJECTS -->
-  <section id="projects">
-    <div class="section-label reveal">Réalisations</div>
-    <h2 class="section-title reveal reveal-delay-1">Mes Projets</h2>
-    <div class="projects-filter reveal reveal-delay-2">
-      <button class="filter-btn active" data-filter="all">Tous</button>
-      <button class="filter-btn" data-filter="embedded">Embarqué</button>
-      <button class="filter-btn" data-filter="vlsi">VLSI</button>
-      <button class="filter-btn" data-filter="control">Automatique</button>
-      <button class="filter-btn" data-filter="energy">Énergie</button>
-    </div>
-    <div class="projects-grid">
-
-      <div class="project-card reveal reveal-delay-1" data-category="embedded">
-        <div class="project-img-placeholder">🔴</div>
-        <div class="project-body">
-          <span class="project-badge embedded">Embarqué</span>
-          <h3>Système intelligent de détection de gaz toxiques</h3>
-          <p>Conception d'un système de détection et protection contre les gaz toxiques, activant automatiquement alarme et ventilation via microcontrôleur.</p>
-          <div class="project-techs">
-            <span class="tech-pill">Arduino</span>
-            <span class="tech-pill">Capteurs MQ</span>
-            <span class="tech-pill">C++</span>
-            <span class="tech-pill">IoT</span>
-          </div>
-          <a href="projet1.html" class="project-link">Voir le projet <i class="fas fa-arrow-right"></i></a>
+    <div class="reveal d1">
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:28px;margin-bottom:18px;">
+        <h4 style="font-family:var(--head);font-size:1.05rem;font-weight:800;color:var(--text);margin-bottom:20px;">📚 Modules clés EMI</h4>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;">
+          <span class="tool-chip">Électrotechnique</span><span class="tool-chip">Systèmes automatiques</span><span class="tool-chip">Électronique de puissance</span><span class="tool-chip">Traitement du signal</span><span class="tool-chip">Systèmes embarqués</span><span class="tool-chip">Réseaux élec.</span><span class="tool-chip">Énergies renouvelables</span><span class="tool-chip">Robotique</span><span class="tool-chip">VLSI</span><span class="tool-chip">Contrôle industriel</span><span class="tool-chip">Management projet</span>
         </div>
       </div>
-
-      <div class="project-card reveal reveal-delay-2" data-category="vlsi">
-        <div class="project-img-placeholder">🔷</div>
-        <div class="project-body">
-          <span class="project-badge vlsi">VLSI</span>
-          <h3>Conception VLSI d'un multiplexeur 4:1 CMOS</h3>
-          <p>Conception et simulation d'un multiplexeur 4:1 en technologie CMOS, optimisant la surface, la vitesse de commutation et la consommation énergétique.</p>
-          <div class="project-techs">
-            <span class="tech-pill">VHDL</span>
-            <span class="tech-pill">CMOS</span>
-            <span class="tech-pill">VLSI</span>
-            <span class="tech-pill">Simulation</span>
+      <div style="background:linear-gradient(135deg,rgba(232,201,109,.06),rgba(251,140,62,.04));border:1px solid rgba(232,201,109,.15);border-radius:16px;padding:28px;">
+        <h4 style="font-family:var(--head);font-size:1.05rem;font-weight:800;color:var(--text);margin-bottom:20px;">🏆 Points forts</h4>
+        <div style="display:flex;flex-direction:column;gap:14px;">
+          <div style="display:flex;align-items:center;gap:14px;">
+            <div style="width:40px;height:40px;border-radius:10px;background:rgba(232,201,109,.1);display:flex;align-items:center;justify-content:center;color:var(--gold);flex-shrink:0;"><i class="fas fa-trophy"></i></div>
+            <div><strong style="color:var(--text);font-size:.88rem;">Admission à l'EMI</strong><br><span style="font-size:.78rem;color:var(--text3);">Top école nationale d'ingénieurs</span></div>
           </div>
-          <a href="projet2.html" class="project-link">Voir le projet <i class="fas fa-arrow-right"></i></a>
-        </div>
-      </div>
-
-      <div class="project-card reveal reveal-delay-3" data-category="control">
-        <div class="project-img-placeholder">📈</div>
-        <div class="project-body">
-          <span class="project-badge control">Automatique</span>
-          <h3>Régulation par contrôleur PID</h3>
-          <p>Implémentation d'un système de correction automatique avec contrôleur PID pour améliorer stabilité, temps de réponse et erreur de régime permanent.</p>
-          <div class="project-techs">
-            <span class="tech-pill">MATLAB</span>
-            <span class="tech-pill">Simulink</span>
-            <span class="tech-pill">PID</span>
-            <span class="tech-pill">Automatique</span>
+          <div style="display:flex;align-items:center;gap:14px;">
+            <div style="width:40px;height:40px;border-radius:10px;background:rgba(45,212,191,.1);display:flex;align-items:center;justify-content:center;color:var(--teal);flex-shrink:0;"><i class="fas fa-star"></i></div>
+            <div><strong style="color:var(--text);font-size:.88rem;">Mention Très Bien au Bac</strong><br><span style="font-size:.78rem;color:var(--text3);">Sciences Mathématiques A</span></div>
           </div>
-          <a href="projet3.html" class="project-link">Voir le projet <i class="fas fa-arrow-right"></i></a>
-        </div>
-      </div>
-
-      <div class="project-card reveal reveal-delay-1" data-category="energy">
-        <div class="project-img-placeholder">💡</div>
-        <div class="project-body">
-          <span class="project-badge energy">Énergie</span>
-          <h3>Lampe à électrolyse eau salée</h3>
-          <p>Conception d'une lampe fonctionnant avec de l'eau salée comme électrolyte, générant de l'énergie par réaction électrochimique pour un éclairage autonome et écologique.</p>
-          <div class="project-techs">
-            <span class="tech-pill">Électrochimie</span>
-            <span class="tech-pill">LED</span>
-            <span class="tech-pill">Énergie verte</span>
-          </div>
-          <a href="projet4.html" class="project-link">Voir le projet <i class="fas fa-arrow-right"></i></a>
-        </div>
-      </div>
-
-    </div>
-  </section>
-
-  <div class="section-divider"></div>
-
-  <!-- CERTIFICATIONS -->
-  <section id="certs">
-    <div class="section-label reveal">Développement continu</div>
-    <h2 class="section-title reveal reveal-delay-1">Certifications</h2>
-    <div class="certs-grid">
-
-      <div class="cert-card reveal reveal-delay-1">
-        <div class="cert-icon"><i class="fas fa-globe"></i></div>
-        <h3>Coordinate Reference Systems, Projections &amp; Spatial Data</h3>
-        <div class="issuer"><i class="fas fa-building"></i> GEO University</div>
-        <p>Systèmes de référence de coordonnées, projections cartographiques et méthodes de représentation des données géospatiales.</p>
-      </div>
-
-      <div class="cert-card reveal reveal-delay-2">
-        <div class="cert-icon"><i class="fas fa-user-tie"></i></div>
-        <h3>Leadership Efficace</h3>
-        <div class="issuer"><i class="fas fa-building"></i> HP Life</div>
-        <p>Principes et techniques du leadership efficace, gestion des équipes, prise de décision stratégique et développement des compétences managériales.</p>
-      </div>
-
-      <div class="cert-card reveal reveal-delay-3">
-        <div class="cert-icon"><i class="fas fa-chart-bar"></i></div>
-        <h3>Management Consulting Presentation Essential Training</h3>
-        <div class="issuer"><i class="fas fa-building"></i> Udemy</div>
-        <p>Compétences essentielles pour le conseil en management : méthodologies d'analyse, résolution de problèmes et stratégie d'entreprise.</p>
-      </div>
-
-      <div class="cert-card reveal reveal-delay-1">
-        <div class="cert-icon"><i class="fas fa-shopping-cart"></i></div>
-        <h3>E-Commerce Training</h3>
-        <div class="issuer"><i class="fas fa-building"></i> MY Tindy</div>
-        <p>Commerce électronique : création, gestion et optimisation de plateformes en ligne, stratégies de marketing digital et de vente.</p>
-      </div>
-
-      <div class="cert-card reveal reveal-delay-2">
-        <div class="cert-icon"><i class="fas fa-briefcase"></i></div>
-        <h3>Management Consulting Essential Training</h3>
-        <div class="issuer"><i class="fas fa-building"></i> Udemy</div>
-        <p>Bases du conseil en management avec focus sur la résolution de problèmes et la préparation aux entretiens de cas (case study).</p>
-      </div>
-
-    </div>
-  </section>
-
-  <div class="section-divider"></div>
-
-  <!-- CONTACT -->
-  <section id="contact">
-    <div class="section-label reveal">Restons en contact</div>
-    <h2 class="section-title reveal reveal-delay-1">Me Contacter</h2>
-    <div class="contact-grid">
-      <div class="contact-info reveal reveal-delay-1">
-        <h3>Parlons de votre projet ou d'une opportunité</h3>
-        <p>Que vous souhaitiez collaborer, proposer un stage, ou simplement échanger sur la tech et l'ingénierie, je suis toujours ouvert à de nouvelles conversations.</p>
-        <div class="contact-links">
-          <a href="mailto:mohammedjabbari@email.com" class="contact-link">
-            <div class="contact-link-icon"><i class="fas fa-envelope"></i></div>
-            <div class="contact-link-text">
-              <strong>Email</strong>
-              <span>mohammedjabbari@email.com</span>
-            </div>
-          </a>
-          <a href="https://www.linkedin.com/in/mohammedjabbari" target="_blank" class="contact-link">
-            <div class="contact-link-icon" style="background:rgba(155,93,229,0.1);color:var(--violet);"><i class="fab fa-linkedin"></i></div>
-            <div class="contact-link-text">
-              <strong>LinkedIn</strong>
-              <span>linkedin.com/in/mohammedjabbari</span>
-            </div>
-          </a>
-          <a href="https://github.com/mohammedjabbari" target="_blank" class="contact-link">
-            <div class="contact-link-icon" style="background:rgba(255,255,255,0.06);color:var(--text2);"><i class="fab fa-github"></i></div>
-            <div class="contact-link-text">
-              <strong>GitHub</strong>
-              <span>github.com/mohammedjabbari</span>
-            </div>
-          </a>
-          <div class="contact-link" style="cursor:default;">
-            <div class="contact-link-icon" style="background:rgba(0,245,160,0.1);color:var(--green);"><i class="fas fa-map-marker-alt"></i></div>
-            <div class="contact-link-text">
-              <strong>Localisation</strong>
-              <span>Rabat, Maroc</span>
-            </div>
+          <div style="display:flex;align-items:center;gap:14px;">
+            <div style="width:40px;height:40px;border-radius:10px;background:rgba(251,140,62,.1);display:flex;align-items:center;justify-content:center;color:var(--orange);flex-shrink:0;"><i class="fas fa-flask"></i></div>
+            <div><strong style="color:var(--text);font-size:.88rem;">Projets techniques pluridisciplinaires</strong><br><span style="font-size:.78rem;color:var(--text3);">VLSI, embarqué, automatique, énergie</span></div>
           </div>
         </div>
-      </div>
-
-      <div class="contact-form-wrap reveal reveal-delay-2">
-        <h3 style="font-family:var(--font-head);font-size:1.2rem;font-weight:700;color:var(--text);margin-bottom:24px;">Envoyer un message</h3>
-        <form id="contact-form" onsubmit="submitForm(event)">
-          <div class="form-row">
-            <div class="form-group">
-              <label>Prénom</label>
-              <input type="text" class="form-control" placeholder="Votre prénom" required>
-            </div>
-            <div class="form-group">
-              <label>Nom</label>
-              <input type="text" class="form-control" placeholder="Votre nom" required>
-            </div>
-          </div>
-          <div class="form-group">
-            <label>Email</label>
-            <input type="email" class="form-control" placeholder="votre@email.com" required>
-          </div>
-          <div class="form-group">
-            <label>Sujet</label>
-            <input type="text" class="form-control" placeholder="Objet du message">
-          </div>
-          <div class="form-group">
-            <label>Message</label>
-            <textarea class="form-control" placeholder="Votre message..." required></textarea>
-          </div>
-          <button type="submit" class="btn-primary" style="width:100%;justify-content:center;">
-            <i class="fas fa-paper-plane"></i> Envoyer le message
-          </button>
-        </form>
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <div class="section-divider"></div>
+<div class="divider"></div>
 
-  <!-- FEEDBACK -->
-  <section style="padding-top:40px;padding-bottom:80px;">
-    <div class="section-label reveal" style="justify-content:center;">Votre avis</div>
-    <h2 class="section-title reveal reveal-delay-1" style="margin-bottom:32px;">Laissez un commentaire</h2>
-    <div id="feedback" class="reveal reveal-delay-2">
-      <form id="feedback-form" onsubmit="submitFeedback(event)">
-        <div class="form-group">
-          <label>Votre nom</label>
-          <input type="text" class="form-control" placeholder="Ex: Alice Dupont" required>
+<!-- ══ PROJECTS ═══════════════════════════ -->
+<section id="projects" class="sec">
+  <div class="sec-label reveal">Réalisations</div>
+  <h2 class="sec-title reveal d1">Mes <em>projets</em></h2>
+  <div class="proj-tabs reveal d2">
+    <button class="proj-tab active" data-f="all">Tous</button>
+    <button class="proj-tab" data-f="embedded">Embarqué</button>
+    <button class="proj-tab" data-f="vlsi">VLSI</button>
+    <button class="proj-tab" data-f="control">Automatique</button>
+    <button class="proj-tab" data-f="energy">Énergie</button>
+  </div>
+  <div class="proj-grid">
+    <div class="proj-card reveal d1" data-cat="embedded">
+      <div class="proj-thumb"><div class="proj-thumb-inner">🔴</div><span class="proj-cat-pill cat-emb">Embarqué</span></div>
+      <div class="proj-body">
+        <h3>Système intelligent de détection de gaz toxiques</h3>
+        <p>Conception d'un système de détection et protection contre les gaz toxiques, activant automatiquement une alarme sonore et un système de ventilation via microcontrôleur Arduino.</p>
+        <div class="proj-stack"><span class="stack-chip">Arduino</span><span class="stack-chip">Capteurs MQ-2/7</span><span class="stack-chip">C++</span><span class="stack-chip">IoT</span></div>
+        <a href="projet1.html" class="proj-link">Voir le projet <i class="fas fa-arrow-right"></i></a>
+      </div>
+    </div>
+    <div class="proj-card reveal d2" data-cat="vlsi">
+      <div class="proj-thumb"><div class="proj-thumb-inner">🔷</div><span class="proj-cat-pill cat-vls">VLSI</span></div>
+      <div class="proj-body">
+        <h3>Conception VLSI d'un multiplexeur 4:1 CMOS</h3>
+        <p>Conception VLSI complète d'un multiplexeur 4:1 en technologie CMOS avec optimisation de la surface, de la vitesse de commutation et de la consommation énergétique.</p>
+        <div class="proj-stack"><span class="stack-chip">VHDL</span><span class="stack-chip">CMOS</span><span class="stack-chip">VLSI</span><span class="stack-chip">Simulation</span></div>
+        <a href="projet2.html" class="proj-link">Voir le projet <i class="fas fa-arrow-right"></i></a>
+      </div>
+    </div>
+    <div class="proj-card reveal d3" data-cat="control">
+      <div class="proj-thumb"><div class="proj-thumb-inner">📈</div><span class="proj-cat-pill cat-aut">Automatique</span></div>
+      <div class="proj-body">
+        <h3>Régulation automatique par contrôleur PID</h3>
+        <p>Implémentation et tuning d'un contrôleur PID pour améliorer la stabilité, le temps de réponse et réduire l'erreur de régime permanent d'un procédé industriel simulé.</p>
+        <div class="proj-stack"><span class="stack-chip">MATLAB</span><span class="stack-chip">Simulink</span><span class="stack-chip">PID</span><span class="stack-chip">Bode</span></div>
+        <a href="projet3.html" class="proj-link">Voir le projet <i class="fas fa-arrow-right"></i></a>
+      </div>
+    </div>
+    <div class="proj-card reveal d4" data-cat="energy">
+      <div class="proj-thumb"><div class="proj-thumb-inner">💡</div><span class="proj-cat-pill cat-nrg">Énergie</span></div>
+      <div class="proj-body">
+        <h3>Lampe autonome à électrolyse eau salée</h3>
+        <p>Conception d'une lampe fonctionnant par réaction électrochimique avec de l'eau salée comme électrolyte — un éclairage autonome, écologique et à faible coût.</p>
+        <div class="proj-stack"><span class="stack-chip">Électrochimie</span><span class="stack-chip">LED</span><span class="stack-chip">Énergie verte</span></div>
+        <a href="projet4.html" class="proj-link">Voir le projet <i class="fas fa-arrow-right"></i></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══ CERTS ══════════════════════════════ -->
+<section id="certs" class="sec">
+  <div class="sec-label reveal">Développement continu</div>
+  <h2 class="sec-title reveal d1">Mes <em>certifications</em></h2>
+  <div class="certs-grid">
+    <div class="cert-card reveal d1"><div class="cert-icon"><i class="fas fa-globe"></i></div><h3>Coordinate Reference Systems & Spatial Data</h3><div class="cert-issuer">GEO UNIVERSITY</div><p>Systèmes de référence de coordonnées, projections cartographiques et représentation des données géospatiales.</p></div>
+    <div class="cert-card reveal d2"><div class="cert-icon"><i class="fas fa-user-tie"></i></div><h3>Leadership Efficace</h3><div class="cert-issuer">HP LIFE</div><p>Principes du leadership, gestion d'équipes, prise de décision stratégique et développement des compétences managériales.</p></div>
+    <div class="cert-card reveal d3"><div class="cert-icon"><i class="fas fa-chart-bar"></i></div><h3>Management Consulting Presentation Training</h3><div class="cert-issuer">UDEMY</div><p>Méthodologies d'analyse, résolution de problèmes et stratégie d'entreprise pour le conseil en management.</p></div>
+    <div class="cert-card reveal d4"><div class="cert-icon"><i class="fas fa-shopping-cart"></i></div><h3>E-Commerce Training</h3><div class="cert-issuer">MY TINDY</div><p>Création, gestion et optimisation de plateformes e-commerce. Stratégies de marketing digital.</p></div>
+    <div class="cert-card reveal d5"><div class="cert-icon"><i class="fas fa-briefcase"></i></div><h3>Management Consulting Essential Training</h3><div class="cert-issuer">UDEMY</div><p>Bases du conseil en management avec focus sur la résolution de problèmes et la préparation aux case studies.</p></div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══ BLOG ═══════════════════════════════ -->
+<section id="blog" class="sec">
+  <div class="sec-label reveal">Réflexions & Analyses</div>
+  <h2 class="sec-title reveal d1">Mon <em>blog</em></h2>
+  <div class="blog-featured reveal d2">
+    <div class="blog-card featured" onclick="openBlog('b1')">
+      <div class="blog-img maroc" style="height:240px;">
+        <div class="blog-img-grad"></div>
+        <span style="position:relative;z-index:1;font-size:4rem;">🇲🇦</span>
+      </div>
+      <div class="blog-body">
+        <div class="blog-meta"><span class="blog-cat bc-ind">Industrie Maroc</span><span class="blog-date">15 Novembre 2024</span><span style="font-family:var(--mono);font-size:.65rem;color:var(--text3);background:var(--surface2);padding:3px 8px;border-radius:6px;">8 min de lecture</span></div>
+        <h3>L'industrie électrique au Maroc : entre ambitions et réalités — le regard d'un futur ingénieur</h3>
+        <p>Le Maroc a réalisé des avancées remarquables dans son tissu industriel électrique ces dernières années. Mais depuis mon poste d'observation à l'EMI, je vois aussi les défis qui freinent notre montée en puissance. Un regard lucide, entre fierté et exigence.</p>
+        <span class="blog-read">Lire l'article <i class="fas fa-arrow-right"></i></span>
+      </div>
+    </div>
+  </div>
+  <div class="blog-grid-small reveal d3">
+    <div class="blog-card" onclick="openBlog('b2')">
+      <div class="blog-img auto" style="height:150px;"><div class="blog-img-grad"></div><span style="position:relative;z-index:1;">🤖</span></div>
+      <div class="blog-body">
+        <div class="blog-meta"><span class="blog-cat bc-tech">Technologie</span><span class="blog-date">2 Oct 2024</span></div>
+        <h3>Industrie 4.0 : pourquoi le Maroc doit accélérer sa transformation digitale industrielle</h3>
+        <p>Les usines intelligentes, l'IA industrielle, la maintenance prédictive... Ces mots semblent encore lointains pour beaucoup d'entreprises marocaines. Voici pourquoi c'est urgent.</p>
+        <span class="blog-read">Lire <i class="fas fa-arrow-right"></i></span>
+      </div>
+    </div>
+    <div class="blog-card" onclick="openBlog('b3')">
+      <div class="blog-img energy" style="height:150px;"><div class="blog-img-grad"></div><span style="position:relative;z-index:1;">☀️</span></div>
+      <div class="blog-body">
+        <div class="blog-meta"><span class="blog-cat bc-nrg">Énergies</span><span class="blog-date">18 Sep 2024</span></div>
+        <h3>Noor Ouarzazate et l'avenir des énergies renouvelables marocaines</h3>
+        <p>Le Maroc est en train de devenir un acteur mondial des énergies renouvelables. Mais derrière les chiffres impressionnants, quels sont les enjeux pour l'ingénierie locale ?</p>
+        <span class="blog-read">Lire <i class="fas fa-arrow-right"></i></span>
+      </div>
+    </div>
+    <div class="blog-card" onclick="openBlog('b4')">
+      <div class="blog-img world" style="height:150px;"><div class="blog-img-grad"></div><span style="position:relative;z-index:1;">🌍</span></div>
+      <div class="blog-body">
+        <div class="blog-meta"><span class="blog-cat bc-auto">Automatisation</span><span class="blog-date">5 Août 2024</span></div>
+        <h3>L'automatisation va-t-elle détruire ou créer des emplois ? Une analyse honnête</h3>
+        <p>La question qui divise économistes et ingénieurs. Mon analyse en tant que futur spécialiste en automatisation, avec des données concrètes et un regard critique.</p>
+        <span class="blog-read">Lire <i class="fas fa-arrow-right"></i></span>
+      </div>
+    </div>
+    <div class="blog-card" onclick="openBlog('b5')">
+      <div class="blog-img emb" style="height:150px;"><div class="blog-img-grad"></div><span style="position:relative;z-index:1;">🔬</span></div>
+      <div class="blog-body">
+        <div class="blog-meta"><span class="blog-cat bc-emb">Embarqué</span><span class="blog-date">20 Juil 2024</span></div>
+        <h3>FPGA vs Microcontrôleur : comment choisir en 2024 pour vos projets embarqués</h3>
+        <p>Une question que je me pose souvent dans mes projets à l'EMI. Je partage ici une grille d'analyse pratique issue de mon expérience avec Arduino et VHDL.</p>
+        <span class="blog-read">Lire <i class="fas fa-arrow-right"></i></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══ NEWS ═══════════════════════════════ -->
+<section id="news" class="sec">
+  <div class="sec-label reveal">Veille technologique</div>
+  <h2 class="sec-title reveal d1"><em>Actualités</em> de l'industrie</h2>
+  <div class="news-layout">
+    <div class="news-list">
+      <div class="news-item reveal d1">
+        <div>
+          <div class="news-source-row"><span class="news-source-badge ns-ma">Maroc</span><span class="news-date-badge">Déc 2024</span></div>
+          <h3>OCP Group investit 13 milliards de $ dans la décarbonation de ses procédés industriels</h3>
+          <p>Le géant marocain des phosphates annonce un plan ambitieux d'électrification et d'automatisation verte de ses chaînes de production, avec une cible de neutralité carbone en 2040.</p>
+          <div class="news-comment">Un virage industriel historique. Pour nous, ingénieurs en génie électrique, c'est l'ouverture de milliers d'opportunités dans la transition énergétique industrielle marocaine. — MJ</div>
         </div>
-        <div class="form-group">
-          <label>Commentaire</label>
-          <textarea class="form-control" placeholder="Partagez votre avis sur mon portfolio..." required></textarea>
+        <div class="news-thumb">🔋</div>
+      </div>
+      <div class="news-item reveal d2">
+        <div>
+          <div class="news-source-row"><span class="news-source-badge ns-eu">Europe</span><span class="news-date-badge">Nov 2024</span></div>
+          <h3>Siemens lance la prochaine génération de contrôleurs PLC S7 avec IA intégrée</h3>
+          <p>La division Digital Industries de Siemens dévoile une nouvelle famille d'automates programmables avec capacités d'apprentissage automatique embarqué pour la maintenance prédictive en temps réel.</p>
+          <div class="news-comment">C'est exactement la direction que j'explore dans mes travaux sur les systèmes de contrôle. L'IA dans les PLC va révolutionner la programmation industrielle telle que nous la connaissons. — MJ</div>
         </div>
-        <div class="form-group">
-          <label>Note</label>
-          <div style="display:flex;align-items:center;gap:16px;margin-top:6px;">
-            <div class="stars-row">
-              <input type="radio" name="rating" id="s5" value="5"><label for="s5">★</label>
-              <input type="radio" name="rating" id="s4" value="4"><label for="s4">★</label>
-              <input type="radio" name="rating" id="s3" value="3"><label for="s3">★</label>
-              <input type="radio" name="rating" id="s2" value="2"><label for="s2">★</label>
-              <input type="radio" name="rating" id="s1" value="1"><label for="s1">★</label>
-            </div>
-          </div>
+        <div class="news-thumb">⚙️</div>
+      </div>
+      <div class="news-item reveal d3">
+        <div>
+          <div class="news-source-row"><span class="news-source-badge ns-ma">Maroc</span><span class="news-date-badge">Oct 2024</span></div>
+          <h3>MASEN : le Maroc dépasse les 4 GW d'énergies renouvelables installées</h3>
+          <p>L'Agence Marocaine de l'Énergie Durable annonce que la capacité installée en énergies renouvelables dépasse désormais 4 gigawatts, avec un objectif de 52% du mix énergétique d'ici 2030.</p>
+          <div class="news-comment">Le Maroc est en train de bâtir l'un des réseaux d'énergie renouvelable les plus ambitieux d'Afrique. Une fierté — et une immense responsabilité pour notre génération d'ingénieurs. — MJ</div>
         </div>
-        <button type="submit" class="btn-primary" style="width:100%;justify-content:center;margin-top:8px;">
-          <i class="fas fa-comment"></i> Soumettre mon avis
-        </button>
+        <div class="news-thumb">☀️</div>
+      </div>
+      <div class="news-item reveal d4">
+        <div>
+          <div class="news-source-row"><span class="news-source-badge ns-gl">Mondial</span><span class="news-date-badge">Oct 2024</span></div>
+          <h3>TSMC annonce une nouvelle usine en Europe : impact sur la filière semiconducteurs mondiale</h3>
+          <p>Le géant taïwanais des semi-conducteurs confirme l'ouverture d'une usine à Dresden, Allemagne. Une décision qui remodèle la carte mondiale de la fabrication de puces électroniques.</p>
+          <div class="news-comment">La délocalisation de la production de semi-conducteurs en Europe va créer une demande massive en ingénieurs spécialisés en VLSI et microélectronique — mon domaine. À surveiller de très près. — MJ</div>
+        </div>
+        <div class="news-thumb">🔬</div>
+      </div>
+      <div class="news-item reveal d5">
+        <div>
+          <div class="news-source-row"><span class="news-source-badge ns-gl">Mondial</span><span class="news-date-badge">Sep 2024</span></div>
+          <h3>ABB Research : les robots collaboratifs dans les PME en forte croissance (+42% en 2024)</h3>
+          <p>Les cobots envahissent les petites et moyennes industries mondiales. ABB enregistre une croissance record de ses ventes de robots collaboratifs, portée par des prix en baisse de 30%.</p>
+          <div class="news-comment">Les cobots accessibles aux PME : c'est la démocratisation de l'automatisation. Pour un ingénieur comme moi, c'est aussi la promesse d'un marché en pleine expansion, y compris au Maroc. — MJ</div>
+        </div>
+        <div class="news-thumb">🤖</div>
+      </div>
+    </div>
+    <div class="news-sidebar reveal d2">
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:20px;">
+        <h4>🔥 Tendances #industrie</h4>
+        <div class="trending-list">
+          <div class="trending-item"><div class="trending-num">01</div><div class="trending-text">Industrie 4.0 au Maroc</div></div>
+          <div class="trending-item"><div class="trending-num">02</div><div class="trending-text">IA embarquée dans les PLC</div></div>
+          <div class="trending-item"><div class="trending-num">03</div><div class="trending-text">Transition énergétique MASEN</div></div>
+          <div class="trending-item"><div class="trending-num">04</div><div class="trending-text">Semi-conducteurs & VLSI</div></div>
+          <div class="trending-item"><div class="trending-num">05</div><div class="trending-text">Robotique collaborative</div></div>
+          <div class="trending-item"><div class="trending-num">06</div><div class="trending-text">Jumeau numérique industriel</div></div>
+        </div>
+      </div>
+      <div class="newsletter-box">
+        <h4>📬 Ma newsletter technique</h4>
+        <p>Recevez mes analyses et veilles industrielles directement dans votre boîte mail.</p>
+        <div class="nl-form">
+          <input class="nl-input" type="email" placeholder="votre@email.com">
+          <button class="btn-gold" style="width:100%;justify-content:center;" onclick="showToast('Inscription confirmée !')"><i class="fas fa-paper-plane"></i> S'inscrire</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══ CONTACT ════════════════════════════ -->
+<section id="contact" class="sec">
+  <div class="sec-label reveal">Restons en contact</div>
+  <h2 class="sec-title reveal d1">Me <em>contacter</em></h2>
+  <div class="contact-layout">
+    <div class="contact-left reveal-l">
+      <h3>Parlons de votre projet ou d'une <em>opportunité</em></h3>
+      <p>Que vous souhaitiez collaborer, proposer un stage, discuter d'une opportunité professionnelle ou simplement échanger sur l'ingénierie, je suis toujours disponible pour une conversation de qualité.</p>
+      <div class="contact-links">
+        <a href="mailto:mohammedjabbari@email.com" class="clink"><div class="clink-icon ci-gold"><i class="fas fa-envelope"></i></div><div class="clink-txt"><strong>Email professionnel</strong><span>mohammedjabbari@email.com</span></div></a>
+        <a href="https://linkedin.com/in/mohammedjabbari" target="_blank" class="clink"><div class="clink-icon ci-blue"><i class="fab fa-linkedin"></i></div><div class="clink-txt"><strong>LinkedIn</strong><span>linkedin.com/in/mohammedjabbari</span></div></a>
+        <a href="https://github.com/mohammedjabbari" target="_blank" class="clink"><div class="clink-icon ci-none"><i class="fab fa-github"></i></div><div class="clink-txt"><strong>GitHub</strong><span>github.com/mohammedjabbari</span></div></a>
+        <div class="clink"><div class="clink-icon ci-teal"><i class="fas fa-map-marker-alt"></i></div><div class="clink-txt"><strong>Localisation</strong><span>Rabat, Maroc 🇲🇦</span></div></div>
+      </div>
+    </div>
+    <div class="form-wrap reveal d1">
+      <h4>✉️ Envoyer un message</h4>
+      <form onsubmit="sendMsg(event)">
+        <div class="fg-row">
+          <div class="fg"><label>Prénom</label><input class="fc" type="text" placeholder="Votre prénom" required></div>
+          <div class="fg"><label>Nom</label><input class="fc" type="text" placeholder="Votre nom" required></div>
+        </div>
+        <div class="fg"><label>Email</label><input class="fc" type="email" placeholder="votre@email.com" required></div>
+        <div class="fg"><label>Sujet</label><input class="fc" type="text" placeholder="Objet du message"></div>
+        <div class="fg"><label>Message</label><textarea class="fc" placeholder="Votre message..." required></textarea></div>
+        <button type="submit" class="btn-gold" style="width:100%;justify-content:center;"><i class="fas fa-paper-plane"></i> Envoyer</button>
       </form>
     </div>
-  </section>
+  </div>
+</section>
 
-</div><!-- /page-wrap -->
+<div class="divider"></div>
+
+<!-- ══ FEEDBACK ═══════════════════════════ -->
+<section class="sec" style="padding-top:40px;padding-bottom:80px;">
+  <div class="sec-label reveal" style="justify-content:center;">Votre avis</div>
+  <h2 class="sec-title reveal d1" style="text-align:center;margin-bottom:32px;">Laissez un <em>commentaire</em></h2>
+  <div class="feedback-wrap reveal d2">
+    <form onsubmit="sendFeedback(event)">
+      <div class="fg"><label>Votre nom</label><input class="fc" type="text" placeholder="Ex: Alice Dupont" required></div>
+      <div class="fg"><label>Votre commentaire</label><textarea class="fc" placeholder="Partagez votre avis..." required></textarea></div>
+      <div class="fg">
+        <label>Note</label>
+        <div class="stars-pick">
+          <input type="radio" name="rt" id="r5" value="5"><label for="r5">★</label>
+          <input type="radio" name="rt" id="r4" value="4"><label for="r4">★</label>
+          <input type="radio" name="rt" id="r3" value="3"><label for="r3">★</label>
+          <input type="radio" name="rt" id="r2" value="2"><label for="r2">★</label>
+          <input type="radio" name="rt" id="r1" value="1"><label for="r1">★</label>
+        </div>
+      </div>
+      <button type="submit" class="btn-gold" style="width:100%;justify-content:center;margin-top:8px;"><i class="fas fa-comment-dots"></i> Soumettre mon avis</button>
+    </form>
+  </div>
+</section>
+
+</div><!-- /page -->
 
 <!-- FOOTER -->
 <footer>
-  <div class="footer-copy">
-    © 2025 Mohammed Jabbari — Tous droits réservés.<br>
-    <span style="font-size:0.75rem;color:var(--text3);">Élève Ingénieur · École Mohammadia d'Ingénieurs</span>
+  <div style="display:flex;align-items:center;gap:12px;">
+    <div class="logo-mark">MJ</div>
+    <div>
+      <div style="font-family:var(--head);font-weight:800;font-size:.95rem;color:var(--text);">Mohammed Jabbari</div>
+      <div style="font-size:.75rem;color:var(--text3);">© 2025 · Tous droits réservés</div>
+    </div>
+  </div>
+  <div style="font-size:.78rem;color:var(--text3);text-align:center;">
+    Élève Ingénieur · École Mohammadia d'Ingénieurs · Rabat, Maroc 🇲🇦
   </div>
   <div class="footer-socials">
-    <a class="footer-social" href="mailto:mohammedjabbari@email.com" title="Email"><i class="fas fa-envelope"></i></a>
-    <a class="footer-social" href="https://www.linkedin.com/in/mohammedjabbari" target="_blank" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
-    <a class="footer-social" href="https://github.com/mohammedjabbari" target="_blank" title="GitHub"><i class="fab fa-github"></i></a>
+    <a class="fsoc" href="mailto:mohammedjabbari@email.com"><i class="fas fa-envelope"></i></a>
+    <a class="fsoc" href="https://linkedin.com/in/mohammedjabbari" target="_blank"><i class="fab fa-linkedin"></i></a>
+    <a class="fsoc" href="https://github.com/mohammedjabbari" target="_blank"><i class="fab fa-github"></i></a>
   </div>
 </footer>
 
-<!-- =============================================
+<!-- ═══════════════════════════════════════════
      SCRIPTS
-============================================= -->
+═══════════════════════════════════════════ -->
 <script>
-  // ============ CANVAS BACKGROUND ============
-  const canvas = document.getElementById('canvas-bg');
-  const ctx = canvas.getContext('2d');
-  let W, H, nodes = [], mouse = { x: -999, y: -999 };
-  const COLORS = ['rgba(0,229,255,', 'rgba(155,93,229,', 'rgba(0,245,160,'];
+/* ── CURSOR ── */
+const cd=document.getElementById('cur-dot'),cc=document.getElementById('cur-circle');
+let rx=0,ry=0,mx=0,my=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cd.style.left=mx+'px';cd.style.top=my+'px';});
+(function anim(){rx+=(mx-rx)*.14;ry+=(my-ry)*.14;cc.style.left=rx+'px';cc.style.top=ry+'px';requestAnimationFrame(anim);})();
+document.querySelectorAll('a,button,.proj-card,.cert-card,.blog-card,.news-item,.hero-card,.tl-card').forEach(el=>{
+  el.addEventListener('mouseenter',()=>document.body.classList.add('cursor-hover'));
+  el.addEventListener('mouseleave',()=>document.body.classList.remove('cursor-hover'));
+});
+document.addEventListener('mousedown',()=>document.body.classList.add('cursor-click'));
+document.addEventListener('mouseup',()=>document.body.classList.remove('cursor-click'));
 
-  function resizeCanvas() {
-    W = canvas.width = window.innerWidth;
-    H = canvas.height = window.innerHeight;
+/* ── CANVAS ── */
+const cv=document.getElementById('bg-canvas'),cx=cv.getContext('2d');
+let W,H,pts=[];
+function rz(){W=cv.width=innerWidth;H=cv.height=innerHeight;}
+function mkPts(){pts=[];const n=Math.floor(W*H/22000);for(let i=0;i<n;i++)pts.push({x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-.5)*.35,vy:(Math.random()-.5)*.35,r:Math.random()*1.4+.4,c:['rgba(232,201,109,','rgba(251,140,62,','rgba(45,212,191,'][Math.floor(Math.random()*3)]});}
+function draw(){cx.clearRect(0,0,W,H);pts.forEach(p=>{p.x+=p.vx;p.y+=p.vy;if(p.x<0||p.x>W)p.vx*=-1;if(p.y<0||p.y>H)p.vy*=-1;cx.beginPath();cx.arc(p.x,p.y,p.r,0,Math.PI*2);cx.fillStyle=p.c+'.6)';cx.fill();});pts.forEach((a,i)=>pts.slice(i+1).forEach(b=>{const dx=a.x-b.x,dy=a.y-b.y,d=Math.sqrt(dx*dx+dy*dy);if(d<110){cx.beginPath();cx.moveTo(a.x,a.y);cx.lineTo(b.x,b.y);cx.strokeStyle=`rgba(232,201,109,${(1-d/110)*.12})`;cx.lineWidth=.5;cx.stroke();}}));requestAnimationFrame(draw);}
+window.addEventListener('resize',()=>{rz();mkPts();});rz();mkPts();draw();
+
+/* ── LOADER ── */
+window.addEventListener('load',()=>setTimeout(()=>document.getElementById('loader').classList.add('gone'),2100));
+
+/* ── SCROLL PROGRESS & BACK TOP & RAIL ── */
+window.addEventListener('scroll',()=>{
+  const sp=document.getElementById('sp');
+  sp.style.width=(scrollY/(document.documentElement.scrollHeight-innerHeight)*100)+'%';
+  document.getElementById('btt').classList.toggle('show',scrollY>400);
+  document.getElementById('rail').classList.toggle('show',scrollY>300);
+  // SPY
+  let cur='';
+  document.querySelectorAll('section[id]').forEach(s=>{if(scrollY>=s.offsetTop-130)cur=s.id;});
+  document.querySelectorAll('[data-s]').forEach(a=>{a.classList.toggle('active',a.dataset.s===cur);});
+  document.querySelectorAll('.rail-dot').forEach(d=>{d.classList.toggle('active',d.dataset.s===cur);});
+});
+
+/* ── NAVIGATION ── */
+function goTo(id){const el=document.getElementById(id);if(el)el.scrollIntoView({behavior:'smooth',block:'start'});document.getElementById('mob-nav').classList.remove('open');document.getElementById('burger').classList.remove('open');}
+document.querySelectorAll('[data-s]').forEach(a=>a.addEventListener('click',()=>goTo(a.dataset.s)));
+document.getElementById('burger').addEventListener('click',function(){this.classList.toggle('open');document.getElementById('mob-nav').classList.toggle('open');});
+
+/* ── THEME ── */
+let dark=true;
+document.getElementById('theme-btn').addEventListener('click',()=>{dark=!dark;document.documentElement.setAttribute('data-theme',dark?'dark':'light');document.getElementById('ticon').className=dark?'fas fa-moon':'fas fa-sun';});
+
+/* ── REVEAL ── */
+const ro=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');e.target.querySelectorAll('.sbar-fill').forEach(b=>{b.style.width=b.dataset.w+'%';});}}),{threshold:.12});
+document.querySelectorAll('.reveal,.reveal-l').forEach(el=>ro.observe(el));
+
+/* ── SKILL CATS ── */
+document.querySelectorAll('.cat-btn').forEach(btn=>{btn.addEventListener('click',()=>{document.querySelectorAll('.cat-btn').forEach(b=>b.classList.remove('active'));document.querySelectorAll('.skill-panel').forEach(p=>p.classList.remove('active'));btn.classList.add('active');const pan=document.getElementById('cat-'+btn.dataset.cat);if(pan){pan.classList.add('active');pan.querySelectorAll('.sbar-fill').forEach(b=>{b.style.width='0%';setTimeout(()=>{b.style.width=b.dataset.w+'%';},50);});}});});
+
+/* ── PROJECT FILTER ── */
+document.querySelectorAll('.proj-tab').forEach(btn=>{btn.addEventListener('click',()=>{document.querySelectorAll('.proj-tab').forEach(b=>b.classList.remove('active'));btn.classList.add('active');const f=btn.dataset.f;document.querySelectorAll('.proj-card').forEach(c=>{const show=f==='all'||c.dataset.cat===f;c.style.transition='opacity .3s,transform .3s';if(show){c.style.display='';setTimeout(()=>{c.style.opacity=1;c.style.transform='';},10);}else{c.style.opacity=0;c.style.transform='scale(.96)';setTimeout(()=>{c.style.display='none';},300);}});});});
+
+/* ── TYPED ── */
+const roles=['Génie Électrique','Automatisation Industrielle','Systèmes Embarqués','VLSI & Microélectronique'];
+let ri=0,ci=0,del=false;const te=document.getElementById('typed');
+function type(){const r=roles[ri];if(!del){te.textContent=r.slice(0,ci+1);ci++;if(ci===r.length){del=true;setTimeout(type,2000);return;}}else{te.textContent=r.slice(0,ci-1);ci--;if(ci===0){del=false;ri=(ri+1)%roles.length;}}setTimeout(type,del?45:95);}
+setTimeout(type,2500);
+
+/* ── TOAST ── */
+function showToast(m='Envoyé !'){const t=document.getElementById('toast');document.getElementById('tmsg').textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3200);}
+
+/* ── FORMS ── */
+function sendMsg(e){e.preventDefault();showToast('Message envoyé ! Merci 🎉');e.target.reset();}
+function sendFeedback(e){e.preventDefault();showToast('Merci pour votre avis ! ⭐');e.target.reset();}
+
+/* ── BLOG MODAL ── */
+const blogData={
+  b1:{
+    title:"L'industrie électrique au Maroc : entre ambitions et réalités",
+    date:"15 Novembre 2024",
+    cat:"Industrie Maroc",
+    body:`<h4>Le contexte : un secteur en mutation accélérée</h4>
+<p>Depuis que je suis entré à l'École Mohammadia d'Ingénieurs, j'ai eu l'occasion d'observer de l'intérieur les dynamiques qui façonnent l'industrie électrique marocaine. Et le constat est ambivalent : il y a une énergie réelle, des projets ambitieux, mais aussi des lacunes structurelles qu'on ne peut pas ignorer.</p>
+<h4>Les avancées réelles</h4>
+<p>Le Maroc a réussi à s'imposer comme un hub industriel de référence en Afrique. Les zones industrielles de Kénitra, Casablanca, Tanger Med attirent des géants comme Stellantis, Safran, ou Yazaki. Pour le génie électrique, cela se traduit par une demande croissante en ingénieurs qualifiés en câblage, systèmes embarqués et automatisation.</p>
+<p>Le Plan d'Accélération Industrielle 2014-2020, puis sa continuation, a permis de créer des écosystèmes dans l'automobile, l'aéronautique et l'électronique. Des filières que l'EMI alimente en ingénieurs formés.</p>
+<h4>Ce qui me préoccupe</h4>
+<p>Mais voilà ce que je vois aussi : un gap technologique entre les grandes entreprises internationales implantées au Maroc et le tissu des PME locales. Ces dernières sont souvent en retard sur la digitalisation, l'automatisation et les normes. L'ingénieur marocain sort bien formé, mais trouve parfois peu d'environnements locaux capables de valoriser pleinement son potentiel.</p>
+<p>Il y a aussi un déficit en R&D industrielle. Combien d'entreprises marocaines investissent réellement dans la recherche appliquée en électrotechnique ou en systèmes embarqués ? La réponse est : trop peu.</p>
+<h4>Mon regard d'avenir</h4>
+<p>Je reste optimiste. La nouvelle génération d'ingénieurs marocains est compétente, connectée au monde et motivée. Avec les projets NOOR, l'hydrogène vert, et le positionnement du Maroc comme portail vers l'Afrique subsaharienne, nous avons tous les atouts. Il faut juste que l'écosystème entreprenarial suive.</p>`
+  },
+  b2:{
+    title:"Industrie 4.0 : pourquoi le Maroc doit accélérer sa transformation digitale industrielle",
+    date:"2 Octobre 2024",
+    cat:"Technologie & Industrie",
+    body:`<h4>La quatrième révolution industrielle frappe à notre porte</h4>
+<p>En cours de systèmes embarqués à l'EMI, on parle souvent de l'Industrie 4.0 comme d'un horizon lointain. Mais la réalité est que pour les nations industrielles avancées, c'est déjà le présent. Pour le Maroc, c'est maintenant ou jamais.</p>
+<h4>Qu'est-ce que l'Industrie 4.0 concrètement ?</h4>
+<p>C'est l'intégration de l'IoT industriel, de l'IA, des jumeaux numériques, de la robotique collaborative et de la cybersécurité dans les usines. C'est une usine où les machines communiquent entre elles, où la maintenance est prédictive, où les données de production sont analysées en temps réel.</p>
+<p>Les pays qui maîtrisent ces technologies domineront l'économie mondiale des 30 prochaines années. L'Allemagne, le Japon, la Corée du Sud l'ont compris. En Afrique, qui sera le premier à franchir ce cap ?</p>
+<h4>Les défis spécifiques au Maroc</h4>
+<p>La transformation digitale industrielle au Maroc se heurte à plusieurs obstacles : le coût de mise à niveau des équipements, le manque de compétences intermédiaires en automation, et une culture industrielle encore marquée par le "ça marche, on ne touche pas". Des obstacles réels, mais surmontables.</p>
+<h4>Ce que je propose</h4>
+<p>Former massivement des techniciens en automation et IoT industriel, créer des incubateurs tech-industrie dans les zones franches, et surtout, intégrer les PME dans les chaînes de valeur des grands groupes internationaux présents au Maroc. Le savoir-faire existe. Il faut structurer sa transmission.</p>`
+  },
+  b3:{
+    title:"Noor Ouarzazate et l'avenir des énergies renouvelables marocaines",
+    date:"18 Septembre 2024",
+    cat:"Énergies Renouvelables",
+    body:`<h4>Un projet qui inspire</h4>
+<p>Quand j'étudiais l'électrotechnique à l'EMI et que nos professeurs évoquaient Noor Ouarzazate, je sentais une vraie fierté. Avec ses 580 MW de capacité solaire concentrée (CSP), c'est l'une des plus grandes centrales solaires du monde. Et c'est marocain.</p>
+<h4>Les chiffres qui impressionnent</h4>
+<p>Le Maroc produit aujourd'hui plus de 4 GW d'énergie renouvelable. L'éolien à Tarfaya, le solaire au Sahara, l'hydraulique dans l'Atlas. MASEN gère un portefeuille de projets qui positionne le Maroc comme leader africain des renouvelables, avec pour objectif 52% du mix énergétique en 2030.</p>
+<h4>Les enjeux techniques pour les ingénieurs</h4>
+<p>Ce qui m'intéresse en tant que futur ingénieur en génie électrique, c'est l'intégration de ces sources d'énergie intermittentes dans le réseau. Comment gérer la fluctuation de la production solaire et éolienne ? Comment dimensionner les systèmes de stockage ? Comment optimiser la distribution ?</p>
+<p>Ce sont des problèmes fascinants qui nécessitent exactement les compétences que je développe : automatisation des réseaux, régulation, simulation MATLAB/Simulink, gestion des systèmes embarqués.</p>
+<h4>Le défi de l'hydrogène vert</h4>
+<p>Le prochain chapitre, c'est l'hydrogène vert. Le Maroc dispose d'un potentiel immense : un ensoleillement record, des côtes venteuses, une position géographique stratégique entre l'Europe et l'Afrique. La route vers 2030 sera construite par notre génération d'ingénieurs. Je veux en faire partie.</p>`
+  },
+  b4:{
+    title:"L'automatisation va-t-elle détruire ou créer des emplois ? Une analyse honnête",
+    date:"5 Août 2024",
+    cat:"Automatisation & Emploi",
+    body:`<h4>La question qui divise</h4>
+<p>Chaque fois que je présente mes projets d'automatisation industrielle à des amis hors de l'ingénierie, la question revient : "Mais tu ne vas pas supprimer des emplois ?" C'est une vraie question, et elle mérite une réponse honnête, pas une pirouette rhétorique.</p>
+<h4>Ce que disent les données</h4>
+<p>Selon le World Economic Forum, la vague d'automatisation va effectivement supprimer 85 millions de postes d'ici 2025. Mais elle va en créer 97 millions. Le solde est positif — mais la transition, elle, est douloureuse pour ceux qui ne se forment pas.</p>
+<p>Historiquement, chaque révolution industrielle a suivi ce schéma : destruction créatrice. La machine à vapeur a tué le métier de tisserand artisan, mais a créé l'ingénieur mécanicien, le conducteur de train, le mineur industriel. L'automatisation suit la même logique.</p>
+<h4>Mon point de vue d'ingénieur en automatisation</h4>
+<p>Ce qui me préoccupe plus que la question emploi/chômage, c'est la vitesse de la transition. Les travailleurs déplacés ont-ils le temps de se former ? Les systèmes éducatifs s'adaptent-ils assez vite ? Au Maroc, la réponse est partiellement non.</p>
+<p>Ma conviction : l'automatisation doit aller de pair avec un investissement massif dans la formation continue. Un opérateur qui maîtrise la supervision d'un système automatisé vaut bien plus sur le marché qu'un opérateur manuel non qualifié. C'est notre responsabilité en tant qu'ingénieurs : concevoir des systèmes qui augmentent l'humain, pas qui le remplacent brutalement.</p>`
+  },
+  b5:{
+    title:"FPGA vs Microcontrôleur : comment choisir en 2024 pour vos projets embarqués",
+    date:"20 Juillet 2024",
+    cat:"Systèmes Embarqués",
+    body:`<h4>Une question que je rencontre tous les jours</h4>
+<p>Dans mes projets à l'EMI, notamment lors de notre projet VLSI et de la conception de systèmes embarqués, je me retrouve régulièrement à devoir choisir entre une approche FPGA (et donc VHDL) et un microcontrôleur classique (Arduino, STM32...). Voici ma grille d'analyse, forgée par l'expérience.</p>
+<h4>Quand choisir un microcontrôleur ?</h4>
+<p><strong>Le microcontrôleur est votre ami quand :</strong> vous avez besoin de prototyper vite, votre traitement est séquentiel (lire capteur → calculer → actionner), votre budget est limité, vous avez besoin de connectivité (WiFi, Bluetooth, USB), et votre équipe maîtrise le C/C++ mais pas le VHDL.</p>
+<p>Pour notre projet de détection de gaz toxiques, l'Arduino était le choix évident. Traitement simple, faible fréquence, capteurs analogiques standards. Un overkill FPGA aurait été absurde.</p>
+<h4>Quand choisir un FPGA ?</h4>
+<p><strong>Le FPGA s'impose quand :</strong> vous avez besoin de parallélisme massif (traitement d'image, DSP), vos contraintes temporelles sont critiques (sub-microseconde), vous faites de la cryptographie matérielle, ou vous prototypez un ASIC.</p>
+<p>Pour notre multiplexeur 4:1, le FPGA avec VHDL était la seule option pertinente. On concevait du silicium logique, pas du logiciel embarqué.</p>
+<h4>La vraie réponse</h4>
+<p>En 2024, la frontière s'estompe. Les SoC (System on Chip) comme les Xilinx Zynq combinent ARM + FPGA sur le même die. La tendance de fond : le soft comme couche de contrôle, le hard comme couche de performance. C'est cette dualité qu'il faut maîtriser.</p>`
   }
-  function initNodes() {
-    nodes = [];
-    const count = Math.floor((W * H) / 18000);
-    for (let i = 0; i < count; i++) {
-      nodes.push({
-        x: Math.random() * W,
-        y: Math.random() * H,
-        vx: (Math.random() - 0.5) * 0.4,
-        vy: (Math.random() - 0.5) * 0.4,
-        r: Math.random() * 1.5 + 0.5,
-        color: COLORS[Math.floor(Math.random() * COLORS.length)]
-      });
-    }
-  }
-  function drawNodes() {
-    ctx.clearRect(0, 0, W, H);
-    nodes.forEach(n => {
-      n.x += n.vx; n.y += n.vy;
-      if (n.x < 0 || n.x > W) n.vx *= -1;
-      if (n.y < 0 || n.y > H) n.vy *= -1;
-      ctx.beginPath();
-      ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
-      ctx.fillStyle = n.color + '0.7)';
-      ctx.fill();
-    });
-    nodes.forEach((a, i) => {
-      nodes.slice(i + 1).forEach(b => {
-        const dx = a.x - b.x, dy = a.y - b.y;
-        const dist = Math.sqrt(dx * dx + dy * dy);
-        if (dist < 120) {
-          ctx.beginPath();
-          ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y);
-          const alpha = (1 - dist / 120) * 0.15;
-          ctx.strokeStyle = `rgba(0,229,255,${alpha})`;
-          ctx.lineWidth = 0.5;
-          ctx.stroke();
-        }
-      });
-    });
-    requestAnimationFrame(drawNodes);
-  }
-  window.addEventListener('resize', () => { resizeCanvas(); initNodes(); });
-  resizeCanvas(); initNodes(); drawNodes();
-
-  // ============ CURSOR ============
-  const dot = document.getElementById('cursorDot');
-  const ring = document.getElementById('cursorRing');
-  let ringX = 0, ringY = 0;
-
-  document.addEventListener('mousemove', e => {
-    dot.style.left = e.clientX + 'px';
-    dot.style.top = e.clientY + 'px';
-    ringX += (e.clientX - ringX) * 0.15;
-    ringY += (e.clientY - ringY) * 0.15;
-    ring.style.left = ringX + 'px';
-    ring.style.top = ringY + 'px';
-  });
-  function animCursor() {
-    requestAnimationFrame(animCursor);
-  }
-  animCursor();
-  document.querySelectorAll('a,button,.project-card,.skill-card,.cert-card').forEach(el => {
-    el.addEventListener('mouseenter', () => {
-      dot.style.width = '14px'; dot.style.height = '14px';
-      ring.style.width = '52px'; ring.style.height = '52px';
-      ring.style.borderColor = 'rgba(0,229,255,0.8)';
-    });
-    el.addEventListener('mouseleave', () => {
-      dot.style.width = '8px'; dot.style.height = '8px';
-      ring.style.width = '36px'; ring.style.height = '36px';
-      ring.style.borderColor = 'rgba(0,229,255,0.5)';
-    });
-  });
-
-  // ============ SCROLL PROGRESS ============
-  window.addEventListener('scroll', () => {
-    const sp = document.getElementById('scroll-progress');
-    const pct = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
-    sp.style.width = pct + '%';
-    const bt = document.getElementById('back-top');
-    bt.classList.toggle('visible', window.scrollY > 400);
-    const dock = document.getElementById('side-dock');
-    dock.classList.toggle('visible', window.scrollY > 300);
-  });
-
-  // ============ PRELOADER ============
-  window.addEventListener('load', () => {
-    setTimeout(() => {
-      document.getElementById('preloader').classList.add('hidden');
-    }, 1900);
-  });
-
-  // ============ THEME TOGGLE ============
-  let isDark = true;
-  document.getElementById('theme-btn').addEventListener('click', () => {
-    isDark = !isDark;
-    document.documentElement.setAttribute('data-theme', isDark ? '' : 'light');
-    document.getElementById('theme-icon').className = isDark ? 'fas fa-moon' : 'fas fa-sun';
-  });
-
-  // ============ NAV SCROLL SPY ============
-  const sections = document.querySelectorAll('section[id]');
-  function updateNav() {
-    let current = '';
-    sections.forEach(s => {
-      if (window.scrollY >= s.offsetTop - 120) current = s.id;
-    });
-    document.querySelectorAll('[data-section]').forEach(a => {
-      a.classList.toggle('active', a.dataset.section === current);
-    });
-    document.querySelectorAll('.dock-item').forEach(a => {
-      a.classList.toggle('active', a.dataset.section === current);
-    });
-  }
-  window.addEventListener('scroll', updateNav);
-
-  // ============ SMOOTH SCROLL NAV ============
-  function scrollToSection(id) {
-    const el = document.getElementById(id);
-    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    document.getElementById('mobileNav').classList.remove('open');
-    document.getElementById('hamburger').classList.remove('open');
-  }
-  document.querySelectorAll('[data-section]').forEach(a => {
-    a.addEventListener('click', () => scrollToSection(a.dataset.section));
-  });
-
-  // ============ HAMBURGER ============
-  document.getElementById('hamburger').addEventListener('click', function() {
-    this.classList.toggle('open');
-    document.getElementById('mobileNav').classList.toggle('open');
-  });
-
-  // ============ REVEAL ANIMATIONS ============
-  const observer = new IntersectionObserver(entries => {
-    entries.forEach(e => {
-      if (e.isIntersecting) {
-        e.target.classList.add('visible');
-        // Trigger skill bars
-        e.target.querySelectorAll('.skill-bar-fill').forEach(b => {
-          b.style.width = b.dataset.width + '%';
-        });
-      }
-    });
-  }, { threshold: 0.12 });
-
-  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-
-  // ============ SKILL TOGGLE ============
-  document.querySelectorAll('.toggle-skill').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const card = btn.closest('.skill-card');
-      card.classList.toggle('open');
-      if (card.classList.contains('open')) {
-        card.querySelectorAll('.skill-bar-fill').forEach(b => {
-          b.style.width = b.dataset.width + '%';
-        });
-      }
-    });
-  });
-
-  // ============ PROJECT FILTER ============
-  document.querySelectorAll('.filter-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      const filter = btn.dataset.filter;
-      document.querySelectorAll('.project-card').forEach(card => {
-        if (filter === 'all' || card.dataset.category === filter) {
-          card.style.display = '';
-          setTimeout(() => { card.style.opacity = 1; card.style.transform = ''; }, 10);
-        } else {
-          card.style.opacity = 0;
-          card.style.transform = 'scale(0.95)';
-          setTimeout(() => { card.style.display = 'none'; }, 300);
-        }
-      });
-    });
-  });
-
-  // ============ TYPED EFFECT ============
-  const roles = ['en Génie Électrique', 'en Automatisation', 'en Systèmes Embarqués'];
-  let ri = 0, ci = 0, deleting = false;
-  const typedEl = document.getElementById('typed-text');
-
-  function typeRole() {
-    const current = roles[ri];
-    if (!deleting) {
-      typedEl.textContent = current.slice(0, ci + 1);
-      ci++;
-      if (ci === current.length) { deleting = true; setTimeout(typeRole, 1800); return; }
-    } else {
-      typedEl.textContent = current.slice(0, ci - 1);
-      ci--;
-      if (ci === 0) { deleting = false; ri = (ri + 1) % roles.length; }
-    }
-    setTimeout(typeRole, deleting ? 50 : 90);
-  }
-  setTimeout(typeRole, 2200);
-
-  // ============ TOAST ============
-  function showToast(msg) {
-    const t = document.getElementById('toast');
-    document.getElementById('toastMsg').textContent = msg;
-    t.classList.add('show');
-    setTimeout(() => t.classList.remove('show'), 3500);
-  }
-
-  // ============ FORMS ============
-  function submitForm(e) {
-    e.preventDefault();
-    showToast('Message envoyé avec succès !');
-    e.target.reset();
-  }
-  function submitFeedback(e) {
-    e.preventDefault();
-    showToast('Merci pour votre avis !');
-    e.target.reset();
-  }
-
-  // ============ STAGGER REVEALS ============
-  document.querySelectorAll('.projects-grid .project-card, .skills-grid .skill-card, .certs-grid .cert-card').forEach((el, i) => {
-    el.style.transitionDelay = (i % 4) * 0.08 + 's';
-  });
+};
+function openBlog(id){const d=blogData[id];if(!d)return;const c=document.getElementById('modal-content');c.innerHTML=`<div style="margin-bottom:8px"><span class="blog-cat bc-ind" style="font-size:.72rem">${d.cat}</span></div><h2>${d.title}</h2><span class="modal-date">${d.date} · par Mohammed Jabbari</span>${d.body}`;document.getElementById('blog-modal').classList.add('open');document.body.style.overflow='hidden';}
+function closeBlogModal(e){if(e.target===document.getElementById('blog-modal')){document.getElementById('blog-modal').classList.remove('open');document.body.style.overflow='';}}
+document.querySelectorAll('#blog-modal .modal-close').forEach(b=>b.addEventListener('click',()=>{document.getElementById('blog-modal').classList.remove('open');document.body.style.overflow='';}));
 </script>
 </body>
 </html>
