@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024" role="img" aria-labelledby="title desc">
+  <title id="title">MJ logo</title>
+  <desc id="desc">Modern MJ monogram in black and acid green.</desc>
+  <defs>
+    <linearGradient id="acidGlow" x1="160" y1="140" x2="860" y2="900" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#edff22"/>
+      <stop offset="0.55" stop-color="#dff10d"/>
+      <stop offset="1" stop-color="#aab900"/>
+    </linearGradient>
+    <filter id="softShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="28" dy="34" stdDeviation="0" flood-color="#dff10d" flood-opacity="0.28"/>
+      <feDropShadow dx="0" dy="26" stdDeviation="24" flood-color="#030303" flood-opacity="0.34"/>
+    </filter>
+  </defs>
+  <path d="M207 118h646l-66 788H142z" fill="#030303" filter="url(#softShadow)"/>
+  <path d="M207 118h646l-66 788H142z" fill="none" stroke="#dff10d" stroke-width="20" stroke-linejoin="round"/>
+  <path d="M250 168h512l-12 66H264z" fill="#dff10d"/>
+  <path d="M780 168h80l-55 180h-80z" fill="#f1efe1" opacity="0.9"/>
+  <path d="M175 812h584l-6 58H164z" fill="#dff10d"/>
+  <g fill="none" stroke="#dff10d" stroke-opacity="0.22" stroke-width="5">
+    <path d="M246 294h500"/>
+    <path d="M220 392h500"/>
+    <path d="M196 490h500"/>
+    <path d="M173 588h500"/>
+    <path d="M151 686h500"/>
+  </g>
+  <text x="512" y="642" text-anchor="middle" fill="url(#acidGlow)" font-family="Impact, Haettenschweiler, 'Arial Black', sans-serif" font-size="386" font-weight="900" letter-spacing="-28">MJ</text>
+  <path d="M646 666h118l-9 48H642z" fill="#f1efe1" opacity="0.88"/>
+  <path d="M252 721h334" stroke="#dff10d" stroke-width="12" stroke-linecap="square"/>
+  <text x="512" y="768" text-anchor="middle" fill="#f1efe1" font-family="Inter, Arial, sans-serif" font-size="34" font-weight="900" letter-spacing="8">ENGINEERED SYSTEMS</text>
+</svg>
